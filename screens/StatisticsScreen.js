@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 const StatisticsScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>The Statistics Screen!</Text>
+      <Text>Podstrona statystyk!</Text>
     </View>
   );
 };
