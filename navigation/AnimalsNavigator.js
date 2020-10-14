@@ -5,6 +5,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
 import AnimalOverviewScreen from "../screens/AnimalOverviewScreen";
@@ -19,13 +20,10 @@ import Animal from "../models/animal";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 
 const defaultStackNavOptions = {
-  defaultNavigationOptions: {
-    headerStyle: {
-      backgroundColor:
-        Platform.OS === "android" ? Colors.primaryColor : "white",
-    },
-    headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "white",
   },
+  headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
 };
 
 const AnimalNavigator = createStackNavigator(
@@ -90,4 +88,31 @@ const AnimalFavTabNavigator =
           activeTintColor: Colors.accentColor,
         },
       });
-export default createAppContainer(AnimalFavTabNavigator);
+const FavoritesNavigator = createStackNavigator(
+  {
+    favnav: FavoritesScreen,
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions,
+  }
+);
+const MainNavigator = createDrawerNavigator(
+  {
+    AnimalsFav: {
+      screen: AnimalFavTabNavigator,
+      navigationOptions: {
+        drawerLabel: "Menu",
+      },
+    },
+    Fav: FavoritesNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.accentColor,
+      labelStyle: {
+        fontFamily: "open-sans-bold",
+      },
+    },
+  }
+);
+export default createAppContainer(MainNavigator);

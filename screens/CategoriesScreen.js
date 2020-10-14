@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import { CATEGORIES } from "../data/categories-data";
 import CategoryGridTile from "../components/CategoryGridTile";
+import HeaderButton from "../components/HeaderButton";
+//import { Item } from "react-native-paper/lib/typescript/src/components/List/List";
 
 const CategoriesScreen = (props) => {
   const renderGridItem = (itemData) => {
@@ -28,6 +31,23 @@ const CategoriesScreen = (props) => {
       numColumns={2}
     />
   );
+};
+
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Menu",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title='Menu'
+          iconName='ios-menu'
+          onPress={() => {
+            navData.navigation.openDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
