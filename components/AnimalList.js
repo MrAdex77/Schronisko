@@ -16,6 +16,7 @@ const AnimalList = (props) => {
             routeName: "AnimalDetail",
             params: {
               animalId: itemData.item.id,
+              animalTitle: itemData.item.title,
             },
           });
         }}

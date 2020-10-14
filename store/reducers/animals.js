@@ -2,10 +2,11 @@ import { State } from "react-native-gesture-handler";
 import Animals from "../../data/dummy-data";
 
 const initialState = {
-  avaiableAnimals: Animals,
-  userAnimals: Animals.filter((ani) => ani.ownerID === "u1"),
+  animals: Animals,
+  favoriteAnimals: [],
 };
 
-export default (state = initialState, action) => {
+const animalReducer = (state = initialState, action) => {
   return state;
 };
+export default animalReducer;

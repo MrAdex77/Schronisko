@@ -1,14 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-
+import { useSelector } from "react-redux";
 import { CATEGORIES } from "../data/categories-data";
-import AnimalItem from "../components/AnimalItem";
-import Animals from "../data/dummy-data";
+
 import AnimalList from "../components/AnimalList";
 const AnimalOverviewScreen = (props) => {
   const catId = props.navigation.getParam("categoryId");
 
-  const displayedAnimals = Animals;
+  const availableAnimals = useSelector((state) => state.animals.animals);
+
+  const displayedAnimals = availableAnimals;
   //const selectedCategory = CATEGORIES.find((cat) => cat.id === catId);
 
   return (

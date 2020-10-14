@@ -7,6 +7,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import DefaultText from "./DefaultText";
 
 const AnimalItem = (props) => {
   return (

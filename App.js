@@ -4,10 +4,19 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import { enableScreens } from "react-native-screens";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
 
 import AnimalsNavigator from "./navigation/AnimalsNavigator";
+import animalReducer from "./store/reducers/animals";
 
 enableScreens();
+
+const rootReducer = combineReducers({
+  animals: animalReducer,
+});
+
+const store = createStore(rootReducer);
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -17,20 +26,24 @@ const fetchFonts = () => {
 };
 
 export default function App() {
-  const [fontLoaded, setFondLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   if (!fontLoaded) {
     return (
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => {
-          setFondLoaded(true);
+          setFontLoaded(true);
         }}
       />
     );
   }
 
-  return <AnimalsNavigator />;
+  return (
+    <Provider store={store}>
+      <AnimalsNavigator />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
