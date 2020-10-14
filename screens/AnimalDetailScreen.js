@@ -1,20 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleFavorite } from "../store/actions/animals";
 
 const AnimalDetailScreen = (props) => {
   const availableAnimals = useSelector((state) => state.animals.animals);
   const animalId = props.navigation.getParam("animalId");
 
   const selectedAnimal = availableAnimals.find((x) => x.id === animalId);
-  /*
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(animalId));
+  }, [dispatch, animalId]);
+
   useEffect(() => {
-    props.navigation.setParams({ animalTitle: selectedAnimal.title });
-  }, [selectedAnimal]);
-*/
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
+
   return (
     <ScrollView>
       <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
@@ -28,20 +35,15 @@ const AnimalDetailScreen = (props) => {
 };
 
 AnimalDetailScreen.navigationOptions = (navigationData) => {
-  const animalId = navigationData.navigation.getParam("animalId");
+  //const animalId = navigationData.navigation.getParam("animalId");
   const animalTitle = navigationData.navigation.getParam("animalTitle");
+  const toggleFavorite = navigationData.navigation.getParam("toggleFav");
   //const selectedAnimal = Animals.find((x) => x.id === animalId);
   return {
     headerTitle: animalTitle,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title='Favorite'
-          iconName='ios-star'
-          onPress={() => {
-            console.log("marked as fav!");
-          }}
-        />
+        <Item title='Favorite' iconName='ios-star' onPress={toggleFavorite} />
       </HeaderButtons>
     ),
   };
