@@ -14,6 +14,7 @@ import DonationScreen from "../screens/DonationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import StatisticsScreen from "../screens/StatisticsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
+import AddAnimalScreen from "../screens/admin/AddAnimalScreen";
 
 import Colors from "../constants/Colors";
 import Animal from "../models/animal";
@@ -44,6 +45,7 @@ const AnimalNavigator = createStackNavigator(
     Login: LoginScreen,
     Statistics: StatisticsScreen,
     AnimalDetail: AnimalDetailScreen,
+    AddAnimal: AddAnimalScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -120,6 +122,27 @@ const FavoritesNavigator = createStackNavigator(
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
+
+const AdminNavigator = createStackNavigator(
+  {
+    Animals: {
+      screen: AnimalOverviewScreen,
+      navigationOptions: { headerTitle: "Przegląd Zwierząt Admin" },
+    },
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-create" : "ios-create"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+  }
+);
+
 const MainNavigator = createDrawerNavigator(
   {
     AnimalsFav: {
@@ -129,6 +152,8 @@ const MainNavigator = createDrawerNavigator(
       },
     },
     Fav: FavoritesNavigator,
+    Admin: AdminNavigator,
+    AddAnimal: AddAnimalScreen,
   },
   {
     contentOptions: {
@@ -139,4 +164,5 @@ const MainNavigator = createDrawerNavigator(
     },
   }
 );
+
 export default createAppContainer(MainNavigator);

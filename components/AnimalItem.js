@@ -13,8 +13,8 @@ const AnimalItem = (props) => {
   return (
     <View style={styles.animalItem}>
       <TouchableOpacity onPress={props.onSelectAnimal}>
-        <View>
-          <View style={{ ...styles.animalRow, ...styles.animalHeader }}>
+        <View style={{ ...styles.animalRow, ...styles.animalHeader }}>
+          <View style={styles.imageContainer}>
             <ImageBackground
               source={{ uri: props.image }}
               style={styles.bgImage}>
@@ -25,20 +25,21 @@ const AnimalItem = (props) => {
               </View>
             </ImageBackground>
           </View>
-          <View style={{ ...styles.animalRow, ...styles.animalDetail }}>
+        </View>
+        {/* <View style={{ ...styles.animalRow, ...styles.animalDetail }}>
             <View>
               <Text numberOfLines={5}>{props.description}</Text>
             </View>
-          </View>
-          <View style={{ ...styles.animalRow, ...styles.buttons }}>
+          </View> */}
+
+        {/* <View style={{ ...styles.animalRow, ...styles.buttons }}>
             <View style={styles.like}>
               <FontAwesome name='heart-o' size={40} color='white' />
             </View>
             <View style={styles.details}>
               <FontAwesome name='info-circle' size={40} color='white' />
             </View>
-          </View>
-        </View>
+          </View> */}
       </TouchableOpacity>
     </View>
   );
@@ -49,23 +50,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   animalItem: {
-    height: 600,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 10,
+    borderRadius: 150,
+    backgroundColor: "white",
+    height: 300,
+    margin: 20,
+  },
+  imageContainer: {
     width: "100%",
-    backgroundColor: "#f5f5f5",
+    height: "100%",
     borderRadius: 10,
-  },
-  like: {
-    alignItems: "center",
-    backgroundColor: "pink",
-    width: "50%",
-  },
-  details: {
-    alignItems: "center",
-    backgroundColor: "green",
-    width: "50%",
+    overflow: "hidden",
   },
   animalHeader: {
-    height: "63%",
+    height: "100%",
   },
   animalDetail: {
     paddingHorizontal: 10,
@@ -73,11 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "30%",
     backgroundColor: "white",
-  },
-  buttons: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "7%",
   },
   bgImage: {
     width: "100%",

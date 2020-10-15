@@ -12,7 +12,7 @@ const FavoritesScreen = (props) => {
   if (favAnimals.length === 0 || !favAnimals) {
     return (
       <View style={styles.content}>
-        <DefaultText>No favorie Animals found.Start Adding some!</DefaultText>
+        <DefaultText>Nie znaleziono ulubionych, dodaj jakies!</DefaultText>
       </View>
     );
   }
@@ -22,17 +22,6 @@ const FavoritesScreen = (props) => {
 
 FavoritesScreen.navigationOptions = {
   headerTitle: "Ulubione",
-  headerRight: () => (
-    <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      <Item
-        title="Favorite"
-        iconName="ios-star"
-        onPress={() => {
-          console.log("marked as fav!");
-        }}
-      />
-    </HeaderButtons>
-  ),
 };
 
 const styles = StyleSheet.create({
