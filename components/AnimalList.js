@@ -1,10 +1,14 @@
 import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
-
+import { useSelector, UseSelector } from "react-redux";
 import AnimalItem from "./AnimalItem";
 
 const AnimalList = (props) => {
+  const FavAnimals = useSelector((state) => state.animals.favoriteAnimals);
   const renderAnimalItem = (itemData) => {
+    const isFavorite = FavAnimals.some(
+      (animal) => animal.id === itemData.item.id
+    );
     return (
       <AnimalItem
         title={itemData.item.title}
@@ -17,6 +21,7 @@ const AnimalList = (props) => {
             params: {
               animalId: itemData.item.id,
               animalTitle: itemData.item.title,
+              isFav: isFavorite,
             },
           });
         }}

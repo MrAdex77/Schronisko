@@ -9,7 +9,8 @@ import { toggleFavorite } from "../store/actions/animals";
 const AnimalDetailScreen = (props) => {
   const availableAnimals = useSelector((state) => state.animals.animals);
   const animalId = props.navigation.getParam("animalId");
-
+  const currentAnimalIsFav = useSelector(state => state.animals.favoriteAnimals.some(animal => animal.id === animalId));
+  
   const selectedAnimal = availableAnimals.find((x) => x.id === animalId);
 
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AnimalDetailScreen = (props) => {
     props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
   }, [toggleFavoriteHandler]);
 
+  useEffect(()=>{props.navigation.setParams({isFav: currentAnimalIsFav})},[currentAnimalIsFav]);
   return (
     <ScrollView>
       <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
@@ -38,12 +40,13 @@ AnimalDetailScreen.navigationOptions = (navigationData) => {
   //const animalId = navigationData.navigation.getParam("animalId");
   const animalTitle = navigationData.navigation.getParam("animalTitle");
   const toggleFavorite = navigationData.navigation.getParam("toggleFav");
+  const isFavorite = navigationData.navigation.getParam("isFav");
   //const selectedAnimal = Animals.find((x) => x.id === animalId);
   return {
     headerTitle: animalTitle,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title='Favorite' iconName='ios-star' onPress={toggleFavorite} />
+        <Item title='Favorite' iconName={isFavorite ? 'ios-star' : 'ios-star-outline'} onPress={toggleFavorite} />
       </HeaderButtons>
     ),
   };
