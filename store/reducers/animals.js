@@ -3,6 +3,8 @@ import Animals from "../../data/dummy-data";
 import Animal from "../../models/animal";
 import {
   CREATE_ANIMAL,
+  SET_ANIMALS,
+  SET_FILTERS,
   TOGGLE_FAVORITE,
   UPDATE_ANIMAL,
 } from "../actions/animals";
@@ -15,6 +17,12 @@ const initialState = {
 
 const animalReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ANIMALS:
+      return {
+        animals: action.animals,
+        favoriteAnimals: [],
+      };
+
     case CREATE_ANIMAL:
       const newAnimal = new Animal(
         new Date().toString(),
@@ -53,6 +61,13 @@ const animalReducer = (state = initialState, action) => {
           favoriteAnimals: state.favoriteAnimals.concat(animal),
         };
       }
+    case SET_FILTERS:
+      const appliedFilters = action.filters;
+      const filteredMeals = state.meals.filter((ani) => {
+        if (filters.glutenFree && !ani.isGlutenFree) {
+          return false;
+        }
+      });
     default:
       return state;
   }

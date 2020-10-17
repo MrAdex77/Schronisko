@@ -8,7 +8,7 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import { createDrawerNavigator } from "react-navigation-drawer";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
-import AnimalOverviewScreen from "../screens/AnimalOverviewScreen";
+import AnimalsOverviewScreen from "../screens/AnimalsOverviewScreen";
 import AppointmentServiceScreen from "../screens/AppointmentScreen";
 import DonationScreen from "../screens/DonationScreen";
 import LoginScreen from "../screens/LoginScreen";
@@ -39,7 +39,7 @@ const AnimalNavigator = createStackNavigator(
       screen: CategoriesScreen,
       navigationOptions: { headerTitle: "Menu" },
     },
-    AnimalOverview: { screen: AnimalOverviewScreen },
+    AnimalsOverview: { screen: AnimalsOverviewScreen },
     Appointment: AppointmentServiceScreen,
     Donation: DonationScreen,
     Login: LoginScreen,
@@ -68,7 +68,7 @@ const tabScreenConfig = {
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return (
-          <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
+          <Ionicons name='ios-restaurant' size={25} color={tabInfo.tintColor} />
         );
       },
       tabBarColor: Colors.primaryColor,
@@ -84,7 +84,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -126,7 +126,7 @@ const FavoritesNavigator = createStackNavigator(
 const AdminNavigator = createStackNavigator(
   {
     Animals: {
-      screen: AnimalOverviewScreen,
+      screen: AnimalsOverviewScreen,
       navigationOptions: { headerTitle: "Przegląd Zwierząt Admin" },
     },
   },

@@ -31,6 +31,7 @@ const AnimalList = (props) => {
   return (
     <View style={styles.list}>
       <FlatList
+        keyExtractor={(item, index) => item.id}
         data={props.listData}
         renderItem={renderAnimalItem}
         style={{ width: "100%" }}

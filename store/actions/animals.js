@@ -1,11 +1,56 @@
+import Animal from "../../models/animal";
+
 export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
+export const SET_FILTERS = "SET_FILTERS";
 export const CREATE_ANIMAL = "CREATE_ANIMAL";
 export const UPDATE_ANIMAL = "UPDATE_ANIMAL";
+export const SET_ANIMALS = "SET_ANIMALS";
 
-export const fetchAnimals = () => {};
+export const fetchAnimals = () => {
+  return async (dispatch) => {
+    //any async code http://176.107.131.27:5000/animals/new
+    try {
+      const response = await fetch(
+        "https://schronisko-7cfd1.firebaseio.com/animals.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      const loadedAnimals = [];
+
+      for (const key in resData) {
+        loadedAnimals.push(
+          new Animal(
+            key,
+            "u1",
+            resData[key].age,
+            resData[key].title,
+            resData[key].imageUrl,
+            resData[key].description
+          )
+        );
+      }
+
+      dispatch({ type: SET_ANIMALS, animals: loadedAnimals });
+    } catch (err) {
+      //send to custon analytics server
+      throw err;
+    }
+  };
+};
 
 export const toggleFavorite = (id) => {
   return { type: TOGGLE_FAVORITE, animalId: id };
+};
+
+export const setFilters = (filterSettings) => {
+  return {
+    type: SET_FILTERS,
+    filters: filterSettings,
+  };
 };
 
 export const createAnimal = (title, age, description, imageUrl) => {
