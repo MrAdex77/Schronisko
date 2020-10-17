@@ -4,10 +4,12 @@ import * as Google from "expo-google-app-auth";
 
 async function signInWithGoogleAsync() {
   try {
+    //id: 999814744000-k4m11cn6q7diiur0ltk78ccoe9bgg18a.apps.googleusercontent.com
     const result = await Google.logInAsync({
       behavior: "web",
-      iosClientId: IOS_CLIENT_ID,
-      //androidClientId: AND_CLIENT_ID,
+      //iosClientId: IOS_CLIENT_ID,
+      androidClientId:
+        "999814744000-k4m11cn6q7diiur0ltk78ccoe9bgg18a.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     });
 
@@ -35,7 +37,7 @@ const LoginScreen = (props) => {
         onPress={() => {
           signInWithGoogle();
         }}
-        title="Sign in"
+        title='Sign in'
       />
     </View>
   );

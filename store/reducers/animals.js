@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   animals: Animals,
+  filteredAnimals: Animals,
   favoriteAnimals: [],
 };
 

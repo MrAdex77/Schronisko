@@ -21,7 +21,7 @@ const AddAnimalScreen = (props) => {
 
   const submitHandler = useCallback(() => {
     dispatch(createAnimal(title, age, description, imageUrl));
-  }, []);
+  }, [dispatch, title, age, description, imageUrl]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
@@ -42,7 +42,7 @@ const AddAnimalScreen = (props) => {
           <Text style={styles.label}>Wiek</Text>
           <TextInput
             style={styles.input}
-            value={title}
+            value={age}
             onChangeText={(text) => setAge(text)}
           />
         </View>
