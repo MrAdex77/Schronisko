@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import * as Google from "expo-google-app-auth";
 
 async function signInWithGoogleAsync() {
@@ -14,6 +14,7 @@ async function signInWithGoogleAsync() {
     });
 
     if (result.type === "success") {
+      Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
       return result.accessToken;
     } else {
       return { cancelled: true };

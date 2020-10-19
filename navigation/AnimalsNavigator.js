@@ -41,7 +41,9 @@ const AnimalNavigator = createStackNavigator(
       screen: CategoriesScreen,
       navigationOptions: { headerTitle: "Menu" },
     },
-    AnimalsOverview: { screen: AnimalsOverviewScreen },
+    AnimalsOverview: {
+      screen: AnimalsOverviewScreen,
+    },
     Appointment: AppointmentServiceScreen,
     Donation: DonationScreen,
     Login: LoginScreen,
@@ -49,6 +51,7 @@ const AnimalNavigator = createStackNavigator(
     AnimalDetail: AnimalDetailScreen,
     AddAnimal: AddAnimalScreen,
     EditAnimal: EditAnimalScreen,
+    AdminAnimals: AdminProductsScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -70,7 +73,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -85,7 +88,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -115,35 +118,17 @@ const AnimalFavTabNavigator =
           activeTintColor: Colors.accentColor,
         },
       });
-const FavoritesNavigator = createStackNavigator(
-  {
-    favnav: FavoritesScreen,
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-  }
-);
 
 const AdminNavigator = createStackNavigator(
   {
     Animals: {
       screen: AdminProductsScreen,
-      navigationOptions: { headerTitle: "Przegląd Zwierząt Admin" },
     },
   },
   {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === "android" ? "md-create" : "ios-create"}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      ),
-    },
+    defaultNavigationOptions: defaultStackNavOptions,
   }
 );
-
 const MainNavigator = createDrawerNavigator(
   {
     AnimalsFav: {
@@ -152,7 +137,6 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: "Menu",
       },
     },
-    Fav: FavoritesNavigator,
     Admin: AdminNavigator,
     AddAnimal: AddAnimalScreen,
   },

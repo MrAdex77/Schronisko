@@ -1,5 +1,14 @@
-import React from "react";
-import { FlatList, Button, Platform, View, StyleSheet } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Button,
+  Platform,
+  View,
+  StyleSheet,
+  Alert,
+  Text,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { AntDesign } from "@expo/vector-icons";
@@ -11,12 +20,80 @@ import * as animalsActions from "../../store/actions/animals";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AdminProductsScreen = (props) => {
-  const animals = useSelector((state) => state.animals.animals);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const availableAnimals = useSelector((state) => state.animals.animals);
   const FavAnimals = useSelector((state) => state.animals.favoriteAnimals);
+
   const dispatch = useDispatch();
+
+  const loadAnimals = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(animalsActions.fetchAnimals());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener("willFocus", loadAnimals);
+
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadAnimals]);
+
+  useEffect(() => {
+    loadAnimals();
+  }, [dispatch, loadAnimals]);
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Wystąpił błąd! </Text>
+        <Button
+          title='Spróbuj ponownie'
+          onPress={loadAnimals}
+          color={Colors.primaryColor}
+        />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
+      </View>
+    );
+  }
+
+  if (!isLoading && availableAnimals.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>Nie znaleziono zwierząt! </Text>
+      </View>
+    );
+  }
 
   const editAnimalHandler = (id) => {
     props.navigation.navigate("EditAnimal", { animalId: id });
+  };
+
+  const deleteHandler = (id) => {
+    Alert.alert("are you sure?", "Do you really want to delete this item?", [
+      { text: "No", style: "default" },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          dispatch(animalsActions.deleteAnimal(id));
+        },
+      },
+    ]);
   };
 
   const renderAnimalItem = (itemData) => {
@@ -29,28 +106,21 @@ const AdminProductsScreen = (props) => {
         age={itemData.item.age}
         description={itemData.item.description}
         image={itemData.item.imageUrl}
-        onSelectAnimal={() => {
-          editAnimalHandler(itemData.item.id);
-        }}
-      >
+        onSelectAnimal={() => {}}>
         <View style={styles.button1}>
           {/* <Button color={Colors.primaryColor} title='Edit' onPress={() => {}} /> */}
           <TouchableOpacity
             onPress={() => {
               editAnimalHandler(itemData.item.id);
-            }}
-          >
-            <AntDesign name="edit" size={35} color="white" />
+            }}>
+            <AntDesign name='edit' size={35} color='white' />
           </TouchableOpacity>
         </View>
         <View style={styles.button2}>
           {/* <Button color={Colors.primaryColor} title='Delete' onPress={() => {}} /> */}
           <TouchableOpacity
-            onPress={() => {
-              dispatch(animalsActions.deleteAnimal(itemData.item.id));
-            }}
-          >
-            <AntDesign name="delete" size={35} color="white" />
+            onPress={deleteHandler.bind(this, itemData.item.id)}>
+            <AntDesign name='delete' size={35} color='white' />
           </TouchableOpacity>
         </View>
       </AnimalItem>
@@ -60,7 +130,7 @@ const AdminProductsScreen = (props) => {
     <View style={styles.list}>
       <FlatList
         keyExtractor={(item, index) => item.id}
-        data={animals}
+        data={availableAnimals}
         renderItem={renderAnimalItem}
         style={{ width: "100%" }}
       />
@@ -71,24 +141,13 @@ const AdminProductsScreen = (props) => {
 AdminProductsScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Twoje zwierzęta",
-    headerLeft: (
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Menu"
-          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          title='Menu'
+          iconName='ios-menu'
           onPress={() => {
             navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Add"
-          iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
-          onPress={() => {
-            navData.navigation.navigate("EditAnimal");
           }}
         />
       </HeaderButtons>
@@ -122,6 +181,11 @@ const styles = StyleSheet.create({
     height: 41,
     backgroundColor: Colors.primaryColor,
     borderRadius: 20,
+    alignItems: "center",
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
 });

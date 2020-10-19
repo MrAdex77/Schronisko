@@ -42,7 +42,7 @@ CategoriesScreen.navigationOptions = (navData) => {
           title='Menu'
           iconName='ios-menu'
           onPress={() => {
-            navData.navigation.openDrawer();
+            navData.navigation.toggleDrawer();
           }}
         />
       </HeaderButtons>

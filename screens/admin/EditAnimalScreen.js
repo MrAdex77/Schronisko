@@ -20,9 +20,7 @@ const EditAnimalScreen = (props) => {
   );
 
   const [title, setTitle] = useState(editedAnimal ? editedAnimal.title : "");
-  const [age, setAge] = useState(
-    editedAnimal ? editedAnimal.age.toString() : ""
-  );
+  const [age, setAge] = useState(editedAnimal ? editedAnimal.age : "");
   const [imageUrl, setImageUrl] = useState(
     editedAnimal ? editedAnimal.imageUrl : ""
   );
@@ -40,6 +38,7 @@ const EditAnimalScreen = (props) => {
     } else {
       dispatch(animalsActions.createAnimal(title, age, description, imageUrl));
     }
+    props.navigation.navigate("AdminAnimals");
   }, [dispatch, animalId, title, age, description, imageUrl]);
 
   useEffect(() => {
@@ -61,7 +60,7 @@ const EditAnimalScreen = (props) => {
           <Text style={styles.label}>Wiek</Text>
           <TextInput
             style={styles.input}
-            value={age}
+            value={age.toString()}
             onChangeText={(text) => setAge(text)}
           />
         </View>
@@ -95,7 +94,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Save"
+          title='Save'
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }

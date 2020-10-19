@@ -55,7 +55,16 @@ export const setFilters = (filterSettings) => {
 };
 
 export const deleteAnimal = (animalId) => {
-  return { type: DELETE_ANIMAL, pid: animalId };
+  return async (dispatch) => {
+    //any async code http://176.107.131.27:5000/animals/new
+    await fetch(
+      `https://schronisko-7cfd1.firebaseio.com/animals/${animalId}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    dispatch({ type: DELETE_ANIMAL, pid: animalId });
+  };
 };
 
 export const createAnimal = (title, age, description, imageUrl) => {
@@ -90,14 +99,29 @@ export const createAnimal = (title, age, description, imageUrl) => {
   };
 };
 export const UpdateAnimal = (id, title, age, description, imageUrl) => {
-  return {
-    type: UPDATE_ANIMAL,
-    pid: id,
-    animalData: {
-      title,
-      age,
-      description,
-      imageUrl,
-    },
+  return async (dispatch) => {
+    await fetch(`https://schronisko-7cfd1.firebaseio.com/animals/${id}.json`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        age,
+        description,
+        imageUrl,
+      }),
+    });
+
+    dispatch({
+      type: UPDATE_ANIMAL,
+      pid: id,
+      animalData: {
+        title,
+        age,
+        description,
+        imageUrl,
+      },
+    });
   };
 };

@@ -44,10 +44,10 @@ const animalReducer = (state = initialState, action) => {
       const updatedAnimal = new Animal(
         action.pid,
         "u1",
-        action.productData.age,
-        action.productData.title,
-        action.productData.imageUrl,
-        action.productData.description
+        action.animalData.age,
+        action.animalData.title,
+        action.animalData.imageUrl,
+        action.animalData.description
       );
       const updatedAvailableAnimals = [...state.animals];
       updatedAvailableAnimals[animalIndex] = updatedAnimal;
