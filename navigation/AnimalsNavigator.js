@@ -3,7 +3,7 @@ import { Platform, Text } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
 
@@ -19,6 +19,7 @@ import AddAnimalScreen from "../screens/admin/AddAnimalScreen";
 import Colors from "../constants/Colors";
 import Animal from "../models/animal";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
+import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -67,9 +68,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return (
-          <Ionicons name='ios-restaurant' size={25} color={tabInfo.tintColor} />
-        );
+        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -126,7 +125,7 @@ const FavoritesNavigator = createStackNavigator(
 const AdminNavigator = createStackNavigator(
   {
     Animals: {
-      screen: AnimalsOverviewScreen,
+      screen: AdminProductsScreen,
       navigationOptions: { headerTitle: "Przegląd Zwierząt Admin" },
     },
   },

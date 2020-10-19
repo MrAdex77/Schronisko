@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Button,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import DefaultText from "./DefaultText";
@@ -15,6 +16,7 @@ const AnimalItem = (props) => {
       <TouchableOpacity onPress={props.onSelectAnimal}>
         <View style={{ ...styles.animalRow, ...styles.animalHeader }}>
           <View style={styles.imageContainer}>
+            <View>{props.children}</View>
             <ImageBackground
               source={{ uri: props.image }}
               style={styles.bgImage}>
