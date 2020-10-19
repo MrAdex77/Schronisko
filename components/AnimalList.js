@@ -24,7 +24,8 @@ const AnimalList = (props) => {
               isFav: isFavorite,
             },
           });
-        }}>
+        }}
+      >
         {props.children}
       </AnimalItem>
     );

@@ -4,6 +4,7 @@ export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
 export const SET_FILTERS = "SET_FILTERS";
 export const CREATE_ANIMAL = "CREATE_ANIMAL";
 export const UPDATE_ANIMAL = "UPDATE_ANIMAL";
+export const DELETE_ANIMAL = "DELETE_ANIMAL";
 export const SET_ANIMALS = "SET_ANIMALS";
 
 export const fetchAnimals = () => {
@@ -51,6 +52,10 @@ export const setFilters = (filterSettings) => {
     type: SET_FILTERS,
     filters: filterSettings,
   };
+};
+
+export const deleteAnimal = (animalId) => {
+  return { type: DELETE_ANIMAL, pid: animalId };
 };
 
 export const createAnimal = (title, age, description, imageUrl) => {

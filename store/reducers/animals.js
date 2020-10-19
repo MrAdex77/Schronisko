@@ -3,6 +3,7 @@ import Animals from "../../data/dummy-data";
 import Animal from "../../models/animal";
 import {
   CREATE_ANIMAL,
+  DELETE_ANIMAL,
   SET_ANIMALS,
   SET_FILTERS,
   TOGGLE_FAVORITE,
@@ -37,14 +38,24 @@ const animalReducer = (state = initialState, action) => {
         animals: state.animals.concat(newAnimal),
       };
     case UPDATE_ANIMAL:
+      const animalIndex = state.animals.findIndex(
+        (ani) => ani.id === action.pid
+      );
       const updatedAnimal = new Animal(
         action.pid,
-        state.animals[animalIndex].ownerID,
+        "u1",
         action.productData.age,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description
       );
+      const updatedAvailableAnimals = [...state.animals];
+      updatedAvailableAnimals[animalIndex] = updatedAnimal;
+      return {
+        ...state,
+        animals: updatedAvailableAnimals,
+      };
+
     //to be contiuned
     case TOGGLE_FAVORITE:
       const existingIndex = state.favoriteAnimals.findIndex(
@@ -68,6 +79,11 @@ const animalReducer = (state = initialState, action) => {
           return false;
         }
       });
+    case DELETE_ANIMAL:
+      return {
+        ...state,
+        animals: state.animals.filter((animal) => animal.id !== action.pid),
+      };
     default:
       return state;
   }

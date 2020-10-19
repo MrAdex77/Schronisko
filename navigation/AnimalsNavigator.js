@@ -20,6 +20,7 @@ import Colors from "../constants/Colors";
 import Animal from "../models/animal";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
+import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -47,6 +48,7 @@ const AnimalNavigator = createStackNavigator(
     Statistics: StatisticsScreen,
     AnimalDetail: AnimalDetailScreen,
     AddAnimal: AddAnimalScreen,
+    EditAnimal: EditAnimalScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -68,7 +70,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -83,7 +85,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
