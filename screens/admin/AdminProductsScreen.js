@@ -55,7 +55,7 @@ const AdminProductsScreen = (props) => {
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title='Spróbuj ponownie'
+          title="Spróbuj ponownie"
           onPress={loadAnimals}
           color={Colors.primaryColor}
         />
@@ -66,7 +66,7 @@ const AdminProductsScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -106,21 +106,24 @@ const AdminProductsScreen = (props) => {
         age={itemData.item.age}
         description={itemData.item.description}
         image={itemData.item.imageUrl}
-        onSelectAnimal={() => {}}>
+        onSelectAnimal={() => {}}
+      >
         <View style={styles.button1}>
           {/* <Button color={Colors.primaryColor} title='Edit' onPress={() => {}} /> */}
           <TouchableOpacity
             onPress={() => {
               editAnimalHandler(itemData.item.id);
-            }}>
-            <AntDesign name='edit' size={35} color='white' />
+            }}
+          >
+            <AntDesign name="edit" size={35} color="white" />
           </TouchableOpacity>
         </View>
         <View style={styles.button2}>
           {/* <Button color={Colors.primaryColor} title='Delete' onPress={() => {}} /> */}
           <TouchableOpacity
-            onPress={deleteHandler.bind(this, itemData.item.id)}>
-            <AntDesign name='delete' size={35} color='white' />
+            onPress={deleteHandler.bind(this, itemData.item.id)}
+          >
+            <AntDesign name="delete" size={35} color="white" />
           </TouchableOpacity>
         </View>
       </AnimalItem>
@@ -144,8 +147,8 @@ AdminProductsScreen.navigationOptions = (navData) => {
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title='Menu'
-          iconName='ios-menu'
+          title="Menu"
+          iconName="ios-menu"
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}

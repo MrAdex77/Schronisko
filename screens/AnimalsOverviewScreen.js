@@ -5,29 +5,31 @@ import {
   View,
   StyleSheet,
   Text,
+  FlatList,
   Button,
 } from "react-native";
-
-import AnimalList from "../components/AnimalList";
+import AnimalItem from "../components/AnimalItem";
 import * as animalsActions from "../store/actions/animals";
 import Colors from "../constants/Colors";
 
 const AnimalsOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const availableAnimals = useSelector((state) => state.animals.animals);
+  const FavAnimals = useSelector((state) => state.animals.favoriteAnimals);
 
   const dispatch = useDispatch();
 
   const loadAnimals = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(animalsActions.fetchAnimals());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
@@ -39,7 +41,10 @@ const AnimalsOverviewScreen = (props) => {
   }, [loadAnimals]);
 
   useEffect(() => {
-    loadAnimals();
+    setIsLoading(true);
+    loadAnimals().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadAnimals]);
 
   if (error) {
@@ -47,7 +52,7 @@ const AnimalsOverviewScreen = (props) => {
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title='Spróbuj ponownie'
+          title="Spróbuj ponownie"
           onPress={loadAnimals}
           color={Colors.primaryColor}
         />
@@ -58,7 +63,7 @@ const AnimalsOverviewScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -70,9 +75,40 @@ const AnimalsOverviewScreen = (props) => {
       </View>
     );
   }
-
+  const renderAnimalItem = (itemData) => {
+    const isFavorite = FavAnimals.some(
+      (animal) => animal.id === itemData.item.id
+    );
+    return (
+      <AnimalItem
+        title={itemData.item.title}
+        age={itemData.item.age}
+        description={itemData.item.description}
+        image={itemData.item.imageUrl}
+        onSelectAnimal={() => {
+          props.navigation.navigate({
+            routeName: "AnimalDetail",
+            params: {
+              animalId: itemData.item.id,
+              animalTitle: itemData.item.title,
+              isFav: isFavorite,
+            },
+          });
+        }}
+      />
+    );
+  };
   return (
-    <AnimalList listData={availableAnimals} navigation={props.navigation} />
+    <View style={styles.list}>
+      <FlatList
+        onRefresh={loadAnimals}
+        refreshing={isRefreshing}
+        keyExtractor={(item, index) => item.id}
+        data={availableAnimals}
+        renderItem={renderAnimalItem}
+        style={{ width: "100%" }}
+      />
+    </View>
   );
 };
 

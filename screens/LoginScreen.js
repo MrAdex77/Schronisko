@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import * as Google from "expo-google-app-auth";
+import { FontAwesome } from "@expo/vector-icons";
 
 async function signInWithGoogleAsync() {
   try {
@@ -32,14 +33,23 @@ const LoginScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Button
+      <FontAwesome.Button
+        name="google"
+        backgroundColor="#3b5998"
+        onPress={() => {
+          signInWithGoogle();
+        }}
+      >
+        Login with Google
+      </FontAwesome.Button>
+      {/* <Button
         style={{ width: 392, height: 248 }}
         size={20}
         onPress={() => {
           signInWithGoogle();
         }}
-        title='Sign in'
-      />
+        title="Sign in"
+      /> */}
     </View>
   );
 };

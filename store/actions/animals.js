@@ -57,12 +57,16 @@ export const setFilters = (filterSettings) => {
 export const deleteAnimal = (animalId) => {
   return async (dispatch) => {
     //any async code http://176.107.131.27:5000/animals/new
-    await fetch(
+    const response = await fetch(
       `https://schronisko-7cfd1.firebaseio.com/animals/${animalId}.json`,
       {
         method: "DELETE",
       }
     );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
     dispatch({ type: DELETE_ANIMAL, pid: animalId });
   };
 };
@@ -100,19 +104,24 @@ export const createAnimal = (title, age, description, imageUrl) => {
 };
 export const UpdateAnimal = (id, title, age, description, imageUrl) => {
   return async (dispatch) => {
-    await fetch(`https://schronisko-7cfd1.firebaseio.com/animals/${id}.json`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        age,
-        description,
-        imageUrl,
-      }),
-    });
-
+    const response = await fetch(
+      `https://schronisko-7cfd1.firebaseio.com/animals/${id}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          age,
+          description,
+          imageUrl,
+        }),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
     dispatch({
       type: UPDATE_ANIMAL,
       pid: id,

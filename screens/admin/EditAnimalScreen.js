@@ -7,13 +7,19 @@ import {
   TextInput,
   StyleSheet,
   Platform,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import HeaderButton from "../../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import Colors from "../../constants/Colors";
 import { createAnimal, UpdateAnimal } from "../../store/actions/animals";
 import * as animalsActions from "../../store/actions/animals";
 
 const EditAnimalScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [Error, setError] = useState();
+
   const animalId = props.navigation.getParam("animalId");
   const editedAnimal = useSelector((state) =>
     state.animals.animals.find((ani) => ani.id === animalId)
@@ -30,20 +36,48 @@ const EditAnimalScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const submitHandler = useCallback(() => {
-    if (editedAnimal) {
-      dispatch(
-        animalsActions.UpdateAnimal(animalId, title, age, description, imageUrl)
-      );
-    } else {
-      dispatch(animalsActions.createAnimal(title, age, description, imageUrl));
+  useEffect(() => {
+    if (Error) {
+      Alert.alert("An error occured!", Error, [{ text: "Okay" }]);
     }
-    props.navigation.navigate("AdminAnimals");
+  }, [Error]);
+  const submitHandler = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      if (editedAnimal) {
+        await dispatch(
+          animalsActions.UpdateAnimal(
+            animalId,
+            title,
+            age,
+            description,
+            imageUrl
+          )
+        );
+      } else {
+        await dispatch(
+          animalsActions.createAnimal(title, age, description, imageUrl)
+        );
+      }
+      props.navigation.navigate("AdminAnimals");
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
   }, [dispatch, animalId, title, age, description, imageUrl]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
@@ -94,7 +128,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title='Save'
+          title="Save"
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }
@@ -121,6 +155,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
