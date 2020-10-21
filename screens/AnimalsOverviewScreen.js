@@ -7,16 +7,23 @@ import {
   Text,
   FlatList,
   Button,
+  Platform,
 } from "react-native";
 import AnimalItem from "../components/AnimalItem";
 import * as animalsActions from "../store/actions/animals";
 import Colors from "../constants/Colors";
+import HeaderButton, {
+  FontAwesomeHeaderButton,
+} from "../components/HeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 const AnimalsOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const availableAnimals = useSelector((state) => state.animals.animals);
+  const availableAnimals = useSelector(
+    (state) => state.animals.filteredAnimals
+  );
   const FavAnimals = useSelector((state) => state.animals.favoriteAnimals);
 
   const dispatch = useDispatch();
@@ -47,12 +54,21 @@ const AnimalsOverviewScreen = (props) => {
     });
   }, [dispatch, loadAnimals]);
 
+  const changeCategory = useCallback(
+    (category) => {
+      dispatch(animalsActions.setCategory(category));
+    },
+    [dispatch, changeCategory]
+  );
+  useEffect(() => {
+    props.navigation.setParams({ category: changeCategory });
+  }, [changeCategory]);
   if (error) {
     return (
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title="Spróbuj ponownie"
+          title='Spróbuj ponownie'
           onPress={loadAnimals}
           color={Colors.primaryColor}
         />
@@ -63,7 +79,7 @@ const AnimalsOverviewScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -114,10 +130,29 @@ const AnimalsOverviewScreen = (props) => {
 
 AnimalsOverviewScreen.navigationOptions = (navigationData) => {
   //const catId = navigationData.navigation.getParam("categoryId");
-
   //const selectedCategory = CATEGORIES.find((cat) => cat.id === catId);
+
+  const changeCategory = navigationData.navigation.getParam("category");
   return {
-    headerTitle: "Przegląd Zwierząt",
+    headerTitle: "Zwierzęta",
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={FontAwesomeHeaderButton}>
+        <Item
+          title='dogs'
+          iconName={Platform.OS === "android" ? "dog" : "ios-checkmark"}
+          onPress={() => {
+            changeCategory("Pies");
+          }}
+        />
+        <Item
+          title='cats'
+          iconName={Platform.OS === "android" ? "cat" : "ios-checkmark"}
+          onPress={() => {
+            changeCategory("Kot");
+          }}
+        />
+      </HeaderButtons>
+    ),
   };
 };
 

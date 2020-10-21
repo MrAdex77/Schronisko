@@ -5,6 +5,7 @@ import {
   CREATE_ANIMAL,
   DELETE_ANIMAL,
   SET_ANIMALS,
+  SET_CATEGORY,
   SET_FILTERS,
   TOGGLE_FAVORITE,
   UPDATE_ANIMAL,
@@ -21,7 +22,8 @@ const animalReducer = (state = initialState, action) => {
     case SET_ANIMALS:
       return {
         animals: action.animals,
-        favoriteAnimals: [],
+        filteredAnimals: action.animals,
+        favoriteAnimals: [...state.favoriteAnimals],
       };
 
     case CREATE_ANIMAL:
@@ -74,13 +76,24 @@ const animalReducer = (state = initialState, action) => {
           favoriteAnimals: state.favoriteAnimals.concat(animal),
         };
       }
-    case SET_FILTERS:
-      const appliedFilters = action.filters;
-      const filteredMeals = state.meals.filter((ani) => {
-        if (filters.glutenFree && !ani.isGlutenFree) {
-          return false;
-        }
-      });
+    case SET_CATEGORY:
+      console.log(action.category);
+      const filteredAnimals = state.animals.filter(
+        (animal) => animal.category === action.category
+      );
+      //const oldAnimals = [...state.animals];
+      //oldAnimals.filter((animal) => animal.category === action.category);
+      return {
+        ...state,
+        filteredAnimals: filteredAnimals,
+      };
+    // case SET_FILTERS:
+    //   const appliedFilters = action.filters;
+    //   const filteredMeals = state.meals.filter((ani) => {
+    //     if (filters.glutenFree && !ani.isGlutenFree) {
+    //       return false;
+    //     }
+    //   });
     case DELETE_ANIMAL:
       return {
         ...state,

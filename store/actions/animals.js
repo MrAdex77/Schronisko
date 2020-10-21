@@ -6,6 +6,7 @@ export const CREATE_ANIMAL = "CREATE_ANIMAL";
 export const UPDATE_ANIMAL = "UPDATE_ANIMAL";
 export const DELETE_ANIMAL = "DELETE_ANIMAL";
 export const SET_ANIMALS = "SET_ANIMALS";
+export const SET_CATEGORY = "SET_CATEGORY";
 
 export const fetchAnimals = () => {
   return async (dispatch) => {
@@ -47,7 +48,9 @@ export const fetchAnimals = () => {
 export const toggleFavorite = (id) => {
   return { type: TOGGLE_FAVORITE, animalId: id };
 };
-
+export const setCategory = (_category) => {
+  return { type: SET_CATEGORY, category: _category };
+};
 export const setFilters = (filterSettings) => {
   return {
     type: SET_FILTERS,

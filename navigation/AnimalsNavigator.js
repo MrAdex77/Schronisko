@@ -14,10 +14,8 @@ import DonationScreen from "../screens/DonationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import StatisticsScreen from "../screens/StatisticsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
-import AddAnimalScreen from "../screens/admin/AddAnimalScreen";
 
 import Colors from "../constants/Colors";
-import Animal from "../models/animal";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
@@ -51,6 +49,7 @@ const AnimalNavigator = createStackNavigator(
     AdminAnimals: AdminProductsScreen,
   },
   {
+    initialRouteName: "Categories",
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
@@ -67,7 +66,7 @@ const FavNavigator = createStackNavigator(
 
 const tabScreenConfig = {
   Animals: {
-    screen: AnimalsOverviewScreen,
+    screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
@@ -128,7 +127,7 @@ const AdminNavigator = createStackNavigator(
 const MainNavigator = createDrawerNavigator(
   {
     AnimalsFav: {
-      screen: AnimalNavigator,
+      screen: AnimalFavTabNavigator,
       navigationOptions: {
         drawerLabel: "Menu",
       },

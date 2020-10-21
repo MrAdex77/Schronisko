@@ -18,7 +18,6 @@ import * as animalsActions from "../../store/actions/animals";
 const EditAnimalScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState();
-
   const animalId = props.navigation.getParam("animalId");
   const editedAnimal = useSelector((state) =>
     state.animals.animals.find((ani) => ani.id === animalId)

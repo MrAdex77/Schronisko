@@ -30,11 +30,13 @@ const AnimalDetailScreen = (props) => {
   }, [currentAnimalIsFav]);
   return (
     <ScrollView>
-      <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.title}>Imię: {selectedAnimal.title}</Text>
-        <Text>Wiek: {selectedAnimal.age} lata</Text>
-        <Text style={styles.description}>{selectedAnimal.description}</Text>
+      <View style={styles.cos}>
+        <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
+        <View style={styles.details}>
+          <Text style={styles.title}>Imię: {selectedAnimal.title}</Text>
+          <Text>Wiek: {selectedAnimal.age} lata</Text>
+          <Text style={styles.description}>{selectedAnimal.description}</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "space-between",
     alignItems: "center",
-    height: 250,
+    height: 300,
     backgroundColor: "white",
   },
   title: {
