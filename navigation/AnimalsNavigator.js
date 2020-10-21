@@ -41,15 +41,12 @@ const AnimalNavigator = createStackNavigator(
       screen: CategoriesScreen,
       navigationOptions: { headerTitle: "Menu" },
     },
-    AnimalsOverview: {
-      screen: AnimalsOverviewScreen,
-    },
+    AnimalsOverview: AnimalsOverviewScreen,
     Appointment: AppointmentServiceScreen,
     Donation: DonationScreen,
     Login: LoginScreen,
     Statistics: StatisticsScreen,
     AnimalDetail: AnimalDetailScreen,
-    AddAnimal: AddAnimalScreen,
     EditAnimal: EditAnimalScreen,
     AdminAnimals: AdminProductsScreen,
   },
@@ -70,7 +67,7 @@ const FavNavigator = createStackNavigator(
 
 const tabScreenConfig = {
   Animals: {
-    screen: AnimalNavigator,
+    screen: AnimalsOverviewScreen,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
@@ -78,9 +75,9 @@ const tabScreenConfig = {
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
         Platform.OS === "android" ? (
-          <Text style={{ fontFamily: "open-sans-bold" }}>Zwierzeta</Text>
+          <Text style={{ fontFamily: "open-sans-bold" }}>Zwierzęta</Text>
         ) : (
-          "Zwierzeta"
+          "Zwierzęta"
         ),
     },
   },
@@ -121,9 +118,8 @@ const AnimalFavTabNavigator =
 
 const AdminNavigator = createStackNavigator(
   {
-    Animals: {
-      screen: AdminProductsScreen,
-    },
+    adminAnimals: AdminProductsScreen,
+    EditAnimal: EditAnimalScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -132,13 +128,13 @@ const AdminNavigator = createStackNavigator(
 const MainNavigator = createDrawerNavigator(
   {
     AnimalsFav: {
-      screen: AnimalFavTabNavigator,
+      screen: AnimalNavigator,
       navigationOptions: {
         drawerLabel: "Menu",
       },
     },
     Admin: AdminNavigator,
-    AddAnimal: AddAnimalScreen,
+    //EditAnimal2: EditAnimalScreen,
   },
   {
     contentOptions: {

@@ -13,7 +13,6 @@ import {
 import HeaderButton from "../../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Colors from "../../constants/Colors";
-import { createAnimal, UpdateAnimal } from "../../store/actions/animals";
 import * as animalsActions from "../../store/actions/animals";
 
 const EditAnimalScreen = (props) => {
@@ -26,6 +25,9 @@ const EditAnimalScreen = (props) => {
   );
 
   const [title, setTitle] = useState(editedAnimal ? editedAnimal.title : "");
+  const [category, setCategory] = useState(
+    editedAnimal ? editedAnimal.category : ""
+  );
   const [age, setAge] = useState(editedAnimal ? editedAnimal.age : "");
   const [imageUrl, setImageUrl] = useState(
     editedAnimal ? editedAnimal.imageUrl : ""
@@ -41,6 +43,7 @@ const EditAnimalScreen = (props) => {
       Alert.alert("An error occured!", Error, [{ text: "Okay" }]);
     }
   }, [Error]);
+
   const submitHandler = useCallback(async () => {
     setError(null);
     setIsLoading(true);
@@ -50,6 +53,7 @@ const EditAnimalScreen = (props) => {
           animalsActions.UpdateAnimal(
             animalId,
             title,
+            category,
             age,
             description,
             imageUrl
@@ -57,15 +61,21 @@ const EditAnimalScreen = (props) => {
         );
       } else {
         await dispatch(
-          animalsActions.createAnimal(title, age, description, imageUrl)
+          animalsActions.createAnimal(
+            title,
+            category,
+            age,
+            description,
+            imageUrl
+          )
         );
       }
-      props.navigation.navigate("AdminAnimals");
+      props.navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
     setIsLoading(false);
-  }, [dispatch, animalId, title, age, description, imageUrl]);
+  }, [dispatch, animalId, category, title, age, description, imageUrl]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
@@ -74,7 +84,7 @@ const EditAnimalScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -88,6 +98,14 @@ const EditAnimalScreen = (props) => {
             style={styles.input}
             value={title}
             onChangeText={(text) => setTitle(text)}
+          />
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Kategoria</Text>
+          <TextInput
+            style={styles.input}
+            value={category}
+            onChangeText={(text) => setCategory(text)}
           />
         </View>
         <View style={styles.formControl}>
@@ -128,7 +146,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Save"
+          title='Save'
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }

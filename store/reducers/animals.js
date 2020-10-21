@@ -28,8 +28,9 @@ const animalReducer = (state = initialState, action) => {
       const newAnimal = new Animal(
         new Date().toString(),
         "u1",
-        action.animalData.title,
+        action.animalData.category,
         action.animalData.age,
+        action.animalData.title,
         action.animalData.imageUrl,
         action.animalData.description
       );
@@ -44,6 +45,7 @@ const animalReducer = (state = initialState, action) => {
       const updatedAnimal = new Animal(
         action.pid,
         "u1",
+        action.animalData.category,
         action.animalData.age,
         action.animalData.title,
         action.animalData.imageUrl,

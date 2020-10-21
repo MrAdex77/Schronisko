@@ -27,6 +27,7 @@ export const fetchAnimals = () => {
           new Animal(
             key,
             "u1",
+            resData[key].category,
             resData[key].age,
             resData[key].title,
             resData[key].imageUrl,
@@ -71,7 +72,7 @@ export const deleteAnimal = (animalId) => {
   };
 };
 
-export const createAnimal = (title, age, description, imageUrl) => {
+export const createAnimal = (title, category, age, description, imageUrl) => {
   return async (dispatch) => {
     //any async code http://176.107.131.27:5000/animals/new
     const response = await fetch(
@@ -83,6 +84,7 @@ export const createAnimal = (title, age, description, imageUrl) => {
         },
         body: JSON.stringify({
           title,
+          category,
           age,
           description,
           imageUrl,
@@ -95,6 +97,7 @@ export const createAnimal = (title, age, description, imageUrl) => {
       type: CREATE_ANIMAL,
       animalData: {
         title,
+        category,
         age,
         description,
         imageUrl,
@@ -102,7 +105,14 @@ export const createAnimal = (title, age, description, imageUrl) => {
     });
   };
 };
-export const UpdateAnimal = (id, title, age, description, imageUrl) => {
+export const UpdateAnimal = (
+  id,
+  title,
+  category,
+  age,
+  description,
+  imageUrl
+) => {
   return async (dispatch) => {
     const response = await fetch(
       `https://schronisko-7cfd1.firebaseio.com/animals/${id}.json`,
@@ -113,6 +123,7 @@ export const UpdateAnimal = (id, title, age, description, imageUrl) => {
         },
         body: JSON.stringify({
           title,
+          category,
           age,
           description,
           imageUrl,
@@ -127,6 +138,7 @@ export const UpdateAnimal = (id, title, age, description, imageUrl) => {
       pid: id,
       animalData: {
         title,
+        category,
         age,
         description,
         imageUrl,

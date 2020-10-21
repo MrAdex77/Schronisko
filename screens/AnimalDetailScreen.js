@@ -9,8 +9,10 @@ import { toggleFavorite } from "../store/actions/animals";
 const AnimalDetailScreen = (props) => {
   const availableAnimals = useSelector((state) => state.animals.animals);
   const animalId = props.navigation.getParam("animalId");
-  const currentAnimalIsFav = useSelector(state => state.animals.favoriteAnimals.some(animal => animal.id === animalId));
-  
+  const currentAnimalIsFav = useSelector((state) =>
+    state.animals.favoriteAnimals.some((animal) => animal.id === animalId)
+  );
+
   const selectedAnimal = availableAnimals.find((x) => x.id === animalId);
 
   const dispatch = useDispatch();
@@ -23,7 +25,9 @@ const AnimalDetailScreen = (props) => {
     props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
   }, [toggleFavoriteHandler]);
 
-  useEffect(()=>{props.navigation.setParams({isFav: currentAnimalIsFav})},[currentAnimalIsFav]);
+  useEffect(() => {
+    props.navigation.setParams({ isFav: currentAnimalIsFav });
+  }, [currentAnimalIsFav]);
   return (
     <ScrollView>
       <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
@@ -46,7 +50,11 @@ AnimalDetailScreen.navigationOptions = (navigationData) => {
     headerTitle: animalTitle,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title='Favorite' iconName={isFavorite ? 'ios-star' : 'ios-star-outline'} onPress={toggleFavorite} />
+        <Item
+          title='Favorite'
+          iconName={isFavorite ? "ios-star" : "ios-star-outline"}
+          onPress={toggleFavorite}
+        />
       </HeaderButtons>
     ),
   };
@@ -61,7 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "space-between",
     alignItems: "center",
-    height: "30%",
+    height: 250,
     backgroundColor: "white",
   },
   title: {
@@ -71,6 +79,8 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: "center",
+    height: "100%",
+    backgroundColor: "white",
   },
 });
 
