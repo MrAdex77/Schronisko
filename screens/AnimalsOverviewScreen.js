@@ -68,7 +68,7 @@ const AnimalsOverviewScreen = (props) => {
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title='Spróbuj ponownie'
+          title="Spróbuj ponownie"
           onPress={loadAnimals}
           color={Colors.primaryColor}
         />
@@ -79,7 +79,7 @@ const AnimalsOverviewScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -138,14 +138,14 @@ AnimalsOverviewScreen.navigationOptions = (navigationData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={FontAwesomeHeaderButton}>
         <Item
-          title='dogs'
+          title="dogs"
           iconName={Platform.OS === "android" ? "dog" : "ios-checkmark"}
           onPress={() => {
             changeCategory("Pies");
           }}
         />
         <Item
-          title='cats'
+          title="cats"
           iconName={Platform.OS === "android" ? "cat" : "ios-checkmark"}
           onPress={() => {
             changeCategory("Kot");

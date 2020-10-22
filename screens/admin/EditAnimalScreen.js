@@ -14,6 +14,7 @@ import HeaderButton from "../../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Colors from "../../constants/Colors";
 import * as animalsActions from "../../store/actions/animals";
+import ImagePicker from "../../components/ImagePicker";
 
 const EditAnimalScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +84,7 @@ const EditAnimalScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -123,6 +124,7 @@ const EditAnimalScreen = (props) => {
             onChangeText={(text) => setImageUrl(text)}
           />
         </View>
+        <ImagePicker />
         <View style={styles.formControl}>
           <Text style={styles.label}>Opis</Text>
           <TextInput
@@ -145,7 +147,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title='Save'
+          title="Save"
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }
