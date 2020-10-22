@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import * as Google from "expo-google-app-auth";
 import { FontAwesome } from "@expo/vector-icons";
-import * as AuthSession from "expo-auth-session";
 import Colors from "../constants/Colors";
-
 async function signInWithGoogleAsync() {
   try {
     //id "999814744000-7q3re9n2b6rcq2gi1o2p81drn6je7rcu.apps.googleusercontent.com";
@@ -12,25 +10,32 @@ async function signInWithGoogleAsync() {
       behavior: "web",
       //iosClientId: IOS_CLIENT_ID,
       androidClientId:
-        "999814744000-7q3re9n2b6rcq2gi1o2p81drn6je7rcu.apps.googleusercontent.com",
+        "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com",
       scopes: ["profile", "email"],
     });
-    // const googleWebAppId =
-    //   "299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com";
-    // const redirectUrl = "http://176.107.131.27:5000/auth/google";
-    // const result = await AuthSession.startAsync({
-    //   authUrl:
-    //     `https://accounts.google.com/o/oauth2/v2/auth?` +
-    //     `&client_id=${googleWebAppId}` +
-    //     `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
-    //     `&response_type=code` +
-    //     `&access_type=offline` +
-    //     `&scope=profile`,
-    // });
+
+    // web  299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com
+    // android 299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com
 
     if (result.type === "success") {
+      const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: result.idToken,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log("blad");
+        throw new Error("Something went wrong!");
+      }
       Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
-      return result.accessToken;
+      const resData = await response.json();
+      console.log(resData);
+      //return result.accessToken;
     } else {
       return { cancelled: true };
     }

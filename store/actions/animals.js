@@ -10,17 +10,22 @@ export const SET_CATEGORY = "SET_CATEGORY";
 
 export const fetchAnimals = () => {
   return async (dispatch) => {
-    //any async code http://176.107.131.27:5000/animals/new
+    //any async code https://schronisko-7cfd1.firebaseio.com/animals.json
+    //http://mateuszdobosz.site/animals/overview
     try {
       const response = await fetch(
-        "https://schronisko-7cfd1.firebaseio.com/animals.json"
+        "https://schronisko-7cfd1.firebaseio.com/animals.json",
+        {
+          method: "GET",
+        }
       );
-
+      console.log(response.status);
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
 
       const resData = await response.json();
+      //console.log(resData);
       const loadedAnimals = [];
 
       for (const key in resData) {
@@ -77,7 +82,8 @@ export const deleteAnimal = (animalId) => {
 
 export const createAnimal = (title, category, age, description, imageUrl) => {
   return async (dispatch) => {
-    //any async code http://176.107.131.27:5000/animals/new
+    //any async code http://mateuszdobosz.site/animals/new
+    //https://schronisko-7cfd1.firebaseio.com/animals.json
     const response = await fetch(
       "https://schronisko-7cfd1.firebaseio.com/animals.json",
       {
