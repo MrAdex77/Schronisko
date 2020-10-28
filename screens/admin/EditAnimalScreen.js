@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
@@ -16,6 +16,13 @@ import Colors from "../../constants/Colors";
 import * as animalsActions from "../../store/actions/animals";
 import ImagePicker from "../../components/ImagePicker";
 
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+  }
+};
+
 const EditAnimalScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState();
@@ -24,19 +31,38 @@ const EditAnimalScreen = (props) => {
     state.animals.animals.find((ani) => ani.id === animalId)
   );
 
-  const [title, setTitle] = useState(editedAnimal ? editedAnimal.title : "");
-  const [category, setCategory] = useState(
-    editedAnimal ? editedAnimal.category : ""
-  );
-  const [age, setAge] = useState(editedAnimal ? editedAnimal.age : "");
-  const [imageUrl, setImageUrl] = useState(
-    editedAnimal ? editedAnimal.imageUrl : ""
-  );
-  const [description, setDescription] = useState(
-    editedAnimal ? editedAnimal.description : ""
-  );
-
   const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: editedAnimal ? editedAnimal.title : "",
+      category: editedAnimal ? editedAnimal.category : "",
+      age: editedAnimal ? editedAnimal.age : "",
+      imageUrl: editedAnimal ? editedAnimal.imageUrl : "",
+      description: editedAnimal ? editedAnimal.description : "",
+    },
+    inputValidities: {
+      title: editedAnimal ? true : false,
+      category: editedAnimal ? true : false,
+      age: editedAnimal ? true : false,
+      imageUrl: editedAnimal ? true : false,
+      description: editedAnimal ? true : false,
+    },
+    formIsValid: editedAnimal ? true : false,
+  });
+
+  const textChangeHandler = (inputId, text) => {
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
+    }
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: text,
+      isValid: isValid,
+      input: inputId,
+    });
+  };
 
   useEffect(() => {
     if (Error) {
@@ -97,7 +123,11 @@ const EditAnimalScreen = (props) => {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={(text) => setTitle(text)}
+            onChangeText={textChangeHandler.bind(this, "title")}
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            returnKeyType="next"
           />
         </View>
         <View style={styles.formControl}>
@@ -106,6 +136,7 @@ const EditAnimalScreen = (props) => {
             style={styles.input}
             value={category}
             onChangeText={(text) => setCategory(text)}
+            keyboardType="decimal-pad"
           />
         </View>
         <View style={styles.formControl}>

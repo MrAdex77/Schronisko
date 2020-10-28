@@ -21,17 +21,47 @@ const ImgPicker = (props) => {
   };
 
   const takeImageHandler = async () => {
-    const hasPermission = await verifyPermissions();
-    if (!hasPermission) {
-      return;
-    }
-    const image = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.5,
-    });
+    try {
+      const hasPermission = await verifyPermissions();
+      if (!hasPermission) {
+        return;
+      }
+      const image = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [16, 9],
+        quality: 0.5,
+      });
+      if (image.cancelled) return;
 
-    setPickedImage(image.uri);
+      setPickedImage(image.uri);
+      let localUri = image.uri;
+      let filename = localUri.split("/").pop();
+      console.log(filename);
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      console.log(type);
+
+      let formData = new FormData();
+      formData.append("photo", { uri: image.uri, name: filename, type });
+
+      const response = await fetch(
+        "https://schronisko-7cfd1.firebaseio.com/Images/RLsKDTEYH9m8SMrLmqYK",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      console.log(resData);
+    } catch (err) {
+      Alert.alert("Error", err.toString());
+    }
   };
 
   return (
