@@ -45,7 +45,7 @@ const ImgPicker = (props) => {
       formData.append("photo", { uri: image.uri, name: filename, type });
 
       const response = await fetch(
-        "https://schronisko-7cfd1.firebaseio.com/Images/RLsKDTEYH9m8SMrLmqYK",
+        "http://176.107.131.27:5000/animals/upload/image",
         {
           method: "POST",
           headers: {
@@ -55,6 +55,7 @@ const ImgPicker = (props) => {
         }
       );
       if (!response.ok) {
+        console.log(response.status);
         throw new Error("Something went wrong!");
       }
       const resData = await response.json();
@@ -74,7 +75,7 @@ const ImgPicker = (props) => {
         )}
       </View>
       <Button
-        title="Take Image"
+        title='Take Image'
         color={Colors.primary}
         onPress={takeImageHandler}
       />

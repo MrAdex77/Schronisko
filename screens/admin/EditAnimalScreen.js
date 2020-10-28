@@ -15,12 +15,31 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Colors from "../../constants/Colors";
 import * as animalsActions from "../../store/actions/animals";
 import ImagePicker from "../../components/ImagePicker";
+import Input from "../../components/Input";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues,
+    };
   }
+  return state;
 };
 
 const EditAnimalScreen = (props) => {
@@ -51,18 +70,17 @@ const EditAnimalScreen = (props) => {
     formIsValid: editedAnimal ? true : false,
   });
 
-  const textChangeHandler = (inputId, text) => {
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
-    }
-    dispatchFormState({
-      type: FORM_INPUT_UPDATE,
-      value: text,
-      isValid: isValid,
-      input: inputId,
-    });
-  };
+  const inputChangeHandler = useCallback(
+    (inputId, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputId,
+      });
+    },
+    [dispatchFormState]
+  );
 
   useEffect(() => {
     if (Error) {
@@ -71,6 +89,10 @@ const EditAnimalScreen = (props) => {
   }, [Error]);
 
   const submitHandler = useCallback(async () => {
+    if (!formState.formIsValid) {
+      Alert.alert("Wrong input!", "blabla");
+      return;
+    }
     setError(null);
     setIsLoading(true);
     try {
@@ -78,21 +100,21 @@ const EditAnimalScreen = (props) => {
         await dispatch(
           animalsActions.UpdateAnimal(
             animalId,
-            title,
-            category,
-            age,
-            description,
-            imageUrl
+            formState.inputValues.title,
+            formState.inputValues.category,
+            formState.inputValues.age,
+            formState.inputValues.description,
+            formState.inputValues.imageUrl
           )
         );
       } else {
         await dispatch(
           animalsActions.createAnimal(
-            title,
-            category,
-            age,
-            description,
-            imageUrl
+            formState.inputValues.title,
+            formState.inputValues.category,
+            formState.inputValues.age,
+            formState.inputValues.description,
+            formState.inputValues.imageUrl
           )
         );
       }
@@ -101,7 +123,7 @@ const EditAnimalScreen = (props) => {
       setError(err.message);
     }
     setIsLoading(false);
-  }, [dispatch, animalId, category, title, age, description, imageUrl]);
+  }, [dispatch, animalId, formState]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
@@ -110,7 +132,7 @@ const EditAnimalScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -118,52 +140,68 @@ const EditAnimalScreen = (props) => {
   return (
     <ScrollView>
       <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Imię</Text>
-          <TextInput
-            style={styles.input}
-            value={title}
-            onChangeText={textChangeHandler.bind(this, "title")}
-            keyboardType="default"
-            autoCapitalize="sentences"
-            autoCorrect
-            returnKeyType="next"
-          />
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Kategoria</Text>
-          <TextInput
-            style={styles.input}
-            value={category}
-            onChangeText={(text) => setCategory(text)}
-            keyboardType="decimal-pad"
-          />
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Wiek</Text>
-          <TextInput
-            style={styles.input}
-            value={age.toString()}
-            onChangeText={(text) => setAge(text)}
-          />
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Link do zdjecia</Text>
-          <TextInput
-            style={styles.input}
-            value={imageUrl}
-            onChangeText={(text) => setImageUrl(text)}
-          />
-        </View>
+        <Input
+          id='title'
+          label='Imie'
+          errorText='Wprowadź poprawne imię!'
+          keyboardType='default'
+          autoCapitalize='sentences'
+          autoCorrect
+          returnKeyType='next'
+          onInputChange={inputChangeHandler}
+          initialValue={editedAnimal ? editedAnimal.title : ""}
+          initiallyValid={!!editedAnimal}
+          required
+        />
+        <Input
+          id='category'
+          label='Kategoria'
+          errorText='Wprowadź poprawną kategorię: Pies,kot'
+          keyboardType='default'
+          returnKeyType='next'
+          onInputChange={inputChangeHandler}
+          initialValue={editedAnimal ? editedAnimal.category : ""}
+          initiallyValid={!!editedAnimal}
+          required
+        />
+        <Input
+          id='age'
+          label='Wiek'
+          errorText='Wprowadź poprawny wiek!'
+          keyboardType='decimal-pad'
+          returnKeyType='next'
+          onInputChange={inputChangeHandler}
+          initialValue={editedAnimal ? editedAnimal.age : ""}
+          initiallyValid={!!editedAnimal}
+          required
+          min={1}
+        />
+        <Input
+          id='imageUrl'
+          label='Link do zdjecia'
+          errorText='Wprowadź poprawny link!'
+          keyboardType='default'
+          returnKeyType='next'
+          onInputChange={inputChangeHandler}
+          initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
+          initiallyValid={!!editedAnimal}
+          required
+        />
+
         <ImagePicker />
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Opis</Text>
-          <TextInput
-            style={styles.input}
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-          />
-        </View>
+        <Input
+          id='description'
+          label='Opis'
+          errorText='Wprowadź poprawny opis!'
+          keyboardType='default'
+          multiline
+          numberOfLines={3}
+          onInputChange={inputChangeHandler}
+          initialValue={editedAnimal ? editedAnimal.description : ""}
+          initiallyValid={!!editedAnimal}
+          required
+          minLength={5}
+        />
       </View>
     </ScrollView>
   );
@@ -178,7 +216,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Save"
+          title='Save'
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }
@@ -193,19 +231,7 @@ const styles = StyleSheet.create({
   form: {
     margin: 20,
   },
-  formControl: {
-    width: "100%",
-  },
-  label: {
-    fontFamily: "open-sans-bold",
-    marginVertical: 8,
-  },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
-  },
+
   centered: {
     flex: 1,
     justifyContent: "center",
