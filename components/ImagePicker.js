@@ -69,13 +69,13 @@ const ImgPicker = (props) => {
     <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
         {!pickedImage ? (
-          <Text>No image picked yet.</Text>
+          <Text>Nie wybrano zdjęcia</Text>
         ) : (
           <Image style={styles.image} source={{ uri: pickedImage }} />
         )}
       </View>
       <Button
-        title='Take Image'
+        title='Zrób Zdjęcie'
         color={Colors.primary}
         onPress={takeImageHandler}
       />
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   imagePreview: {
     width: "100%",
     height: 200,
+    marginTop: 10,
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",

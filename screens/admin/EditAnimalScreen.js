@@ -9,6 +9,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import HeaderButton from "../../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -84,13 +85,13 @@ const EditAnimalScreen = (props) => {
 
   useEffect(() => {
     if (Error) {
-      Alert.alert("An error occured!", Error, [{ text: "Okay" }]);
+      Alert.alert("Wystąpił błąd!", Error, [{ text: "Okay" }]);
     }
   }, [Error]);
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
-      Alert.alert("Wrong input!", "blabla");
+      Alert.alert("Złe dane!", "Wypełnij jeszcze raz poprawnie!");
       return;
     }
     setError(null);
@@ -138,72 +139,74 @@ const EditAnimalScreen = (props) => {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <Input
-          id='title'
-          label='Imie'
-          errorText='Wprowadź poprawne imię!'
-          keyboardType='default'
-          autoCapitalize='sentences'
-          autoCorrect
-          returnKeyType='next'
-          onInputChange={inputChangeHandler}
-          initialValue={editedAnimal ? editedAnimal.title : ""}
-          initiallyValid={!!editedAnimal}
-          required
-        />
-        <Input
-          id='category'
-          label='Kategoria'
-          errorText='Wprowadź poprawną kategorię: Pies,kot'
-          keyboardType='default'
-          returnKeyType='next'
-          onInputChange={inputChangeHandler}
-          initialValue={editedAnimal ? editedAnimal.category : ""}
-          initiallyValid={!!editedAnimal}
-          required
-        />
-        <Input
-          id='age'
-          label='Wiek'
-          errorText='Wprowadź poprawny wiek!'
-          keyboardType='decimal-pad'
-          returnKeyType='next'
-          onInputChange={inputChangeHandler}
-          initialValue={editedAnimal ? editedAnimal.age : ""}
-          initiallyValid={!!editedAnimal}
-          required
-          min={1}
-        />
-        <Input
-          id='imageUrl'
-          label='Link do zdjecia'
-          errorText='Wprowadź poprawny link!'
-          keyboardType='default'
-          returnKeyType='next'
-          onInputChange={inputChangeHandler}
-          initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
-          initiallyValid={!!editedAnimal}
-          required
-        />
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={styles.form}>
+          <Input
+            id='title'
+            label='Imie'
+            errorText='Wprowadź poprawne imię!'
+            keyboardType='default'
+            autoCapitalize='sentences'
+            autoCorrect
+            returnKeyType='next'
+            onInputChange={inputChangeHandler}
+            initialValue={editedAnimal ? editedAnimal.title : ""}
+            initiallyValid={!!editedAnimal}
+            required
+          />
+          <Input
+            id='category'
+            label='Kategoria'
+            errorText='Wprowadź poprawną kategorię: Pies,kot'
+            keyboardType='default'
+            returnKeyType='next'
+            onInputChange={inputChangeHandler}
+            initialValue={editedAnimal ? editedAnimal.category : ""}
+            initiallyValid={!!editedAnimal}
+            required
+          />
+          <Input
+            id='age'
+            label='Wiek'
+            errorText='Wprowadź poprawny wiek!'
+            keyboardType='decimal-pad'
+            returnKeyType='next'
+            onInputChange={inputChangeHandler}
+            initialValue={editedAnimal ? editedAnimal.age : ""}
+            initiallyValid={!!editedAnimal}
+            required
+            min={1}
+          />
+          <Input
+            id='imageUrl'
+            label='Link do zdjecia'
+            errorText='Wprowadź poprawny link!'
+            keyboardType='default'
+            returnKeyType='next'
+            onInputChange={inputChangeHandler}
+            initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
+            initiallyValid={!!editedAnimal}
+            required
+          />
 
-        <ImagePicker />
-        <Input
-          id='description'
-          label='Opis'
-          errorText='Wprowadź poprawny opis!'
-          keyboardType='default'
-          multiline
-          numberOfLines={3}
-          onInputChange={inputChangeHandler}
-          initialValue={editedAnimal ? editedAnimal.description : ""}
-          initiallyValid={!!editedAnimal}
-          required
-          minLength={5}
-        />
-      </View>
-    </ScrollView>
+          <ImagePicker />
+          <Input
+            id='description'
+            label='Opis'
+            errorText='Wprowadź poprawny opis!'
+            keyboardType='default'
+            multiline
+            numberOfLines={3}
+            onInputChange={inputChangeHandler}
+            initialValue={editedAnimal ? editedAnimal.description : ""}
+            initiallyValid={!!editedAnimal}
+            required
+            minLength={5}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
