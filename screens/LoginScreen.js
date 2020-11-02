@@ -30,6 +30,7 @@ async function signInWithGoogleAsync() {
 
       if (!response.ok) {
         console.log("blad");
+        console.log(response.status);
         throw new Error("Something went wrong!");
       }
       Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
