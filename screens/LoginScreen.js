@@ -3,6 +3,8 @@ import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import * as Google from "expo-google-app-auth";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import * as SecureStore from "expo-secure-store";
+
 async function signInWithGoogleAsync() {
   try {
     //id "999814744000-7q3re9n2b6rcq2gi1o2p81drn6je7rcu.apps.googleusercontent.com";
@@ -36,6 +38,8 @@ async function signInWithGoogleAsync() {
       Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
       const resData = await response.json();
       console.log(resData);
+      //console.log(resData.token);
+      SecureStore.setItemAsync("token", resData.token);
       //return result.accessToken;
     } else {
       return { cancelled: true };
@@ -54,11 +58,12 @@ const LoginScreen = (props) => {
   return (
     <View style={styles.screen}>
       <FontAwesome.Button
-        name='google'
+        name="google"
         backgroundColor={Colors.primaryColor}
         onPress={() => {
           signInWithGoogle();
-        }}>
+        }}
+      >
         Login with Google
       </FontAwesome.Button>
       {/* <Button

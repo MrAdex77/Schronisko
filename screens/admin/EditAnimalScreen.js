@@ -51,6 +51,7 @@ const EditAnimalScreen = (props) => {
   const editedAnimal = useSelector((state) =>
     state.animals.animals.find((ani) => ani.id === animalId)
   );
+  const [newValue, setnewValue] = useState("");
 
   const dispatch = useDispatch();
 
@@ -72,13 +73,9 @@ const EditAnimalScreen = (props) => {
     formIsValid: editedAnimal ? true : false,
   });
 
-  const addNewImageHandler = (newImage) => {
-    inputChangeHandler("imageUrl", newImage, true);
-    console.log("NEW IMAGE:" + newImage);
-  };
-
   const inputChangeHandler = useCallback(
     (inputId, inputValue, inputValidity) => {
+      console.log("ID: " + inputId + "val: " + inputValue);
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
@@ -88,6 +85,12 @@ const EditAnimalScreen = (props) => {
     },
     [dispatchFormState]
   );
+
+  const addNewImageHandler = (newImage) => {
+    inputChangeHandler("imageUrl", newImage, true);
+    setnewValue(newImage);
+    console.log("NEW IMAGE:" + newImage);
+  };
 
   useEffect(() => {
     if (Error) {
@@ -139,7 +142,7 @@ const EditAnimalScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -149,35 +152,35 @@ const EditAnimalScreen = (props) => {
       <ScrollView>
         <View style={styles.form}>
           <Input
-            id='title'
-            label='Imie'
-            errorText='Wprowadź poprawne imię!'
-            keyboardType='default'
-            autoCapitalize='sentences'
+            id="title"
+            label="Imie"
+            errorText="Wprowadź poprawne imię!"
+            keyboardType="default"
+            autoCapitalize="sentences"
             autoCorrect
-            returnKeyType='next'
+            returnKeyType="next"
             onInputChange={inputChangeHandler}
             initialValue={editedAnimal ? editedAnimal.title : ""}
             initiallyValid={!!editedAnimal}
             required
           />
           <Input
-            id='category'
-            label='Kategoria'
-            errorText='Wprowadź poprawną kategorię: Pies,kot'
-            keyboardType='default'
-            returnKeyType='next'
+            id="category"
+            label="Kategoria"
+            errorText="Wprowadź poprawną kategorię: Pies,kot"
+            keyboardType="default"
+            returnKeyType="next"
             onInputChange={inputChangeHandler}
             initialValue={editedAnimal ? editedAnimal.category : ""}
             initiallyValid={!!editedAnimal}
             required
           />
           <Input
-            id='age'
-            label='Wiek'
-            errorText='Wprowadź poprawny wiek!'
-            keyboardType='decimal-pad'
-            returnKeyType='next'
+            id="age"
+            label="Wiek"
+            errorText="Wprowadź poprawny wiek!"
+            keyboardType="decimal-pad"
+            returnKeyType="next"
             onInputChange={inputChangeHandler}
             initialValue={editedAnimal ? editedAnimal.age : ""}
             initiallyValid={!!editedAnimal}
@@ -185,12 +188,13 @@ const EditAnimalScreen = (props) => {
             min={1}
           />
           <Input
-            id='imageUrl'
-            label='Link do zdjecia'
-            errorText='Wprowadź poprawny link!'
-            keyboardType='default'
-            returnKeyType='next'
+            id="imageUrl"
+            label="Link do zdjecia"
+            errorText="Wprowadź poprawny link!"
+            keyboardType="default"
+            returnKeyType="next"
             onInputChange={inputChangeHandler}
+            img={newValue}
             initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
             initiallyValid={!!editedAnimal}
             required
@@ -198,10 +202,10 @@ const EditAnimalScreen = (props) => {
 
           <ImagePicker onAddImage={addNewImageHandler} />
           <Input
-            id='description'
-            label='Opis'
-            errorText='Wprowadź poprawny opis!'
-            keyboardType='default'
+            id="description"
+            label="Opis"
+            errorText="Wprowadź poprawny opis!"
+            keyboardType="default"
             multiline
             numberOfLines={3}
             onInputChange={inputChangeHandler}
@@ -225,7 +229,7 @@ EditAnimalScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title='Save'
+          title="Save"
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }

@@ -21,51 +21,36 @@ const ImgPicker = (props) => {
   };
 
   const takeImageHandler = async () => {
-    try {
-      const hasPermission = await verifyPermissions();
-      if (!hasPermission) {
-        return;
-      }
-      const image = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        aspect: [16, 9],
-        quality: 0.5,
-      });
-      if (image.cancelled) return;
-
-      setPickedImage(image.uri);
-
-      props.onAddImage(image.uri);
-
-      let localUri = image.uri;
-      let filename = localUri.split("/").pop();
-      console.log(filename);
-      let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : `image`;
-      console.log(type);
-
-      let formData = new FormData();
-      formData.append("photo", { uri: image.uri, name: filename, type });
-
-      const response = await fetch(
-        "http://176.107.131.27:5000/animals/upload/image",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: formData,
-        }
-      );
-      if (!response.ok) {
-        console.log(response.status);
-        throw new Error("Something went wrong!");
-      }
-      const resData = await response.json();
-      console.log(resData);
-    } catch (err) {
-      Alert.alert("Error", err.toString());
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
     }
+    const image = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.5,
+    });
+    if (image.cancelled) return;
+
+    setPickedImage(image.uri);
+
+    props.onAddImage(image.uri);
+    // let formData = new FormData();
+    // formData.append("photo", { uri: image.uri, name: filename, type });
+
+    // const response = await fetch("http://176.107.131.27/animals/new", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    //   body: formData,
+    // });
+    // if (!response.ok) {
+    //   console.log(response.status);
+    //   throw new Error("Something went wrong!");
+    // }
+    // const resData = await response.json();
+    // console.log(resData);
   };
 
   return (
@@ -78,7 +63,7 @@ const ImgPicker = (props) => {
         )}
       </View>
       <Button
-        title='Zrób Zdjęcie'
+        title="Zrób Zdjęcie"
         color={Colors.primary}
         onPress={takeImageHandler}
       />
