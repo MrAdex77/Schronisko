@@ -84,6 +84,7 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
   return async (dispatch) => {
     //any async code http://mateuszdobosz.site/animals/new
     //https://schronisko-7cfd1.firebaseio.com/animals.json
+    //name,category,age,description,token
     const response = await fetch(
       "https://schronisko-7cfd1.firebaseio.com/animals.json",
       {

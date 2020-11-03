@@ -34,6 +34,9 @@ const ImgPicker = (props) => {
       if (image.cancelled) return;
 
       setPickedImage(image.uri);
+
+      props.onAddImage(image.uri);
+
       let localUri = image.uri;
       let filename = localUri.split("/").pop();
       console.log(filename);

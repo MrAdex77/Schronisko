@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
+  InputAccessoryView,
 } from "react-native";
 import HeaderButton from "../../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -70,6 +71,11 @@ const EditAnimalScreen = (props) => {
     },
     formIsValid: editedAnimal ? true : false,
   });
+
+  const addNewImageHandler = (newImage) => {
+    inputChangeHandler("imageUrl", newImage, true);
+    console.log("NEW IMAGE:" + newImage);
+  };
 
   const inputChangeHandler = useCallback(
     (inputId, inputValue, inputValidity) => {
@@ -190,7 +196,7 @@ const EditAnimalScreen = (props) => {
             required
           />
 
-          <ImagePicker />
+          <ImagePicker onAddImage={addNewImageHandler} />
           <Input
             id='description'
             label='Opis'
