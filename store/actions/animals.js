@@ -98,7 +98,9 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
       formData.append("name", title);
       formData.append("category", category);
       formData.append("description", description);
-      formData.append("token", SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
+      console.log("TOKEN:" + JSON.parse(token));
+      formData.append("token", JSON.parse(token));
       const response = await fetch("http://mateuszdobosz.site/animals/new", {
         method: "POST",
         headers: {

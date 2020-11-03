@@ -38,8 +38,7 @@ async function signInWithGoogleAsync() {
       Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
       const resData = await response.json();
       console.log(resData);
-      //console.log(resData.token);
-      SecureStore.setItemAsync("token", resData.token);
+      await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
       //return result.accessToken;
     } else {
       return { cancelled: true };
@@ -58,12 +57,11 @@ const LoginScreen = (props) => {
   return (
     <View style={styles.screen}>
       <FontAwesome.Button
-        name="google"
+        name='google'
         backgroundColor={Colors.primaryColor}
         onPress={() => {
           signInWithGoogle();
-        }}
-      >
+        }}>
         Login with Google
       </FontAwesome.Button>
       {/* <Button
