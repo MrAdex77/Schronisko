@@ -14,6 +14,8 @@ import DonationScreen from "../screens/DonationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import StatisticsScreen from "../screens/StatisticsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
+import NewsScreen from "../screens/NewsScreen";
+import ContactScreen from "../screens/ContactScreen";
 
 import Colors from "../constants/Colors";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
@@ -44,6 +46,8 @@ const AnimalNavigator = createStackNavigator(
     Donation: DonationScreen,
     Login: LoginScreen,
     Statistics: StatisticsScreen,
+    News: NewsScreen,
+    Contact: ContactScreen,
     AnimalDetail: AnimalDetailScreen,
     EditAnimal: EditAnimalScreen,
     AdminAnimals: AdminProductsScreen,
