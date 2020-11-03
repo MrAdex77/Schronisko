@@ -50,6 +50,7 @@ const EditAnimalScreen = (props) => {
   const editedAnimal = useSelector((state) =>
     state.animals.animals.find((ani) => ani.id === animalId)
   );
+  const [newValue, setnewValue] = useState("");
 
   const dispatch = useDispatch();
 
@@ -73,6 +74,7 @@ const EditAnimalScreen = (props) => {
 
   const inputChangeHandler = useCallback(
     (inputId, inputValue, inputValidity) => {
+      console.log("ID: " + inputId + "val: " + inputValue);
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
@@ -82,6 +84,12 @@ const EditAnimalScreen = (props) => {
     },
     [dispatchFormState]
   );
+
+  const addNewImageHandler = (newImage) => {
+    inputChangeHandler("imageUrl", newImage, true);
+    setnewValue(newImage);
+    console.log("NEW IMAGE:" + newImage);
+  };
 
   useEffect(() => {
     if (Error) {
@@ -185,12 +193,13 @@ const EditAnimalScreen = (props) => {
             keyboardType='default'
             returnKeyType='next'
             onInputChange={inputChangeHandler}
+            img={newValue}
             initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
             initiallyValid={!!editedAnimal}
             required
           />
 
-          <ImagePicker />
+          <ImagePicker onAddImage={addNewImageHandler} />
           <Input
             id='description'
             label='Opis'

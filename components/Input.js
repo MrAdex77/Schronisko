@@ -28,6 +28,11 @@ const Input = (props) => {
     isValid: props.initialValid,
     touched: false,
   });
+  useEffect(() => {
+    if (props.img) {
+      textChangeHandler(props.img);
+    }
+  }, [props.img]);
 
   const { onInputChange, id } = props;
 
@@ -35,6 +40,7 @@ const Input = (props) => {
     if (inputState.touched) {
       props.onInputChange(id, inputState.value, inputState.isValid);
     }
+    // props.onInputChange(id, inputState.value, inputState.isValid);
   }, [inputState, onInputChange, id]);
 
   const textChangeHandler = (text) => {

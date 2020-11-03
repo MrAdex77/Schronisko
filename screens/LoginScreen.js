@@ -4,8 +4,12 @@ import * as Google from "expo-google-app-auth";
 import { FontAwesome ,FontAwesome5} from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
+
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
+
+import * as SecureStore from "expo-secure-store";
+
 
 async function signInWithGoogleAsync() {
   try {
@@ -33,11 +37,13 @@ async function signInWithGoogleAsync() {
       });
       if (!response.ok) {
         console.log("blad");
+        console.log(response.status);
         throw new Error("Something went wrong!");
       }
       Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
       const resData = await response.json();
       console.log(resData);
+      await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
       //return result.accessToken;
     } else {
       return { cancelled: true };

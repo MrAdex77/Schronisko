@@ -1,5 +1,7 @@
 import Animal from "../../models/animal";
 
+import * as SecureStore from "expo-secure-store";
+
 export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
 export const SET_FILTERS = "SET_FILTERS";
 export const CREATE_ANIMAL = "CREATE_ANIMAL";
@@ -84,34 +86,48 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
   return async (dispatch) => {
     //any async code http://mateuszdobosz.site/animals/new
     //https://schronisko-7cfd1.firebaseio.com/animals.json
-    const response = await fetch(
-      "https://schronisko-7cfd1.firebaseio.com/animals.json",
-      {
+    //name,category,age,description,token
+    try {
+      let filename = imageUrl.split("/").pop();
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      let formData = new FormData();
+      formData.append("photo", { uri: imageUrl, name: filename, type });
+      formData.append("age", age);
+      formData.append("name", title);
+      formData.append("category", category);
+      formData.append("description", description);
+      const token = await SecureStore.getItemAsync("token");
+      console.log("TOKEN:" + JSON.parse(token));
+      formData.append("token", JSON.parse(token));
+      const response = await fetch("http://mateuszdobosz.site/animals/new", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify({
+        body: formData,
+      });
+      if (!response.ok) {
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      console.log(resData);
+      dispatch({
+        type: CREATE_ANIMAL,
+        animalData: {
           title,
           category,
           age,
           description,
           imageUrl,
-        }),
-      }
-    );
-    const resData = await response.json();
-    console.log(resData);
-    dispatch({
-      type: CREATE_ANIMAL,
-      animalData: {
-        title,
-        category,
-        age,
-        description,
-        imageUrl,
-      },
-    });
+        },
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 };
 export const UpdateAnimal = (
