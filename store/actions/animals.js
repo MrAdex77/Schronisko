@@ -16,29 +16,31 @@ export const fetchAnimals = () => {
     //http://mateuszdobosz.site/animals/overview
     try {
       const response = await fetch(
-        "https://schronisko-7cfd1.firebaseio.com/animals.json",
+        "http://mateuszdobosz.site/animals/overview",
         {
           method: "GET",
         }
       );
-      console.log(response.status);
       if (!response.ok) {
+        console.log(response.status);
         throw new Error("Something went wrong!");
       }
 
       const resData = await response.json();
       //console.log(resData);
+      //console.log(resData[0].);
       const loadedAnimals = [];
 
       for (const key in resData) {
+        const images = `http://176.107.131.27/images/${resData[key].image}`;
         loadedAnimals.push(
           new Animal(
-            key,
+            resData[key]._id,
             "u1",
             resData[key].category,
             resData[key].age,
-            resData[key].title,
-            resData[key].imageUrl,
+            resData[key].name,
+            images,
             resData[key].description
           )
         );
@@ -67,15 +69,20 @@ export const setFilters = (filterSettings) => {
 
 export const deleteAnimal = (animalId) => {
   return async (dispatch) => {
+    const token = await SecureStore.getItemAsync("token");
+    //console.log("TOKEN:" + JSON.parse(token));
+    const token2 = JSON.parse(token);
     //any async code http://176.107.131.27:5000/animals/new
-    const response = await fetch(
-      `https://schronisko-7cfd1.firebaseio.com/animals/${animalId}.json`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch("http://mateuszdobosz.site/animals/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: animalId, token: token2 }),
+    });
 
     if (!response.ok) {
+      console.log(response.status);
       throw new Error("Something went wrong!");
     }
     dispatch({ type: DELETE_ANIMAL, pid: animalId });
@@ -99,7 +106,7 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
       formData.append("category", category);
       formData.append("description", description);
       const token = await SecureStore.getItemAsync("token");
-      console.log("TOKEN:" + JSON.parse(token));
+      //console.log("TOKEN:" + JSON.parse(token));
       formData.append("token", JSON.parse(token));
       const response = await fetch("http://mateuszdobosz.site/animals/new", {
         method: "POST",
@@ -115,6 +122,7 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
 
       const resData = await response.json();
       console.log(resData);
+      const NewImage = `http://176.107.131.27/images/${resData.image}`;
       dispatch({
         type: CREATE_ANIMAL,
         animalData: {
@@ -122,7 +130,7 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
           category,
           age,
           description,
-          imageUrl,
+          NewImage,
         },
       });
     } catch (err) {

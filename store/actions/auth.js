@@ -1,6 +1,8 @@
 import * as SecureStore from "expo-secure-store";
 import * as Google from "expo-google-app-auth";
 
+import User from "../../models/user";
+
 export const LOGIN = "LOGIN";
 
 export const signInWithGoogleAsync = () => {
@@ -28,17 +30,21 @@ export const signInWithGoogleAsync = () => {
           console.log(response.status);
           throw new Error("Something went wrong!");
         }
-        //Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
+        const email = result.user.email;
+        const name = result.user.name;
+        const newUser = new User(email, name);
         const resData = await response.json();
         console.log(resData);
         await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
+        dispatch({
+          type: LOGIN,
+          user: newUser,
+        });
       } else {
         return { cancelled: true };
       }
     } catch (e) {
       return { error: true };
     }
-
-    dispatch({ type: LOGIN });
   };
 };

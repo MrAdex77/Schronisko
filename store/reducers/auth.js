@@ -8,7 +8,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
-      return state;
+      return {
+        ...state,
+        user: action.user,
+      };
     default:
       return state;
   }

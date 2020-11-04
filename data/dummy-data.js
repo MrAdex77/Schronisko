@@ -52,5 +52,5 @@ const Animals = [
   ),
 ];
 
-export const USER = [new User("mradex77@gmail.com", "Adex")];
+export const USER = new User("mradex77@gmail.com", "Adex");
 export default Animals;

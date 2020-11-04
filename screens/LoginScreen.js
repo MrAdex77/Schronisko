@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
@@ -19,45 +19,6 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
 
-async function signInWithGoogleAsync() {
-  // try {
-  //   //id "999814744000-7q3re9n2b6rcq2gi1o2p81drn6je7rcu.apps.googleusercontent.com";
-  //   const result = await Google.logInAsync({
-  //     behavior: "web",
-  //     //iosClientId: IOS_CLIENT_ID,
-  //     androidClientId:
-  //       "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com",
-  //     scopes: ["profile", "email"],
-  //   });
-  //   // web  299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com
-  //   // android 299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com
-  //   if (result.type === "success") {
-  //     const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         token: result.idToken,
-  //       }),
-  //     });
-  //     if (!response.ok) {
-  //       console.log("blad");
-  //       console.log(response.status);
-  //       throw new Error("Something went wrong!");
-  //     }
-  //     Alert.alert("Zalogowano", result.user.email + "\n" + result.user.name);
-  //     const resData = await response.json();
-  //     console.log(resData);
-  //     await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
-  //     //return result.accessToken;
-  //   } else {
-  //     return { cancelled: true };
-  //   }
-  // } catch (e) {
-  //   return { error: true };
-  // }
-}
 async function signInWithFacebookAsync() {
   try {
     await Facebook.initializeAsync({
@@ -102,39 +63,41 @@ async function signInWithFacebookAsync() {
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
-  const signInWithGoogle = () => {
-    signInWithGoogleAsync();
-  };
   const signInWithFacebook = () => {
     signInWithFacebookAsync();
   };
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
+  const userEmail = useSelector((state) => state.auth.user);
+
+  const signInWithGoogleAsync = async () => {
+    await dispatch(AuthActions.signInWithGoogleAsync());
+    console.log(userEmail);
+  };
+
   return (
     <ImageBackground source={require("../img/dog.png")} style={styles.image}>
       <Text style={styles.text1}>Witaj !</Text>
-      <FontAwesome5 name="users" size={150} color="white" />
+      <FontAwesome5 name='users' size={150} color='white' />
       <View style={styles.space1} />
       <FontAwesome.Button
-        name="facebook"
-        backgroundColor="#3b5998"
+        name='facebook'
+        backgroundColor='#3b5998'
         onPress={() => {
           signInWithFacebook();
-        }}
-      >
+        }}>
         Zaloguj z Facebook
       </FontAwesome.Button>
 
       <View style={styles.space} />
 
       <FontAwesome.Button
-        name="google"
-        backgroundColor="#dd4b39"
+        name='google'
+        backgroundColor='#dd4b39'
         onPress={() => {
-          dispatch(AuthActions.signInWithGoogleAsync());
-        }}
-      >
+          signInWithGoogleAsync();
+        }}>
         Zaloguj z Google
       </FontAwesome.Button>
 

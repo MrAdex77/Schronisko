@@ -21,6 +21,7 @@ import Colors from "../constants/Colors";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
+import SurveyScreen from "../screens/SurveyScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -51,6 +52,7 @@ const AnimalNavigator = createStackNavigator(
     AnimalDetail: AnimalDetailScreen,
     EditAnimal: EditAnimalScreen,
     AdminAnimals: AdminProductsScreen,
+    Survey: SurveyScreen,
   },
   {
     initialRouteName: "Categories",

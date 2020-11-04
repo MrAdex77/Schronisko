@@ -16,7 +16,7 @@ enableScreens();
 
 const rootReducer = combineReducers({
   animals: animalReducer,
-  user: userReducer,
+  auth: userReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
