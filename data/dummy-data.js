@@ -1,4 +1,5 @@
 import Animal from "../models/animal";
+import User from "../models/user";
 
 const Animals = [
   new Animal(
@@ -51,4 +52,5 @@ const Animals = [
   ),
 ];
 
+export const USER = [new User("mradex77@gmail.com", "Adex")];
 export default Animals;
