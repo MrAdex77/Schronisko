@@ -22,6 +22,8 @@ import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
 import SurveyScreen from "../screens/SurveyScreen";
+import SurveyOverviewScreen from "../screens/admin/SurveyOverviewScreen";
+import StartupScreen from "../screens/StartupScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -53,9 +55,11 @@ const AnimalNavigator = createStackNavigator(
     EditAnimal: EditAnimalScreen,
     AdminAnimals: AdminProductsScreen,
     Survey: SurveyScreen,
+    SurveyOverview: SurveyOverviewScreen,
+    StartUp: StartupScreen,
   },
   {
-    initialRouteName: "Categories",
+    initialRouteName: "StartUp",
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
@@ -75,7 +79,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -90,7 +94,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:

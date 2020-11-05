@@ -35,6 +35,10 @@ export const signInWithGoogleAsync = () => {
         const newUser = new User(email, name);
         const resData = await response.json();
         console.log(resData);
+        await SecureStore.setItemAsync(
+          "Googletoken",
+          JSON.stringify(result.idToken)
+        );
         await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
         dispatch({
           type: LOGIN,
@@ -43,6 +47,41 @@ export const signInWithGoogleAsync = () => {
       } else {
         return { cancelled: true };
       }
+    } catch (e) {
+      return { error: true };
+    }
+  };
+};
+
+export const googleLogIn = (token) => {
+  return async (dispatch) => {
+    try {
+      //console.log("TOKEN: " + token);
+      const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+        }),
+      });
+      if (!response.ok) {
+        console.log("blad");
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      console.log("Zalogowano: " + resData.name);
+      const name = resData.name;
+      const newUser = new User("trololo@wp.pl", name);
+      await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
+
+      dispatch({
+        type: LOGIN,
+        user: newUser,
+      });
     } catch (e) {
       return { error: true };
     }
