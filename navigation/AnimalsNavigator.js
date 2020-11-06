@@ -16,11 +16,15 @@ import StatisticsScreen from "../screens/StatisticsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ContactScreen from "../screens/ContactScreen";
+import SignUpOnWalkScreen from "../screens/SignUpOnWalkScreen";
+import AdminCategoriesScreen from "../screens/AdminCategoriesScreen" ;
+
 
 import Colors from "../constants/Colors";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
+import AddNewsScreen from "../screens/admin/AddNewsScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -46,11 +50,22 @@ const AnimalNavigator = createStackNavigator(
     Donation: DonationScreen,
     Login: LoginScreen,
     Statistics: StatisticsScreen,
-    News: NewsScreen,
-    Contact: ContactScreen,
+    News: {
+      screen: NewsScreen,
+      navigationOptions:{headerTitle: "Aktualności"}
+    },
+    Contact: {
+      screen: ContactScreen,
+      navigationOptions:{headerTitle: "Kontakt"}
+    },
+    SignUpOnWalk: {
+      screen: SignUpOnWalkScreen,
+      navigationOptions:{headerTitle: "Umów się na spacer"}
+    },
     AnimalDetail: AnimalDetailScreen,
-    EditAnimal: EditAnimalScreen,
-    AdminAnimals: AdminProductsScreen,
+    //EditAnimal: EditAnimalScreen,
+    //AdminAnimals: AdminProductsScreen,
+    
   },
   {
     initialRouteName: "Categories",
@@ -101,6 +116,9 @@ const tabScreenConfig = {
   },
 };
 
+
+
+
 const AnimalFavTabNavigator =
   Platform.OS === "android"
     ? createMaterialBottomTabNavigator(tabScreenConfig, {
@@ -119,12 +137,29 @@ const AnimalFavTabNavigator =
         },
       });
 
+  
+
 const AdminNavigator = createStackNavigator(
   {
-    adminAnimals: AdminProductsScreen,
+    AdminCategories:{
+     screen:AdminCategoriesScreen,
+     navigationOptions:{headerTitle:"Admin menu"}
+
+    },
+    AddNews: {
+      screen: AddNewsScreen,
+      navigationOptions:{headerTitle: "Dodaj aktualność"}
+     },
+
+    AdminProducts:{
+      screen: AdminProductsScreen,
+      navigationOptions:{headerTitle:"Twoje zwierzęta"}
+
+    } ,
     EditAnimal: EditAnimalScreen,
   },
   {
+    initialRouteName: "AdminCategories",
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
@@ -136,8 +171,13 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: "Menu",
       },
     },
-    Admin: AdminNavigator,
-    //EditAnimal2: EditAnimalScreen,
+    Admin: {
+      screen: AdminNavigator,
+      navigationOptions: {
+        drawerLabel: "Adminxdd",
+      },
+    },
+    
   },
   {
     contentOptions: {

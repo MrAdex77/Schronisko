@@ -73,13 +73,11 @@ async function signInWithFacebookAsync() {
         token:token
     })
     
-      .then( function(response) {
-       
-      
-      
-      
-       console.log(JSON.stringify(response.data))
-       console.log(response)
+      .then( async function(response) {
+
+       console.log(JSON.stringify(response.data.token));
+       await SecureStore.setItemAsync("tokenfb", response.data.token);
+       //console.log(response.data)
       // console.log(JSON.stringify(response))
        
       })

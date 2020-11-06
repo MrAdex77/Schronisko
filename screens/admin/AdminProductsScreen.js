@@ -138,22 +138,22 @@ const AdminProductsScreen = (props) => {
   );
 };
 
-AdminProductsScreen.navigationOptions = (navData) => {
-  return {
-    headerTitle: "Twoje zwierzęta",
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title='Menu'
-          iconName='ios-menu'
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    ),
-  };
-};
+// AdminProductsScreen.navigationOptions = (navData) => {
+//   return {
+//     headerTitle: "Twoje zwierzęta",
+//     headerLeft: () => (
+//       <HeaderButtons HeaderButtonComponent={HeaderButton}>
+//         <Item
+//           title='Menu'
+//           iconName='ios-menu'
+//           onPress={() => {
+//             navData.navigation.toggleDrawer();
+//           }}
+//         />
+//       </HeaderButtons>
+//     ),
+//   };
+// };
 const styles = StyleSheet.create({
   list: {
     flex: 1,
