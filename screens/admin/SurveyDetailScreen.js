@@ -1,7 +1,15 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Modal,
+  TouchableHighlight,
+} from "react-native";
 
 const SurveyDetailScreen = (props) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const userId = props.navigation.getParam("userId");
   const userName = props.navigation.getParam("userName");
 
@@ -24,6 +32,14 @@ const SurveyDetailScreen = (props) => {
   }
 
   console.log("userid: " + userId + " userName: " + userName);
+
+  if (loadedSurveys.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.header}> Nie znaleziono ankiet!</Text>
+      </View>
+    );
+  }
 
   const renderSurveyItem = (itemData) => {
     return (

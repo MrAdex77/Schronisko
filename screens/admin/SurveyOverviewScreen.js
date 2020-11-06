@@ -48,9 +48,6 @@ const SurveyOverviewScreen = (props) => {
       console.log(resData);
       const loadedSurveys = [];
       for (const key in resData) {
-        console.log(
-          "SURVEY:" + resData[3].survey.map((arena) => arena.answers)
-        );
         loadedSurveys.push({
           id: resData[key]._id,
           name: resData[key].name,
@@ -87,7 +84,7 @@ const SurveyOverviewScreen = (props) => {
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title='Spróbuj ponownie'
+          title="Spróbuj ponownie"
           onPress={loadSurveys}
           color={Colors.primaryColor}
         />
@@ -98,7 +95,7 @@ const SurveyOverviewScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -118,7 +115,8 @@ const SurveyOverviewScreen = (props) => {
               survey: itemData.item.survey,
             },
           });
-        }}>
+        }}
+      >
         <View style={styles.animalItem}>
           <Text>{itemData.item.name}</Text>
         </View>
