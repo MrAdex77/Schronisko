@@ -29,6 +29,10 @@ const DonationScreen = (props) => {
     }
     if (amount) {
       dispatch(userActions.UpdateDonation(amount));
+      Alert.alert(
+        "Udało się!",
+        "Pieniądze bezpiecznie powędrowały do naszych zwierząt"
+      );
       //send
     }
   };

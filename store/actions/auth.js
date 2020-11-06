@@ -33,7 +33,8 @@ export const signInWithGoogleAsync = () => {
         }
         const email = result.user.email;
         const name = result.user.name;
-        const newUser = new User(email, name);
+        const balance = response.balance;
+        const newUser = new User(email, name, balance);
         const resData = await response.json();
         console.log(resData);
         await SecureStore.setItemAsync(
@@ -74,9 +75,10 @@ export const googleLogIn = (token) => {
       }
 
       const resData = await response.json();
-      console.log("Zalogowano: " + resData.name);
+      console.log("Zalogowano: " + resData.name + " " + resData.balance);
       const name = resData.name;
-      const newUser = new User("trololo@wp.pl", name);
+      const balance = resData.balance;
+      const newUser = new User("trololo@wp.pl", name, balance);
       await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
 
       dispatch({
@@ -113,12 +115,12 @@ export const UpdateDonation = (amount) => {
       }
 
       const resData = await response.json();
-      console.log(resData);
-
-      // dispatch({
-      //   type: LOGIN,
-      //   user: newUser,
-      // });
+      //console.log(resData);
+      const newAmount = resData.balance;
+      dispatch({
+        type: UpdateDonation,
+        amount: newAmount,
+      });
     } catch (e) {
       return { error: true };
     }
