@@ -25,6 +25,11 @@ import AnimalDetailScreen from "../screens/AnimalDetailScreen";
 import AdminProductsScreen from "../screens/admin/AdminProductsScreen";
 import EditAnimalScreen from "../screens/admin/EditAnimalScreen";
 import AddNewsScreen from "../screens/admin/AddNewsScreen";
+import SurveyScreen from "../screens/SurveyScreen";
+import SurveyOverviewScreen from "../screens/admin/SurveyOverviewScreen";
+import StartupScreen from "../screens/StartupScreen";
+import SurveyDetailScreen from "../screens/admin/SurveyDetailScreen";
+
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -63,12 +68,15 @@ const AnimalNavigator = createStackNavigator(
       navigationOptions:{headerTitle: "Umów się na spacer"}
     },
     AnimalDetail: AnimalDetailScreen,
-    //EditAnimal: EditAnimalScreen,
-    //AdminAnimals: AdminProductsScreen,
-    
+    EditAnimal: EditAnimalScreen,
+    AdminAnimals: AdminProductsScreen,
+    Survey: SurveyScreen,
+    SurveyOverview: SurveyOverviewScreen,
+    StartUp: StartupScreen,
+    SurveyDetail: SurveyDetailScreen,
   },
   {
-    initialRouteName: "Categories",
+    initialRouteName: "StartUp",
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
@@ -88,7 +96,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -103,7 +111,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:

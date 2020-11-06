@@ -1,5 +1,12 @@
 import React, { useEffect, useCallback } from "react";
-import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
@@ -35,7 +42,21 @@ const AnimalDetailScreen = (props) => {
         <View style={styles.details}>
           <Text style={styles.title}>Imię: {selectedAnimal.title}</Text>
           <Text>Wiek: {selectedAnimal.age} lata</Text>
-          <Text style={styles.description}>{selectedAnimal.description}</Text>
+          <Text style={styles.description}>
+            {selectedAnimal.description}{" "}
+            <Button
+              title='adoptuj mnie!'
+              color='red'
+              onPress={() => {
+                props.navigation.navigate({
+                  routeName: "Survey",
+                  params: {
+                    animalId: animalId,
+                  },
+                });
+              }}
+            />
+          </Text>
         </View>
       </View>
     </ScrollView>
