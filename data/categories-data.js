@@ -13,5 +13,6 @@ export const ADMINCATEGORIES =[
   new Category("AdminProducts", "Twoje zwierzęta", "#f5428d"),
   new Category("EditAnimal", "Dodaj zwierzaka", "#ffc7ff"),
   new Category("AddNews","Dodaj aktualności","#47fce"),
+  new Category("SurveyOverview","Przegląd ankiet","#47fce")
 
 ];

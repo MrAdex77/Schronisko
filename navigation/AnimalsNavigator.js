@@ -68,12 +68,9 @@ const AnimalNavigator = createStackNavigator(
       navigationOptions:{headerTitle: "Umów się na spacer"}
     },
     AnimalDetail: AnimalDetailScreen,
-    EditAnimal: EditAnimalScreen,
-    AdminAnimals: AdminProductsScreen,
-    Survey: SurveyScreen,
-    SurveyOverview: SurveyOverviewScreen,
+    Survey:SurveyScreen,
     StartUp: StartupScreen,
-    SurveyDetail: SurveyDetailScreen,
+    
   },
   {
     initialRouteName: "StartUp",
@@ -164,8 +161,14 @@ const AdminNavigator = createStackNavigator(
       navigationOptions:{headerTitle:"Twoje zwierzęta"}
 
     } ,
+    SurveyOverview: {
+      screen: SurveyOverviewScreen,
+      navigationOptions:{headerTitle: "Przegląd ankiet"}
+    },
     EditAnimal: EditAnimalScreen,
+    SurveyDetail:SurveyDetailScreen,
   },
+  
   {
     initialRouteName: "AdminCategories",
     defaultNavigationOptions: defaultStackNavOptions,
