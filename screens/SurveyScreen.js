@@ -131,11 +131,12 @@ const SurveyScreen = (props) => {
 
       const resData = await response.json();
       console.log(resData);
+      Alert.alert("Wysłano!", "Formularz został wysłany na serwer!");
     } catch (err) {
       setError(err.message);
     }
     setIsLoading(false);
-  }, [dispatch, animalId, formState]);
+  }, [dispatch, formState]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
