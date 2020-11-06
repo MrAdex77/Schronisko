@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import * as userActions from "../store/actions/auth";
 
 const DonationScreen = (props) => {
   const [amount, setAmount] = useState(10);
@@ -27,6 +28,7 @@ const DonationScreen = (props) => {
       return;
     }
     if (amount) {
+      dispatch(userActions.UpdateDonation(amount));
       //send
     }
   };
@@ -38,12 +40,12 @@ const DonationScreen = (props) => {
         <TextInput
           style={styles.input}
           value={amount.toString()}
-          placeholder="ile"
-          keyboardType="numeric"
+          placeholder='ile'
+          keyboardType='numeric'
           onChangeText={(text) => textChangeHandler(text)}
         />
         <View style={styles.buttonContainer}>
-          <Button title="Podaruj" onPress={submitHandler} />
+          <Button title='Podaruj' onPress={submitHandler} />
         </View>
       </View>
     </View>

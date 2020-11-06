@@ -4,6 +4,7 @@ import * as Google from "expo-google-app-auth";
 import User from "../../models/user";
 
 export const LOGIN = "LOGIN";
+export const DONATE = "DONATE";
 
 export const signInWithGoogleAsync = () => {
   return async (dispatch) => {
@@ -82,6 +83,42 @@ export const googleLogIn = (token) => {
         type: LOGIN,
         user: newUser,
       });
+    } catch (e) {
+      return { error: true };
+    }
+  };
+};
+
+export const UpdateDonation = (amount) => {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const response = await fetch(
+        `http://mateuszdobosz.site/user/donation/new`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+            amount: amount,
+          }),
+        }
+      );
+      if (!response.ok) {
+        console.log("blad");
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      console.log(resData);
+
+      // dispatch({
+      //   type: LOGIN,
+      //   user: newUser,
+      // });
     } catch (e) {
       return { error: true };
     }
