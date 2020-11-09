@@ -10,9 +10,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-
+import { useKeepAwake } from "expo-keep-awake";
 import Colors from "../constants/Colors";
-
 import * as Facebook from "expo-facebook";
 import axios from "axios";
 
@@ -34,30 +33,25 @@ async function signInWithFacebookAsync() {
       behavior: "web",
       permissions: ["public_profile"],
     });
-    if (type === 'success') {
-      
-      axios.post('http://176.107.131.27:5000/auth/facebook',{
-        token:token
-    })
-    
-      .then( async function(response) {
+    if (type === "success") {
+      axios
+        .post("http://176.107.131.27:5000/auth/facebook", {
+          token: token,
+        })
 
-       console.log(JSON.stringify(response.data.token));
-       await SecureStore.setItemAsync("tokenfb", response.data.token);
-       //console.log(response.data)
-      // console.log(JSON.stringify(response))
-       
-      })
-      .catch( function (error) {
-        
-        console.log("catch po axiosie");
-        console.log(error);
-      })
-      
+        .then(async function (response) {
+          console.log(JSON.stringify(response.data.token));
+          await SecureStore.setItemAsync("tokenfb", response.data.token);
+          //console.log(response.data)
+          // console.log(JSON.stringify(response))
+        })
+        .catch(function (error) {
+          console.log("catch po axiosie");
+          console.log(error);
+        });
 
-     //const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-    // console.log('zalogowano', `Witaj ${(await response.json()).name}!`);
-
+      //const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+      // console.log('zalogowano', `Witaj ${(await response.json()).name}!`);
     } else {
       return { cancelled: true };
     }
@@ -72,12 +66,11 @@ const LoginScreen = (props) => {
   const signInWithFacebook = () => {
     signInWithFacebookAsync();
   };
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
 
   const userEmail = useSelector((state) => state.auth.user);
 
   const signInWithGoogleAsync = async () => {
+    //useKeepAwake();
     await dispatch(AuthActions.signInWithGoogleAsync());
     console.log(userEmail);
   };

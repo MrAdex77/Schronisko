@@ -7,28 +7,38 @@ import {
   Modal,
   TouchableHighlight,
 } from "react-native";
+import CustomButton from "../../components/CustomButton";
+import * as SecureStore from "expo-secure-store";
+import { cos } from "react-native-reanimated";
 
 const SurveyDetailScreen = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const userId = props.navigation.getParam("userId");
   const userName = props.navigation.getParam("userName");
 
+  const answers = props.navigation.getParam("answers");
   const survey = props.navigation.getParam("survey");
   const loadedSurveys = [];
-  for (const key in survey) {
+
+  for (const key in answers) {
     //console.log("survey1: " + survey[key].answer1);
     loadedSurveys.push({
-      answer1: survey[key].answer1,
-      answer2: survey[key].answer2,
-      answer3: survey[key].answer3,
-      answer4: survey[key].answer4,
-      answer5: survey[key].answer5,
-      answer6: survey[key].answer6,
-      answer7: survey[key].answer7,
-      answer8: survey[key].answer8,
-      answer9: survey[key].answer9,
-      answer10: survey[key].answer10,
+      id: null,
+      answer1: answers[key].answer1,
+      answer2: answers[key].answer2,
+      answer3: answers[key].answer3,
+      answer4: answers[key].answer4,
+      answer5: answers[key].answer5,
+      answer6: answers[key].answer6,
+      answer7: answers[key].answer7,
+      answer8: answers[key].answer8,
+      answer9: answers[key].answer9,
+      answer10: answers[key].answer10,
     });
+  }
+  for (const key in survey) {
+    loadedSurveys[key].id = survey[key];
+    //console.log("sdasd: " + survey[key]);
   }
 
   console.log("userid: " + userId + " userName: " + userName);
@@ -41,11 +51,34 @@ const SurveyDetailScreen = (props) => {
     );
   }
 
+  const confirmSurvey = async (id) => {
+    //404 wywala
+    const token = await SecureStore.getItemAsync("token");
+    const response = await fetch(
+      "http://mateuszdobosz.site/panel/survey/accept",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          token,
+        }),
+      }
+    );
+    if (!response.ok) {
+      console.log(response.status);
+      throw new Error("Something went wrong!");
+    }
+  };
+
   const renderSurveyItem = (itemData) => {
     return (
       <View style={styles.centered}>
         <View style={styles.form}>
           <Text style={styles.header}>Ankieta</Text>
+          <Text> id: {itemData.item.id}</Text>
           <Text style={styles.question}>Imię i nazwisko: {userName}</Text>
           <Text style={styles.question}>
             Czy wszyscy domownicy zgadzają się na adopcję zwierzęcia?
@@ -99,6 +132,13 @@ const SurveyDetailScreen = (props) => {
             zwierzęcia?
           </Text>
           <Text style={styles.answer}>{itemData.item.answer10}</Text>
+          <CustomButton
+            style={styles.button}
+            onPress={() => {
+              confirmSurvey(itemData.item.id);
+            }}>
+            Zatwierdź
+          </CustomButton>
         </View>
       </View>
     );
@@ -131,6 +171,10 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 20,
+    padding: 5,
+    borderColor: "green",
+    borderWidth: 2,
+    borderRadius: 20,
   },
   question: {
     fontFamily: "open-sans-bold",
@@ -147,6 +191,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center",
     marginVertical: 2,
+  },
+  button: {
+    marginVertical: 18,
+    alignItems: "center",
   },
 });
 

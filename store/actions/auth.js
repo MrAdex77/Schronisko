@@ -1,6 +1,5 @@
 import * as SecureStore from "expo-secure-store";
 import * as Google from "expo-google-app-auth";
-
 import User from "../../models/user";
 
 export const LOGIN = "LOGIN";

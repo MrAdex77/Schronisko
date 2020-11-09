@@ -1,83 +1,104 @@
-import React from "react";
-import { Pedometer } from "expo-sensors";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  Button,
+  ActivityIndicator,
+} from "react-native";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
+import { getDistance } from "geolib";
 
-export default class App extends React.Component {
-  state = {
-    isPedometerAvailable: "checking",
-    pastStepCount: 0,
-    currentStepCount: 0,
+const PedometerScreen = () => {
+  const shelterCoords = { latitude: 50.811294, longitude: 19.120867 };
+  const [isFetching, setIsFetching] = useState(false);
+  const [pickedLocation, setPickedLocation] = useState();
+  const [showPedometer, setShowPedometer] = useState(false);
+
+  const verifyPermissions = async () => {
+    const result = await Permissions.askAsync(Permissions.LOCATION);
+    if (result.status !== "granted") {
+      Alert.alert(
+        "Brak pozwolenia!",
+        "Musisz pozwolic aplikacji na dostep do lokalizacji!"
+      ),
+        [{ text: "Okay" }];
+      return false;
+    }
+    return true;
   };
 
-  componentDidMount() {
-    this._subscribe();
-  }
-
-  componentWillUnmount() {
-    this._unsubscribe();
-  }
-
-  _subscribe = () => {
-    this._subscription = Pedometer.watchStepCount((result) => {
-      this.setState({
-        currentStepCount: result.steps,
+  const getLocationHandler = async () => {
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+    try {
+      setIsFetching(true);
+      const location = await Location.getCurrentPositionAsync({
+        timeout: 5000,
       });
-    });
-
-    Pedometer.isAvailableAsync().then(
-      (result) => {
-        this.setState({
-          isPedometerAvailable: String(result),
-        });
-      },
-      (error) => {
-        this.setState({
-          isPedometerAvailable: "Could not get isPedometerAvailable: " + error,
-        });
+      //console.log(location);
+      setPickedLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      const distance = getDistance(shelterCoords, pickedLocation);
+      console.log(distance);
+      if (distance <= 50000) {
+        setShowPedometer(true);
+      } else {
+        setShowPedometer(false);
+        Alert.alert(
+          "Zła lokalizacja!",
+          "Niestety nie jestes na terenie schroniska, odpal jak juz będziesz!",
+          [{ text: "Okay" }]
+        );
       }
-    );
-
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - 1);
-    Pedometer.getStepCountAsync(start, end).then(
-      (result) => {
-        this.setState({ pastStepCount: result.steps });
-      },
-      (error) => {
-        this.setState({
-          pastStepCount: "Could not get stepCount: " + error,
-        });
-      }
-    );
+    } catch (err) {
+      console.log(err.message);
+      Alert.alert(
+        "Nie udalo sie pobrac lokalizacji!",
+        "Prosze sprobowac ponownie pozniej!",
+        [{ text: "Okay" }]
+      );
+    }
+    setIsFetching(false);
   };
 
-  _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  };
-
-  render() {
+  if (isFetching) {
     return (
-      <View style={styles.container}>
-        <Text>
-          Czy krokomierz jest obsługiwany przez urządzenie?{" "}
-          {this.state.isPedometerAvailable}
-        </Text>
-        {/* <Text>kroki przebyte przez 24 godziny: {this.state.pastStepCount}</Text> */}
-        <Text>
-          Przebyte kroki od włączenia widoku: {this.state.currentStepCount}
-        </Text>
+      <View style={styles.screen}>
+        <ActivityIndicator size='large' color='red' />
       </View>
     );
   }
-}
+
+  if (showPedometer) {
+    return (
+      <View style={styles.screen}>
+        <Text>Pedometer Screen</Text>
+        <Button title='kroki' onPress={() => {}} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <Text>Pedometer Screen</Text>
+      <Button title='lokalizacja' onPress={getLocationHandler} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    marginTop: 15,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
 });
+
+export default PedometerScreen;
