@@ -49,9 +49,10 @@ const SurveyOverviewScreen = (props) => {
       const loadedSurveys = [];
       for (const key in resData) {
         loadedSurveys.push({
-          id: resData[key]._id,
+          survey: resData[key].survey.map((x) => x._id),
+          userId: resData[key]._id,
           name: resData[key].name,
-          survey: resData[key].survey.map((x) => x.answers),
+          answers: resData[key].survey.map((x) => x.answers),
         });
       }
       setList(loadedSurveys);
@@ -84,7 +85,7 @@ const SurveyOverviewScreen = (props) => {
       <View style={styles.centered}>
         <Text>Wystąpił błąd! </Text>
         <Button
-          title="Spróbuj ponownie"
+          title='Spróbuj ponownie'
           onPress={loadSurveys}
           color={Colors.primaryColor}
         />
@@ -95,7 +96,7 @@ const SurveyOverviewScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -110,13 +111,13 @@ const SurveyOverviewScreen = (props) => {
           props.navigation.navigate({
             routeName: "SurveyDetail",
             params: {
-              userId: itemData.item.id,
-              userName: itemData.item.name,
               survey: itemData.item.survey,
+              userId: itemData.item.userId,
+              userName: itemData.item.name,
+              answers: itemData.item.answers,
             },
           });
-        }}
-      >
+        }}>
         <View style={styles.animalItem}>
           <Text>{itemData.item.name}</Text>
         </View>

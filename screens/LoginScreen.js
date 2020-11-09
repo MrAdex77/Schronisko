@@ -10,11 +10,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Google from "expo-google-app-auth";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-
+import { useKeepAwake } from "expo-keep-awake";
 import Colors from "../constants/Colors";
 
 //import * as Facebook from "expo-facebook";
 //import axios from "axios";
+
 
 import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
@@ -24,13 +25,11 @@ import * as AuthActions from "../store/actions/auth";
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
-  
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
 
   const userEmail = useSelector((state) => state.auth.user);
 
   const signInWithGoogleAsync = async () => {
+    //useKeepAwake();
     await dispatch(AuthActions.signInWithGoogleAsync());
     console.log(userEmail);
   };
