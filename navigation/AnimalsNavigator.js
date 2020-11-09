@@ -17,8 +17,7 @@ import FavoritesScreen from "../screens/FavoritesScreen";
 import NewsScreen from "../screens/NewsScreen";
 import ContactScreen from "../screens/ContactScreen";
 import SignUpOnWalkScreen from "../screens/SignUpOnWalkScreen";
-import AdminCategoriesScreen from "../screens/AdminCategoriesScreen" ;
-
+import AdminCategoriesScreen from "../screens/AdminCategoriesScreen";
 
 import Colors from "../constants/Colors";
 import AnimalDetailScreen from "../screens/AnimalDetailScreen";
@@ -29,7 +28,7 @@ import SurveyScreen from "../screens/SurveyScreen";
 import SurveyOverviewScreen from "../screens/admin/SurveyOverviewScreen";
 import StartupScreen from "../screens/StartupScreen";
 import SurveyDetailScreen from "../screens/admin/SurveyDetailScreen";
-
+import PedometerScreen from "../screens/PedometerScreen";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -57,20 +56,20 @@ const AnimalNavigator = createStackNavigator(
     Statistics: StatisticsScreen,
     News: {
       screen: NewsScreen,
-      navigationOptions:{headerTitle: "Aktualności"}
+      navigationOptions: { headerTitle: "Aktualności" },
     },
     Contact: {
       screen: ContactScreen,
-      navigationOptions:{headerTitle: "Kontakt"}
+      navigationOptions: { headerTitle: "Kontakt" },
     },
     SignUpOnWalk: {
       screen: SignUpOnWalkScreen,
-      navigationOptions:{headerTitle: "Umów się na spacer"}
+      navigationOptions: { headerTitle: "Umów się na spacer" },
     },
     AnimalDetail: AnimalDetailScreen,
-    Survey:SurveyScreen,
+    Survey: SurveyScreen,
     StartUp: StartupScreen,
-    
+    Krokomierz: PedometerScreen,
   },
   {
     initialRouteName: "StartUp",
@@ -93,7 +92,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -108,7 +107,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -120,9 +119,6 @@ const tabScreenConfig = {
     },
   },
 };
-
-
-
 
 const AnimalFavTabNavigator =
   Platform.OS === "android"
@@ -142,33 +138,29 @@ const AnimalFavTabNavigator =
         },
       });
 
-  
-
 const AdminNavigator = createStackNavigator(
   {
-    AdminCategories:{
-     screen:AdminCategoriesScreen,
-     navigationOptions:{headerTitle:"Admin menu"}
-
+    AdminCategories: {
+      screen: AdminCategoriesScreen,
+      navigationOptions: { headerTitle: "Admin menu" },
     },
     AddNews: {
       screen: AddNewsScreen,
-      navigationOptions:{headerTitle: "Dodaj aktualność"}
-     },
+      navigationOptions: { headerTitle: "Dodaj aktualność" },
+    },
 
-    AdminProducts:{
+    AdminProducts: {
       screen: AdminProductsScreen,
-      navigationOptions:{headerTitle:"Twoje zwierzęta"}
-
-    } ,
+      navigationOptions: { headerTitle: "Twoje zwierzęta" },
+    },
     SurveyOverview: {
       screen: SurveyOverviewScreen,
-      navigationOptions:{headerTitle: "Przegląd ankiet"}
+      navigationOptions: { headerTitle: "Przegląd ankiet" },
     },
     EditAnimal: EditAnimalScreen,
-    SurveyDetail:SurveyDetailScreen,
+    SurveyDetail: SurveyDetailScreen,
   },
-  
+
   {
     initialRouteName: "AdminCategories",
     defaultNavigationOptions: defaultStackNavOptions,
@@ -188,7 +180,6 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: "Adminxdd",
       },
     },
-    
   },
   {
     contentOptions: {
