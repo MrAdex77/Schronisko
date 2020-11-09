@@ -10,9 +10,9 @@ const StartupScreen = (props) => {
   useEffect(() => {
     const tryLogin = async () => {
       const token = await SecureStore.getItemAsync("Googletoken");
-
+      const tokenfb = await SecureStore.getItemAsync("Facebooktoken");
       //console.log("token:" + token);
-      if (!token) {
+      if (!token && !tokenfb) {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [
@@ -24,9 +24,13 @@ const StartupScreen = (props) => {
         props.navigation.dispatch(resetAction);
         return;
       }
+      if(!tokenfb)
+      {
       const token2 = JSON.parse(token);
       dispatch(authActions.googleLogIn(token2));
-
+      }else{   
+        dispatch(authActions.facebookLogIn(tokenfb));
+      }
       const resetAction = StackActions.reset({
         index: 0,
         actions: [

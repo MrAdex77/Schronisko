@@ -29,7 +29,7 @@ const descriptionInputHandler = (enteredText) =>{
  };
  async function AddNewsAsync (){
 
-     const token = await SecureStore.getItemAsync("tokenfb");
+     const token = await SecureStore.getItemAsync("token");
     
      
     try{
