@@ -62,10 +62,10 @@ const SetCountMinus = () =>{
   }
 };
 
-const extractDate = ()=>(date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate());
+const extractDate = ()=>((date.getDate()<10?"0"+date.getDate():date.getDate())+"-"+date.getMonth()+"-"+date.getFullYear());
 const extractTime = ()=>(date.getHours()+":"+(date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes()));
 const extractEndTime = ()=>(endDate.getHours()+":"+(endDate.getMinutes()<10?"0"+endDate.getMinutes():endDate.getMinutes()));
-const extractEndDate = ()=>(endDate.getFullYear()+"-"+endDate.getMonth()+"-"+endDate.getDate());
+const extractEndDate = ()=>((endDate.getDate()<10?"0"+endDate.getDate():endDate.getDate())+"-"+endDate.getMonth()+"-"+endDate.getFullYear());
 const checkDate = () => {
   
  if (date.getDay() === 0) {
@@ -198,7 +198,7 @@ const checkDate = () => {
         </View>
       </View>
       <View style={styles.line2}>
-      <Text style={styles.txt1}>Data zakonczenia {extractEndDate()}</Text>
+      <Text style={styles.txt1}>Data zakonczenia: {extractEndDate()}</Text>
       </View>
       <View style={styles.line}>
         {/* <Text style={styles.txt1}>Data zakonczenia {extractEndDate()}</Text> */}
