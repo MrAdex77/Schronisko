@@ -13,65 +13,18 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
 
-import * as Facebook from "expo-facebook";
-import axios from "axios";
+//import * as Facebook from "expo-facebook";
+//import axios from "axios";
 
 import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
 
-async function signInWithFacebookAsync() {
-  try {
-    await Facebook.initializeAsync({
-      appId: "652089999027908",
-    });
-    const {
-      type,
-      token,
-      expirationDate,
-      permissions,
-      declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync({
-      behavior: "web",
-      permissions: ["public_profile"],
-    });
-    if (type === 'success') {
-      
-      axios.post('http://176.107.131.27:5000/auth/facebook',{
-        token:token
-    })
-    
-      .then( async function(response) {
 
-       console.log(JSON.stringify(response.data.token));
-       await SecureStore.setItemAsync("tokenfb", response.data.token);
-       //console.log(response.data)
-      // console.log(JSON.stringify(response))
-       
-      })
-      .catch( function (error) {
-        
-        console.log("catch po axiosie");
-        console.log(error);
-      })
-      
-
-     //const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-    // console.log('zalogowano', `Witaj ${(await response.json()).name}!`);
-
-    } else {
-      return { cancelled: true };
-    }
-  } catch (e) {
-    return { error: true };
-  }
-}
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
-  const signInWithFacebook = () => {
-    signInWithFacebookAsync();
-  };
+  
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
 
@@ -79,6 +32,11 @@ const LoginScreen = (props) => {
 
   const signInWithGoogleAsync = async () => {
     await dispatch(AuthActions.signInWithGoogleAsync());
+    console.log(userEmail);
+  };
+
+  const signInWithFacebookAsync = async () => {
+    await dispatch(AuthActions.signInWithFacebookAsync());
     console.log(userEmail);
   };
 
@@ -91,7 +49,7 @@ const LoginScreen = (props) => {
         name='facebook'
         backgroundColor='#3b5998'
         onPress={() => {
-          signInWithFacebook();
+          signInWithFacebookAsync();
         }}>
         Zaloguj z Facebook
       </FontAwesome.Button>

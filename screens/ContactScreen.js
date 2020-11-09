@@ -81,14 +81,14 @@ const ContactScreen = (props) => {
       <Text style={styles.tittle}>E-mail </Text>
       <View style={styles.item}>
           <TouchableOpacity style={styles.btn} onPress={()=>openMail()}>
-              <Ionicons name="ios-mail" size={34} color="black" />
+              <Ionicons name="ios-mail" size={34} color="#0D9E47" />
               <Text style={styles.inner}>{mail}</Text>
           </TouchableOpacity>
       </View>
       <Text style={styles.tittle}>Telefon </Text>
       <View style={styles.item}>
           <TouchableOpacity style={styles.btn} onPress={()=>openDial()}>
-              <FontAwesome name="phone-square" size={30} color="black" />
+              <FontAwesome name="phone-square" size={30} color="#0D9E47" />
               <Text style={styles.inner}>{phone}</Text>
           </TouchableOpacity>
       </View>
