@@ -24,11 +24,11 @@ const StartupScreen = (props) => {
         props.navigation.dispatch(resetAction);
         return;
       }
-      if(!tokenfb)
-      {
-      const token2 = JSON.parse(token);
-      dispatch(authActions.googleLogIn(token2));
-      }else{   
+      if (!tokenfb) {
+        const token2 = JSON.parse(token);
+        //console.log("token2: " + token2);
+        dispatch(authActions.googleLogIn(token2));
+      } else {
         dispatch(authActions.facebookLogIn(tokenfb));
       }
       const resetAction = StackActions.reset({

@@ -16,51 +16,47 @@ import Colors from "../constants/Colors";
 //import * as Facebook from "expo-facebook";
 //import axios from "axios";
 
-
 import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
-
-
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
-
-  const userEmail = useSelector((state) => state.auth.user);
-
   const signInWithGoogleAsync = async () => {
     //useKeepAwake();
     await dispatch(AuthActions.signInWithGoogleAsync());
-    console.log(userEmail);
+    //console.log(userEmail);
   };
 
   const signInWithFacebookAsync = async () => {
     await dispatch(AuthActions.signInWithFacebookAsync());
-    console.log(userEmail);
+    //console.log(userEmail);
   };
 
   return (
     <ImageBackground source={require("../img/dog.png")} style={styles.image}>
       <Text style={styles.text1}>Witaj !</Text>
-      <FontAwesome5 name='users' size={150} color='white' />
+      <FontAwesome5 name="users" size={150} color="white" />
       <View style={styles.space1} />
       <FontAwesome.Button
-        name='facebook'
-        backgroundColor='#3b5998'
+        name="facebook"
+        backgroundColor="#3b5998"
         onPress={() => {
           signInWithFacebookAsync();
-        }}>
+        }}
+      >
         Zaloguj z Facebook
       </FontAwesome.Button>
 
       <View style={styles.space} />
 
       <FontAwesome.Button
-        name='google'
-        backgroundColor='#dd4b39'
+        name="google"
+        backgroundColor="#dd4b39"
         onPress={() => {
           signInWithGoogleAsync();
-        }}>
+        }}
+      >
         Zaloguj z Google
       </FontAwesome.Button>
 
