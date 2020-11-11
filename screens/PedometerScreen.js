@@ -12,15 +12,21 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { getDistance } from "geolib";
 import { Pedometer } from "expo-sensors";
+import Colors from "../constants/Colors";
+import { useDispatch, useSelector } from "react-redux";
+import * as userActions from "../store/actions/auth";
 
 const PedometerScreen = () => {
   const shelterCoords = { latitude: 50.811294, longitude: 19.120867 };
   const [isFetching, setIsFetching] = useState(false);
   const [pickedLocation, setPickedLocation] = useState();
   const [showPedometer, setShowPedometer] = useState(false);
-
   const [isPedometerAvailable, setIsPedometerAvailable] = useState(false);
   const [currentStepCount, setCurrentStepCount] = useState(0);
+
+  const [trackSteps, setTrackSteps] = useState(false);
+
+  const dispatch = useDispatch();
 
   const pedometerHandler = async () => {
     const isAvailable = await Pedometer.isAvailableAsync();
@@ -33,16 +39,31 @@ const PedometerScreen = () => {
   };
 
   const watchSteps = async () => {
-    Pedometer.watchStepCount((result) => setCurrentStepCount(result.steps));
+    setTrackSteps(true);
+    this.subscription = Pedometer.watchStepCount((result) =>
+      setCurrentStepCount(result.steps)
+    );
   };
-
+  const sendSteps = async () => {
+    try {
+      setTrackSteps(false);
+      this.subscription.remove();
+      dispatch(userActions.UpdateSteps(currentStepCount));
+      Alert.alert(
+        "Udało się!",
+        "Kroki zostały wysłane na serwer do statystyk!"
+      );
+    } catch (err) {
+      Alert.alert("Błąd!", "Nie udało się wysłać kroków na serwer!");
+    }
+  };
   useEffect(() => {
     pedometerHandler();
   }, []);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
-    if (result.status !== "granted") {
+    if (result.status != "granted") {
       Alert.alert(
         "Brak pozwolenia!",
         "Musisz pozwolic aplikacji na dostep do lokalizacji!"
@@ -61,7 +82,7 @@ const PedometerScreen = () => {
     try {
       setIsFetching(true);
       const location = await Location.getCurrentPositionAsync({
-        timeout: 5000,
+        timeout: 10000,
       });
       //console.log(location);
       setPickedLocation({
@@ -70,7 +91,7 @@ const PedometerScreen = () => {
       });
       const distance = getDistance(shelterCoords, pickedLocation);
       console.log(distance);
-      if (distance <= 5000) {
+      if (distance <= 50000) {
         setShowPedometer(true);
       } else {
         setShowPedometer(false);
@@ -102,7 +123,7 @@ const PedometerScreen = () => {
   if (isFetching) {
     return (
       <View style={styles.screen}>
-        <ActivityIndicator size="large" color="red" />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -114,12 +135,22 @@ const PedometerScreen = () => {
           Pedometer Screen, czy obsluguje?
           {isPedometerAvailable ? "tak" : "nie"}
         </Text>
-        <Button
-          title="zliczaj kroki"
-          onPress={() => {
-            watchSteps();
-          }}
-        />
+        {!trackSteps && (
+          <Button
+            title='zliczaj kroki'
+            onPress={() => {
+              watchSteps();
+            }}
+          />
+        )}
+        {trackSteps && (
+          <Button
+            title='Zatrzymaj liczenie'
+            onPress={() => {
+              sendSteps();
+            }}
+          />
+        )}
         <Text>Zrobine kroki: {currentStepCount}</Text>
       </View>
     );
@@ -128,7 +159,7 @@ const PedometerScreen = () => {
   return (
     <View style={styles.screen}>
       <Text>Pedometer Screen</Text>
-      <Button title="lokalizacja" onPress={getLocationHandler} />
+      <Button title='lokalizacja' onPress={getLocationHandler} />
     </View>
   );
 };

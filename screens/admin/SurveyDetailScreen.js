@@ -53,11 +53,11 @@ const SurveyDetailScreen = (props) => {
 
   const confirmSurvey = async (id) => {
     //404 wywala
-    const token = await SecureStore.getItemAsync("token");
+    const token = JSON.parse(await SecureStore.getItemAsync("token"));
     const response = await fetch(
       "http://mateuszdobosz.site/panel/survey/accept",
       {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -71,6 +71,7 @@ const SurveyDetailScreen = (props) => {
       console.log(response.status);
       throw new Error("Something went wrong!");
     }
+    console.log(response.status);
   };
 
   const renderSurveyItem = (itemData) => {

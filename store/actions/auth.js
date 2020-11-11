@@ -8,6 +8,7 @@ import User from "../../models/user";
 
 export const LOGIN = "LOGIN";
 export const DONATE = "DONATE";
+export const UPDATE_STEPS = "UPDATE_STEPS";
 
 export const signInWithGoogleAsync = () => {
   return async (dispatch) => {
@@ -121,11 +122,44 @@ export const UpdateDonation = (amount) => {
       //console.log(resData);
       const newAmount = resData.balance;
       dispatch({
-        type: UpdateDonation,
+        type: DONATE,
         amount: newAmount,
       });
-    } catch (e) {
-      return { error: true };
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const UpdateSteps = (amount) => {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const response = await fetch(`http://mateuszdobosz.site/user/walk/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          steps: amount,
+        }),
+      });
+      if (!response.ok) {
+        console.log("blad");
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      // const resData = await response.json();
+      // console.log(resData);
+
+      dispatch({
+        type: UPDATE_STEPS,
+        amount: amount,
+      });
+    } catch (err) {
+      throw err;
     }
   };
 };
