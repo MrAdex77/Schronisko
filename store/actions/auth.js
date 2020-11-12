@@ -63,7 +63,7 @@ export const googleLogIn = (token) => {
   return async (dispatch) => {
     try {
       //console.log("TOKEN: " + token);
-      const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
+      const response = await fetch(`http://mateuszdobosz.site/auth/check`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,12 +79,11 @@ export const googleLogIn = (token) => {
       }
 
       const resData = await response.json();
+      console.log(resData);
       console.log("Zalogowano: " + resData.name + " " + resData.balance);
       const name = resData.name;
       const balance = resData.balance;
       const newUser = new User("trololo@wp.pl", name, balance);
-      await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
-
       dispatch({
         type: LOGIN,
         user: newUser,

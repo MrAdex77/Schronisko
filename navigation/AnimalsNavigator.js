@@ -29,6 +29,7 @@ import SurveyOverviewScreen from "../screens/admin/SurveyOverviewScreen";
 import StartupScreen from "../screens/StartupScreen";
 import SurveyDetailScreen from "../screens/admin/SurveyDetailScreen";
 import PedometerScreen from "../screens/PedometerScreen";
+import CustomDrawer from "../components/CustomDrawer";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -92,7 +93,7 @@ const tabScreenConfig = {
     screen: AnimalNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -107,7 +108,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -182,6 +183,7 @@ const MainNavigator = createDrawerNavigator(
     },
   },
   {
+    contentComponent: CustomDrawer,
     contentOptions: {
       activeTintColor: Colors.accentColor,
       labelStyle: {
