@@ -62,10 +62,10 @@ const SetCountMinus = () =>{
   }
 };
 
-const extractDate = ()=>((date.getDate()<10?"0"+date.getDate():date.getDate())+"-"+date.getMonth()+"-"+date.getFullYear());
+const extractDate = ()=>((date.getDate()<10?"0"+date.getDate():date.getDate())+"-"+(date.getMonth()<10?"0"+date.getMonth():date.getMonth())+"-"+date.getFullYear());
 const extractTime = ()=>(date.getHours()+":"+(date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes()));
 const extractEndTime = ()=>(endDate.getHours()+":"+(endDate.getMinutes()<10?"0"+endDate.getMinutes():endDate.getMinutes()));
-const extractEndDate = ()=>((endDate.getDate()<10?"0"+endDate.getDate():endDate.getDate())+"-"+endDate.getMonth()+"-"+endDate.getFullYear());
+const extractEndDate = ()=>((endDate.getDate()<10?"0"+endDate.getDate():endDate.getDate())+"-"+(endDate.getMonth()<10?"0"+endDate.getMonth():endDate.getMonth())+"-"+endDate.getFullYear());
 const checkDate = () => {
   
  if (date.getDay() === 0) {
@@ -109,25 +109,27 @@ const checkDate = () => {
   };
 
   async function AddWalkAsync (){
-
+    
+    
     const token = await SecureStore.getItemAsync("token");
    
     
    try{
-   await axios.patch('http://176.107.131.27/panel/walk/new',{
-       date: date,
+   await axios.post('http://176.107.131.27/user/help/new',{
+       startTime: date,
+       endTime: endDate,
        token:token
    })
    
      .then( function(response) {
-      console.log("udalo sie dodac spacer")
+      console.log("udalo sie dodac wolontariat")
       console.log(response)
       
       Alert.alert("Dodano spacer")
       
      }) .catch( function (error) {
        
-       console.log("catch po axiosie  spaceru");
+       console.log("catch po axiosie  wolontariat");
        console.log(error);
        Alert.alert("Nie udalo sie,sprobuj ponownie");
        
@@ -145,7 +147,7 @@ const checkDate = () => {
       <View>
         {/* <Button onPress={showDatepicker} color={Colors.primaryColor} title="Wybierz datę spaceru" /> */}
         <TouchableOpacity   style={styles.btn} onPress={showDatepicker}          >
-       <Text style={styles.txt}>Wybierz datę spaceru</Text>
+       <Text style={styles.txt}>Wybierz datę wolontariatu</Text>
        </TouchableOpacity>
       </View>
       <View>
@@ -177,7 +179,7 @@ const checkDate = () => {
        <Text style={styles.txt1}>Godzina rozpoczęcia: {extractTime()} </Text>
        </View>
       <View>
-        <Text style={styles.txt1}>Ilośc spacerów(ilosc godzin)</Text>
+        <Text style={styles.txt1}>Jak długo?(ilosc godzin)</Text>
       </View>
       <View>
       <Text style={styles.txt2} >{count-1}</Text>
@@ -207,7 +209,7 @@ const checkDate = () => {
       <View>
         {/* <Button  onPress={checkDate} color={Colors.primaryColor} title="Umów się na spacer"/> */}
         <TouchableOpacity   style={styles.btn} onPress={checkDate}        >
-       <Text style={styles.txt}>Umów się na spacer</Text>
+       <Text style={styles.txt}>Umów się na wolontariat</Text>
        </TouchableOpacity>
       </View>
         <View>

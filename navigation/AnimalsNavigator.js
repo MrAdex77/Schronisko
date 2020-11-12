@@ -50,10 +50,18 @@ const AnimalNavigator = createStackNavigator(
       navigationOptions: { headerTitle: "Menu" },
     },
     AnimalsOverview: AnimalsOverviewScreen,
-    Appointment: AppointmentServiceScreen,
+    Appointment: {
+      screen: AppointmentServiceScreen,
+      navigationOptions: {headerTitle: "Twój wolontariat"}
+    },
     Donation: DonationScreen,
     Login: LoginScreen,
-    Statistics: StatisticsScreen,
+    Statistics: {
+      screen:StatisticsScreen,
+      navigationOptions: {
+        headerTitle: "Statystki"
+      },
+    },
     News: {
       screen: NewsScreen,
       navigationOptions: { headerTitle: "Aktualności" },
@@ -64,7 +72,7 @@ const AnimalNavigator = createStackNavigator(
     },
     SignUpOnWalk: {
       screen: SignUpOnWalkScreen,
-      navigationOptions: { headerTitle: "Umów się na spacer" },
+      navigationOptions: { headerTitle: "Umów się na wolontariat" },
     },
     AnimalDetail: AnimalDetailScreen,
     Survey: SurveyScreen,

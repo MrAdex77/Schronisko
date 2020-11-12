@@ -165,7 +165,7 @@ export const signInWithFacebookAsync = () => {
             //const balance = response.data.balance;
             const newUser = new User("abcmm@abcmm.pl", name, 1000);
 
-            await SecureStore.setItemAsync("FacebookToken", token);
+            await SecureStore.setItemAsync("FacebookToken",  token);
 
             await SecureStore.setItemAsync("token", response.data.token);
 

@@ -29,6 +29,7 @@ const StartupScreen = (props) => {
       const token2 = JSON.parse(token);
       dispatch(authActions.googleLogIn(token2));
       }else{   
+        
         dispatch(authActions.facebookLogIn(tokenfb));
       }
       const resetAction = StackActions.reset({

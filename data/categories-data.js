@@ -5,11 +5,10 @@ export const CATEGORIES = [
   new Category("Krokomierz", "Krokomierz", "#f54242"),
   new Category("Donation", "Darowizna", "#f5d142"),
   new Category("Statistics", "Statystyki", "#368dff"),
-  new Category("SignUpOnWalk","Umów się na spacer","#47fce"),
-  new Category("Appointment", "Krokomierz", "#f54242"),
+  new Category("SignUpOnWalk","Wolontariat zapisy","#47fce"),
+  new Category("Appointment", "Twoj wolontariat", "#f54242"),
   new Category("Login", "Zaloguj się", "#47fced"),
   new Category("Contact", "Kontakt", "#47fce"),
-  new Category("SignUpOnWalk", "Umów się na spacer", "#47fce"),
 ];
 export const ADMINCATEGORIES = [
   new Category("AdminProducts", "Twoje zwierzęta", "#f5428d"),

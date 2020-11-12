@@ -36,7 +36,7 @@ const ContactScreen = (props) => {
                 console.log("catch po dialer android");
                 console.log(Error);
               })
-          }else{
+          }else{ 
             Linking.canOpenURL(`telprompt:${phone}`)
             .then(supported => {
               if (!supported) {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     
   },
   tittle: {
-     color: 'white',
+     color: '#000000',
      fontFamily: 'open-sans',
      fontSize: 30,
      textAlign: 'center',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
      margin:5,
   },
   inner: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'open-sans',
     fontSize: 24,
     textAlign: 'center',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 
   },
   innerDays: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'open-sans',
     fontSize: 24,
     textAlign: 'left',
