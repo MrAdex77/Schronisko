@@ -11,12 +11,14 @@ import ReduxThunk from "redux-thunk";
 import AnimalsNavigator from "./navigation/AnimalsNavigator";
 import animalReducer from "./store/reducers/animals";
 import userReducer from "./store/reducers/auth";
+import walkReducer from "./store/reducers/walk";
 
 enableScreens();
 
 const rootReducer = combineReducers({
   animals: animalReducer,
   auth: userReducer,
+  walks: walkReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

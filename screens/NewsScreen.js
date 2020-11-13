@@ -10,6 +10,7 @@ import {
 import NewsItem from "../components/NewsItem";
 import Colors from "../constants/Colors";
 import axios from 'axios';
+import { NavigationActions, StackActions } from "react-navigation";
 
 const NewsScreen = (props) => {
     const dane2 =[];
@@ -37,6 +38,15 @@ const NewsScreen = (props) => {
            
            console.log("catch po axiosie pobranie  newsa");
            console.log(error);
+           const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Categories",
+              }),
+            ],
+          });
+          props.navigation.dispatch(resetAction);
          })
    
        }catch ( e ) {

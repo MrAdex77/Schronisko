@@ -5,7 +5,7 @@ import {ScrollView,SafeAreaView,View, Text, StyleSheet } from "react-native";
 const NewsItem = (props) => {
    const dt= new Date (props.date);
     const extractDate = (d) =>(
-        d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()
+      (d.getDate()<10?"0"+d.getDate():d.getDate())+"-"+d.getMonth()+"-"+d.getFullYear()
     );
   return (
         <SafeAreaView style={styles.container}>

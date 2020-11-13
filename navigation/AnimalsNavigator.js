@@ -44,7 +44,6 @@ const defaultStackNavOptions = {
   },
   headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
 };
-
 const FavNavigator = createStackNavigator(
   {
     Favorites: {
