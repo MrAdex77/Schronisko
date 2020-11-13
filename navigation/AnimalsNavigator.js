@@ -3,7 +3,7 @@ import { Platform, Text } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
 
@@ -29,6 +29,7 @@ import SurveyOverviewScreen from "../screens/admin/SurveyOverviewScreen";
 import StartupScreen from "../screens/StartupScreen";
 import SurveyDetailScreen from "../screens/admin/SurveyDetailScreen";
 import PedometerScreen from "../screens/PedometerScreen";
+import LogoutScreen from "../screens/LogoutScreen";
 import CustomDrawer from "../components/CustomDrawer";
 
 const defaultStackNavOptions = {
@@ -44,44 +45,12 @@ const defaultStackNavOptions = {
   headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
 };
 
-const AnimalNavigator = createStackNavigator(
-  {
-    Categories: {
-      screen: CategoriesScreen,
-      navigationOptions: { headerTitle: "Menu" },
-    },
-    AnimalsOverview: AnimalsOverviewScreen,
-    Appointment: AppointmentServiceScreen,
-    Donation: DonationScreen,
-    Login: LoginScreen,
-    Statistics: StatisticsScreen,
-    News: {
-      screen: NewsScreen,
-      navigationOptions: { headerTitle: "Aktualności" },
-    },
-    Contact: {
-      screen: ContactScreen,
-      navigationOptions: { headerTitle: "Kontakt" },
-    },
-    SignUpOnWalk: {
-      screen: SignUpOnWalkScreen,
-      navigationOptions: { headerTitle: "Umów się na spacer" },
-    },
-    AnimalDetail: AnimalDetailScreen,
-    Survey: SurveyScreen,
-    StartUp: StartupScreen,
-    Krokomierz: PedometerScreen,
-  },
-  {
-    initialRouteName: "StartUp",
-    defaultNavigationOptions: defaultStackNavOptions,
-  }
-);
-
 const FavNavigator = createStackNavigator(
   {
-    Favorites: FavoritesScreen,
-    AnimalDetail: AnimalDetailScreen,
+    Favorites: {
+      screen: FavoritesScreen,
+      navigationOptions: { headerTitle: "Ulubione" },
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -90,10 +59,10 @@ const FavNavigator = createStackNavigator(
 
 const tabScreenConfig = {
   Animals: {
-    screen: AnimalNavigator,
+    screen: AnimalsOverviewScreen,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <FontAwesome5 name="dog" size={25} color={tabInfo.tintColor} />;
+        return <FontAwesome5 name='dog' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.primaryColor,
       tabBarLabel:
@@ -108,7 +77,7 @@ const tabScreenConfig = {
     screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -138,6 +107,43 @@ const AnimalFavTabNavigator =
           activeTintColor: Colors.accentColor,
         },
       });
+
+const AnimalNavigator = createStackNavigator(
+  {
+    Categories: {
+      screen: CategoriesScreen,
+      navigationOptions: { headerTitle: "Menu" },
+    },
+    AnimalsOverview: {
+      screen: AnimalFavTabNavigator,
+      navigationOptions: { headerTitle: "Zwierzęta" },
+    },
+    Appointment: AppointmentServiceScreen,
+    Donation: DonationScreen,
+    Login: LoginScreen,
+    Statistics: StatisticsScreen,
+    News: {
+      screen: NewsScreen,
+      navigationOptions: { headerTitle: "Aktualności" },
+    },
+    Contact: {
+      screen: ContactScreen,
+      navigationOptions: { headerTitle: "Kontakt" },
+    },
+    SignUpOnWalk: {
+      screen: SignUpOnWalkScreen,
+      navigationOptions: { headerTitle: "Umów się na spacer" },
+    },
+    AnimalDetail: { screen: AnimalDetailScreen },
+    Survey: SurveyScreen,
+    StartUp: StartupScreen,
+    Krokomierz: PedometerScreen,
+  },
+  {
+    initialRouteName: "StartUp",
+    defaultNavigationOptions: defaultStackNavOptions,
+  }
+);
 
 const AdminNavigator = createStackNavigator(
   {
@@ -170,15 +176,24 @@ const AdminNavigator = createStackNavigator(
 const MainNavigator = createDrawerNavigator(
   {
     AnimalsFav: {
-      screen: AnimalFavTabNavigator,
+      screen: AnimalNavigator,
       navigationOptions: {
         drawerLabel: "Menu",
+        drawerIcon: () => <Ionicons name='md-menu' size={23} color='black' />,
       },
     },
     Admin: {
       screen: AdminNavigator,
       navigationOptions: {
-        drawerLabel: "Adminxdd",
+        drawerLabel: "Admin",
+        drawerIcon: () => <FontAwesome5 name='user' size={23} color='black' />,
+      },
+    },
+    Logout: {
+      screen: LogoutScreen,
+      navigationOptions: {
+        drawerLabel: "Wyloguj",
+        drawerIcon: () => <Feather name='log-out' size={23} color='black' />,
       },
     },
   },

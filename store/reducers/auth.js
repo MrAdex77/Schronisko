@@ -1,6 +1,6 @@
 import User from "../../models/user";
 import { USER } from "../../data/dummy-data";
-import { LOGIN, DONATE } from "../actions/auth";
+import { LOGIN, DONATE, LOGOUT } from "../actions/auth";
 const initialState = {
   user: USER,
 };
@@ -17,6 +17,8 @@ const userReducer = (state = initialState, action) => {
       return {
         user: user,
       };
+    case LOGOUT:
+      return initialState;
     default:
       return state;
   }

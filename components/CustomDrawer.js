@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
+  Button,
 } from "react-native";
 import { DrawerItems } from "react-navigation-drawer";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +37,7 @@ const CustomDrawer = (props) => {
           {Picture && <Image style={styles.image} source={{ uri: Picture }} />}
           <View style={styles.textCotainer}>
             <Text style={styles.title}>{name}</Text>
-            <Text style={styles.points}>{UserBalance} points</Text>
+            <Text style={styles.points}>{UserBalance} punktów</Text>
           </View>
         </View>
       </View>
@@ -59,6 +60,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 50,
+    borderColor: "black",
+    borderWidth: 2,
   },
   Header: {
     flexDirection: "row",

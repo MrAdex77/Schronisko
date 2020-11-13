@@ -9,6 +9,7 @@ import User from "../../models/user";
 export const LOGIN = "LOGIN";
 export const DONATE = "DONATE";
 export const UPDATE_STEPS = "UPDATE_STEPS";
+export const LOGOUT = "LOGOUT";
 
 export const signInWithGoogleAsync = () => {
   return async (dispatch) => {
@@ -35,13 +36,13 @@ export const signInWithGoogleAsync = () => {
           console.log(response.status);
           throw new Error("Something went wrong!");
         }
+        const resData = await response.json();
         const email = result.user.email;
         const name = result.user.name;
-        const balance = response.balance;
-        const isAdmin = response.isAdmin;
-        const picture = response.picture;
+        const balance = resData.balance;
+        const isAdmin = resData.isAdmin;
+        const picture = resData.picture;
         const newUser = new User(email, name, balance, isAdmin, picture);
-        const resData = await response.json();
         console.log(resData);
         await SecureStore.setItemAsync(
           "Googletoken",
@@ -261,5 +262,14 @@ export const facebookLogIn = (token) => {
     } catch (e) {
       return { error: true };
     }
+  };
+};
+
+export const logout = () => {
+  return async (dispatch) => {
+    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("FacebookToken");
+    await SecureStore.deleteItemAsync("Googletoken");
+    dispatch({ type: LOGOUT });
   };
 };

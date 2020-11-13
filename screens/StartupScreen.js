@@ -25,7 +25,6 @@ const StartupScreen = (props) => {
         return;
       }
       if (!tokenfb) {
-        //console.log("token2: " + token2);
         dispatch(authActions.googleLogIn(token));
       } else {
         dispatch(authActions.facebookLogIn(tokenfb));
@@ -46,7 +45,7 @@ const StartupScreen = (props) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
-      <ActivityIndicator size="large" color={Colors.primaryColor} />
+      <ActivityIndicator size='large' color={Colors.primaryColor} />
     </View>
   );
 };
