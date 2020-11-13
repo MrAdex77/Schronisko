@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {ScrollView,SafeAreaView,View, Text, StyleSheet,TouchableOpacity,Alert } from "react-native";
 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -12,11 +12,14 @@ const WalkItem = (props) => {
 const date= new Date (props.date);
 const endDate = new Date(props.endDate);
 
+const [color,setColor]=useState("rgba(0,0,0,0)");
+
 const dispatch = useDispatch();
 
 const deleteHandler = (id) => {
+    setColor("rgba(255,0,0,0.3)");
     Alert.alert("Usunąć wolontariat?" ,"Czy chcesz usunac ten wolontariat?", [
-      { text: "Nie", style: "default" },
+      { text: "Nie", style: "default", onPress:()=> (setColor("rgba(0,0,0,0)"))},
       {
         text: "Tak",
         style: "destructive",
@@ -34,7 +37,7 @@ const extractTime = ()=>(date.getHours()+":"+(date.getMinutes()<10?"0"+date.getM
 const extractEndTime = ()=>(endDate.getHours()+":"+(endDate.getMinutes()<10?"0"+endDate.getMinutes():endDate.getMinutes()));
 const extractEndDate = ()=>((endDate.getDate()<10?"0"+endDate.getDate():endDate.getDate())+"-"+(endDate.getMonth()<10?"0"+endDate.getMonth():endDate.getMonth())+"-"+endDate.getFullYear());
   return (  
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:color}]}>
        <View style={{flexDirection:'row'}}  >
        <Text style={styles.txt1}>W dniu {extractDate()}</Text>
        <TouchableOpacity style={styles.button2} onPress={deleteHandler.bind(this,props.id)}>
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
   container:{
      flex: 1,
      alignItems:'center',
-     
+    
     // justifyContent: 'space-evenly' ,
      margin: 15,
   },

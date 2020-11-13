@@ -15,7 +15,7 @@ const walkReducer = (state = initialState,action) => {
       case DELETE_WALK:
          return {
            ...state,
-           walks: state.walks.filter((walk)=> walk.item._id !== action.id)   ,
+           walks: state.walks.filter(walk => walk._id !== action.pid)   ,
           };
       default:
           return state;
