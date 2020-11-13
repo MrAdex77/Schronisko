@@ -16,27 +16,23 @@ import Colors from "../constants/Colors";
 //import * as Facebook from "expo-facebook";
 //import axios from "axios";
 
-
 import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
-
-
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
-
-  const userEmail = useSelector((state) => state.auth.user);
-
   const signInWithGoogleAsync = async () => {
     //useKeepAwake();
     await dispatch(AuthActions.signInWithGoogleAsync());
-    console.log(userEmail);
+    Alert.alert("Zalogowano!");
+    //console.log(userEmail);
   };
 
   const signInWithFacebookAsync = async () => {
     await dispatch(AuthActions.signInWithFacebookAsync());
-    console.log(userEmail);
+    Alert.alert("Zalogowano!");
+    //console.log(userEmail);
   };
 
   return (

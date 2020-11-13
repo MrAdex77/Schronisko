@@ -9,7 +9,7 @@ import { NavigationActions, StackActions } from "react-navigation";
 const StartupScreen = (props) => {
   useEffect(() => {
     const tryLogin = async () => {
-      const token = await SecureStore.getItemAsync("Googletoken");
+      const token = JSON.parse(await SecureStore.getItemAsync("token"));
       const tokenfb = await SecureStore.getItemAsync("Facebooktoken");
       //console.log("token:" + token);
       if (!token && !tokenfb) {
@@ -24,12 +24,9 @@ const StartupScreen = (props) => {
         props.navigation.dispatch(resetAction);
         return;
       }
-      if(!tokenfb)
-      {
-      const token2 = JSON.parse(token);
-      dispatch(authActions.googleLogIn(token2));
-      }else{   
-        
+      if (!tokenfb) {
+        dispatch(authActions.googleLogIn(token));
+      } else {
         dispatch(authActions.facebookLogIn(tokenfb));
       }
       const resetAction = StackActions.reset({
@@ -48,7 +45,7 @@ const StartupScreen = (props) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
-      <ActivityIndicator size="large" color={Colors.primaryColor} />
+      <ActivityIndicator size='large' color={Colors.primaryColor} />
     </View>
   );
 };

@@ -4,11 +4,12 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import axios from "axios";
 
-
 import User from "../../models/user";
 
 export const LOGIN = "LOGIN";
 export const DONATE = "DONATE";
+export const UPDATE_STEPS = "UPDATE_STEPS";
+export const LOGOUT = "LOGOUT";
 
 export const signInWithGoogleAsync = () => {
   return async (dispatch) => {
@@ -35,11 +36,13 @@ export const signInWithGoogleAsync = () => {
           console.log(response.status);
           throw new Error("Something went wrong!");
         }
+        const resData = await response.json();
         const email = result.user.email;
         const name = result.user.name;
-        const balance = response.balance;
-        const newUser = new User(email, name, balance);
-        const resData = await response.json();
+        const balance = resData.balance;
+        const isAdmin = resData.isAdmin;
+        const picture = resData.picture;
+        const newUser = new User(email, name, balance, isAdmin, picture);
         console.log(resData);
         await SecureStore.setItemAsync(
           "Googletoken",
@@ -63,7 +66,7 @@ export const googleLogIn = (token) => {
   return async (dispatch) => {
     try {
       //console.log("TOKEN: " + token);
-      const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
+      const response = await fetch(`http://mateuszdobosz.site/auth/check`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,12 +82,20 @@ export const googleLogIn = (token) => {
       }
 
       const resData = await response.json();
+      console.log(resData);
       console.log("Zalogowano: " + resData.name + " " + resData.balance);
       const name = resData.name;
       const balance = resData.balance;
-      const newUser = new User("trololo@wp.pl", name, balance);
-      await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
+      const isAdmin = resData.isAdmin;
+      const picture = resData.picture;
 
+      const newUser = new User(
+        "trololo@wp.pl",
+        name,
+        balance,
+        isAdmin,
+        picture
+      );
       dispatch({
         type: LOGIN,
         user: newUser,
@@ -122,15 +133,47 @@ export const UpdateDonation = (amount) => {
       //console.log(resData);
       const newAmount = resData.balance;
       dispatch({
-        type: UpdateDonation,
+        type: DONATE,
         amount: newAmount,
       });
-    } catch (e) {
-      return { error: true };
+    } catch (err) {
+      throw err;
     }
   };
 };
 
+export const UpdateSteps = (amount) => {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const response = await fetch(`http://mateuszdobosz.site/user/walk/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          steps: amount,
+        }),
+      });
+      if (!response.ok) {
+        console.log("blad");
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      // const resData = await response.json();
+      // console.log(resData);
+
+      dispatch({
+        type: UPDATE_STEPS,
+        amount: amount,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
 
 export const signInWithFacebookAsync = () => {
   return async (dispatch) => {
@@ -148,18 +191,18 @@ export const signInWithFacebookAsync = () => {
         behavior: "web",
         permissions: ["public_profile"],
       });
-      if (type === 'success') {
+      if (type === "success") {
         console.log(type);
-           await axios.post('http://176.107.131.27:5000/auth/facebook', {
-          token: token
-        })
+        await axios
+          .post("http://176.107.131.27:5000/auth/facebook", {
+            token: token,
+          })
 
           .then(async function (response) {
-
             console.log(JSON.stringify(response.data.token));
             //await SecureStore.setItemAsync("tokenfb", response.data.token);
-            console.log(response.data)
-            
+            console.log(response.data);
+
             //const email = response.data.email;
             const name = response.data.name;
             //const balance = response.data.balance;
@@ -173,63 +216,60 @@ export const signInWithFacebookAsync = () => {
               type: LOGIN,
               user: newUser,
             });
-
           })
           .catch(function (error) {
-
             console.log("catch po axiosie");
             console.log(error);
-          })
+          });
       } else {
         return { cancelled: true };
       }
     } catch (e) {
       return { error: true };
     }
-
-
   };
 };
-
 
 export const facebookLogIn = (token) => {
   return async (dispatch) => {
     try {
-      await await axios.post('http://176.107.131.27:5000/auth/facebook', {
-        
-        token: token
-      })
-
-        .then(async function (response) {
-          console.log("fbLogin success")
-          console.log(response)
-          console.log(response.data)
-            
-           // const email = response.data.email;
-            const name = response.data.name;
-           // const balance = response.data.balance;
-            const newUser = new User("abcmm@abcmm.pl", name, 1000);
-
-            await SecureStore.setItemAsync("token", response.data.token);
-
-            dispatch({
-              type: LOGIN,
-              user: newUser,
-            });
-          
-
-        }).catch(function (error) {
-
-          console.log("catch po axiosie  loginFB");
-          console.log(error);
-
+      await await axios
+        .post("http://176.107.131.27:5000/auth/facebook", {
+          token: token,
         })
 
-    } catch (e) {
+        .then(async function (response) {
+          console.log("fbLogin success");
+          console.log(response);
+          console.log(response.data);
 
+          // const email = response.data.email;
+          const name = response.data.name;
+          // const balance = response.data.balance;
+          const newUser = new User("abcmm@abcmm.pl", name, 1000);
+
+          await SecureStore.setItemAsync("token", response.data.token);
+
+          dispatch({
+            type: LOGIN,
+            user: newUser,
+          });
+        })
+        .catch(function (error) {
+          console.log("catch po axiosie  loginFB");
+          console.log(error);
+        });
+    } catch (e) {
       return { error: true };
     }
+  };
+};
 
-
+export const logout = () => {
+  return async (dispatch) => {
+    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("FacebookToken");
+    await SecureStore.deleteItemAsync("Googletoken");
+    dispatch({ type: LOGOUT });
   };
 };
