@@ -15,11 +15,12 @@ import { Pedometer } from "expo-sensors";
 import Colors from "../constants/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../store/actions/auth";
+import CustomButton from "../components/CustomButton";
 
 const PedometerScreen = () => {
   const shelterCoords = { latitude: 50.811294, longitude: 19.120867 };
   const [isFetching, setIsFetching] = useState(false);
-  const [pickedLocation, setPickedLocation] = useState();
+  const [pickedLocation, setPickedLocation] = useState(null);
   const [showPedometer, setShowPedometer] = useState(false);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState(false);
   const [currentStepCount, setCurrentStepCount] = useState(0);
@@ -81,15 +82,17 @@ const PedometerScreen = () => {
     }
     try {
       setIsFetching(true);
-      const location = await Location.getCurrentPositionAsync({
+      let location = await Location.getCurrentPositionAsync({
         timeout: 10000,
       });
       //console.log(location);
-      setPickedLocation({
+      console.log(location.coords.latitude);
+      let fetchedLocation = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-      });
-      const distance = getDistance(shelterCoords, pickedLocation);
+      };
+      setPickedLocation(fetchedLocation);
+      const distance = getDistance(shelterCoords, fetchedLocation);
       console.log(distance);
       if (distance <= 50000) {
         setShowPedometer(true);
@@ -97,16 +100,16 @@ const PedometerScreen = () => {
         setShowPedometer(false);
         Alert.alert(
           "Zła lokalizacja!",
-          "Niestety nie jestes na terenie schroniska, odpal jak juz będziesz!",
+          "Niestety nie jestes na terenie schroniska, uruchom jak juz będziesz!",
           [{ text: "Okay" }]
         );
       }
     } catch (err) {
       console.log(err.message);
       Alert.alert(
-        "Nie udalo sie pobrac lokalizacji!",
-        "Prosze sprobowac ponownie pozniej!",
-        [{ text: "Okay" }]
+        "Nie udalo sie pobrac lokalizacji",
+        "Prosze sprobowac ponownie pozniej",
+        [{ text: "Ok" }]
       );
     }
     setIsFetching(false);
@@ -123,7 +126,7 @@ const PedometerScreen = () => {
   if (isFetching) {
     return (
       <View style={styles.screen}>
-        <ActivityIndicator size='large' color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
       </View>
     );
   }
@@ -132,24 +135,28 @@ const PedometerScreen = () => {
     return (
       <View style={styles.screen}>
         <Text>
-          Pedometer Screen, czy obsluguje?
-          {isPedometerAvailable ? "tak" : "nie"}
+          Czy Twój telefon obsługuje krokomierz?
+          {isPedometerAvailable ? " tak" : " nie"}
         </Text>
         {!trackSteps && (
-          <Button
-            title='zliczaj kroki'
+          <CustomButton
+            style={styles.button}
             onPress={() => {
               watchSteps();
             }}
-          />
+          >
+            Zliczaj kroki
+          </CustomButton>
         )}
         {trackSteps && (
-          <Button
-            title='Zatrzymaj liczenie'
+          <CustomButton
+            style={styles.button}
             onPress={() => {
               sendSteps();
             }}
-          />
+          >
+            Zatrzymaj liczenie
+          </CustomButton>
         )}
         <Text>Zrobine kroki: {currentStepCount}</Text>
       </View>
@@ -158,8 +165,10 @@ const PedometerScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <Text>Pedometer Screen</Text>
-      <Button title='lokalizacja' onPress={getLocationHandler} />
+      <Text>Aby zacząć rozpocznij skanowanie lokalizacji</Text>
+      <CustomButton style={styles.button} onPress={getLocationHandler}>
+        Lokalizacja
+      </CustomButton>
     </View>
   );
 };
@@ -169,6 +178,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  button: {
+    marginVertical: 20,
   },
 });
 

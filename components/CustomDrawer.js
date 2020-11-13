@@ -9,14 +9,16 @@ import {
 } from "react-native";
 import { DrawerItems } from "react-navigation-drawer";
 import { useDispatch, useSelector } from "react-redux";
+import Colors from "../constants/Colors";
 
 const CustomDrawer = (props) => {
   const UserBalance = useSelector((state) => state.auth.user.balance);
   //const UserId = useSelector((state) => state.users.user.id);
   const UserName = useSelector((state) => state.auth.user.name);
+  const Picture = useSelector((state) => state.auth.user.picture);
   const name = UserName.substr(0, UserName.indexOf(" "));
   //console.log("name: " + name);
-
+  //console.log(Picture);
   //console.log("username: " + UserName + " userBalance: " + UserBalance);
 
   const dispatch = useDispatch();
@@ -25,10 +27,13 @@ const CustomDrawer = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.Header}>
-          <Image
-            style={styles.image}
-            source={require("../assets/avatar.png")}
-          />
+          {!Picture && (
+            <Image
+              style={styles.image}
+              source={require("../assets/avatar.png")}
+            />
+          )}
+          {Picture && <Image style={styles.image} source={{ uri: Picture }} />}
           <View style={styles.textCotainer}>
             <Text style={styles.title}>{name}</Text>
             <Text style={styles.points}>{UserBalance} points</Text>
@@ -48,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "flex-start",
     justifyContent: "center",
-    backgroundColor: "#e5e5e5",
+    backgroundColor: Colors.primaryColor,
   },
   image: {
     height: 100,

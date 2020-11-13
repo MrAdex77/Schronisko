@@ -45,8 +45,9 @@ const AnimalDetailScreen = (props) => {
           <Text style={styles.description}>
             {selectedAnimal.description}{" "}
             <Button
-              title='adoptuj mnie!'
-              color='red'
+              style={styles.button}
+              title="adoptuj mnie!"
+              color="red"
               onPress={() => {
                 props.navigation.navigate({
                   routeName: "Survey",
@@ -74,7 +75,7 @@ AnimalDetailScreen.navigationOptions = (navigationData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title='Favorite'
+          title="Favorite"
           iconName={isFavorite ? "ios-star" : "ios-star-outline"}
           onPress={toggleFavorite}
         />

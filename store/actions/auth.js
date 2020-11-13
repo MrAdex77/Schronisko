@@ -38,7 +38,9 @@ export const signInWithGoogleAsync = () => {
         const email = result.user.email;
         const name = result.user.name;
         const balance = response.balance;
-        const newUser = new User(email, name, balance);
+        const isAdmin = response.isAdmin;
+        const picture = response.picture;
+        const newUser = new User(email, name, balance, isAdmin, picture);
         const resData = await response.json();
         console.log(resData);
         await SecureStore.setItemAsync(
@@ -83,7 +85,16 @@ export const googleLogIn = (token) => {
       console.log("Zalogowano: " + resData.name + " " + resData.balance);
       const name = resData.name;
       const balance = resData.balance;
-      const newUser = new User("trololo@wp.pl", name, balance);
+      const isAdmin = resData.isAdmin;
+      const picture = resData.picture;
+
+      const newUser = new User(
+        "trololo@wp.pl",
+        name,
+        balance,
+        isAdmin,
+        picture
+      );
       dispatch({
         type: LOGIN,
         user: newUser,
