@@ -199,7 +199,7 @@ const EditAnimalScreen = (props) => {
             required
           />
 
-          <ImagePicker onAddImage={addNewImageHandler} />
+          {!editedAnimal && <ImagePicker onAddImage={addNewImageHandler} />}
           <Input
             id='description'
             label='Opis'
