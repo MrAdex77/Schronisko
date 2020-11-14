@@ -44,11 +44,8 @@ export const signInWithGoogleAsync = () => {
         const picture = resData.picture;
         const newUser = new User(email, name, balance, isAdmin, picture);
         console.log(resData);
-        await SecureStore.setItemAsync(
-          "Googletoken",
-          JSON.stringify(result.idToken)
-        );
-        await SecureStore.setItemAsync("token", JSON.stringify(resData.token));
+        await SecureStore.setItemAsync("Googletoken", result.idToken);
+        await SecureStore.setItemAsync("token", resData.token);
         dispatch({
           type: LOGIN,
           user: newUser,
@@ -109,7 +106,7 @@ export const googleLogIn = (token) => {
 export const UpdateDonation = (amount) => {
   return async (dispatch) => {
     try {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
       const response = await fetch(
         `http://mateuszdobosz.site/user/donation/new`,
         {
@@ -145,7 +142,7 @@ export const UpdateDonation = (amount) => {
 export const UpdateSteps = (amount) => {
   return async (dispatch) => {
     try {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
       const response = await fetch(`http://mateuszdobosz.site/user/walk/new`, {
         method: "POST",
         headers: {
@@ -208,7 +205,7 @@ export const signInWithFacebookAsync = () => {
             //const balance = response.data.balance;
             const newUser = new User("abcmm@abcmm.pl", name, 1000);
 
-            await SecureStore.setItemAsync("FacebookToken",  token);
+            await SecureStore.setItemAsync("FacebookToken", token);
 
             await SecureStore.setItemAsync("token", response.data.token);
 

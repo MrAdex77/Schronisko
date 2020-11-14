@@ -181,7 +181,7 @@ const EditAnimalScreen = (props) => {
             keyboardType='decimal-pad'
             returnKeyType='next'
             onInputChange={inputChangeHandler}
-            initialValue={editedAnimal ? editedAnimal.age : ""}
+            initialValue={editedAnimal ? editedAnimal.age.toString() : ""}
             initiallyValid={!!editedAnimal}
             required
             min={1}
@@ -199,7 +199,7 @@ const EditAnimalScreen = (props) => {
             required
           />
 
-          <ImagePicker onAddImage={addNewImageHandler} />
+          {!editedAnimal && <ImagePicker onAddImage={addNewImageHandler} />}
           <Input
             id='description'
             label='Opis'

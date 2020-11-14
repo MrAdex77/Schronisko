@@ -49,7 +49,7 @@ const animalReducer = (state = initialState, action) => {
         "u1",
         action.animalData.category,
         action.animalData.age,
-        action.animalData.title,
+        action.animalData.name,
         action.animalData.imageUrl,
         action.animalData.description
       );
