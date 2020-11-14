@@ -136,7 +136,7 @@ const SignUpOnWalkScreen = (props) => {
   };
 
   async function AddWalkAsync() {
-    const token = JSON.parse(await SecureStore.getItemAsync("token"));
+    const token = await SecureStore.getItemAsync("token");
 
     try {
       await axios

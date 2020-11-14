@@ -29,7 +29,7 @@ const StatisticsScreen = (props) => {
   };
   async function GetStatsAsync() {
     try {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
       await axios
         .put("http://176.107.131.27/user/statistics/overview", { token: token })
 

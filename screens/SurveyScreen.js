@@ -99,7 +99,6 @@ const SurveyScreen = (props) => {
     setIsLoading(true);
     try {
       const token = await SecureStore.getItemAsync("token");
-      const token2 = JSON.parse(token);
       const response = await fetch(
         "http://mateuszdobosz.site/panel/survey/new",
         {
@@ -108,7 +107,7 @@ const SurveyScreen = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: token2,
+            token: token,
             answers: {
               answer1: formState.inputValues.answer1,
               answer2: formState.inputValues.answer2,

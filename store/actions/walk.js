@@ -7,7 +7,7 @@ export const DELETE_WALK = "DELETE_WALK";
 export const GetWalksAsync = () => {
   return async (dispatch) => {
     try {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
       await axios
         .put("http://176.107.131.27/user/help/overview", { token: token })
 
@@ -32,7 +32,7 @@ export const GetWalksAsync = () => {
 export const deleteWalk = (id) => {
   return async (dispatch) => {
     try {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = await SecureStore.getItemAsync("token");
       await axios
         .delete("http://176.107.131.27/user/help/delete/" + id, {
           token: token,

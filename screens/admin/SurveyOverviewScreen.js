@@ -24,7 +24,6 @@ const SurveyOverviewScreen = (props) => {
     setIsRefreshing(true);
     try {
       const token = await SecureStore.getItemAsync("token");
-      const token2 = JSON.parse(token);
       //http://mateuszdobosz.site/panel/survey/overview
       //http://mateuszdobosz.site/animals/overview
       const response = await fetch(
@@ -35,7 +34,7 @@ const SurveyOverviewScreen = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: token2,
+            token: token,
           }),
         }
       );

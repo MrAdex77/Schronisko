@@ -53,7 +53,7 @@ const SurveyDetailScreen = (props) => {
 
   const confirmSurvey = async (id) => {
     //404 wywala
-    const token = JSON.parse(await SecureStore.getItemAsync("token"));
+    const token = await SecureStore.getItemAsync("token");
     const response = await fetch(
       "http://mateuszdobosz.site/panel/survey/accept",
       {
