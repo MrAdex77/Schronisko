@@ -199,7 +199,7 @@ export const signInWithFacebookAsync = () => {
           })
 
           .then(async function (response) {
-            console.log(JSON.stringify(response.data.token));
+           // console.log(response);
             //await SecureStore.setItemAsync("tokenfb", response.data.token);
             console.log(response.data);
 

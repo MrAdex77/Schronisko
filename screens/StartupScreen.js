@@ -9,7 +9,7 @@ import { NavigationActions, StackActions } from "react-navigation";
 const StartupScreen = (props) => {
   useEffect(() => {
     const tryLogin = async () => {
-      const token = JSON.parse(await SecureStore.getItemAsync("token"));
+      const token = JSON.parse(await SecureStore.getItemAsync("Googletoken"));
       const tokenfb = await SecureStore.getItemAsync("Facebooktoken");
       //console.log("token:" + token);
       if (!token && !tokenfb) {
