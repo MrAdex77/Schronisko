@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import * as authActions from "../store/actions/auth";
 import * as SecureStore from "expo-secure-store";
 import Colors from "../constants/Colors";
-import { NavigationActions, StackActions } from "react-navigation";
+import {SwitchActions, NavigationActions, StackActions } from "react-navigation";
 
 const StartupScreen = (props) => {
   useEffect(() => {
@@ -22,6 +22,8 @@ const StartupScreen = (props) => {
           ],
         });
         props.navigation.dispatch(resetAction);
+        
+
         return;
       }
       // if (!tokenfb) {
@@ -39,6 +41,7 @@ const StartupScreen = (props) => {
         ],
       });
       props.navigation.dispatch(resetAction);
+      
     };
     tryLogin();
   }, [dispatch]);

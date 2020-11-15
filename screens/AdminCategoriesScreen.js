@@ -6,15 +6,26 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
+
+import Colors from "../constants/Colors"
 import { ADMINCATEGORIES } from "../data/categories-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import HeaderButton from "../components/HeaderButton";
-
+import { useDispatch,useSelector } from "react-redux";
+import { NavigationActions, StackActions } from "react-navigation";
+import AnimalsNavigator from "../navigation/AnimalsNavigator";
 const AdminCategoriesScreen = (props) => {
+
+  const isAdmin = useSelector((state) => state.auth.user.isAdmin);
+  console.log("check admin Admin categories "+isAdmin);
+  
+  
+
   const renderGridItem = (itemData) => {
     return (
       <CategoryGridTile
