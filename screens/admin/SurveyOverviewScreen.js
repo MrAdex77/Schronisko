@@ -48,7 +48,9 @@ const SurveyOverviewScreen = (props) => {
       const loadedSurveys = [];
       for (const key in resData) {
         loadedSurveys.push({
+          id: resData[key]._id,
           survey: resData[key].survey.map((x) => x._id),
+          accepted: resData[key].survey.map((x) => x.isAccepted),
           userId: resData[key]._id,
           name: resData[key].name,
           answers: resData[key].survey.map((x) => x.answers),
@@ -114,6 +116,7 @@ const SurveyOverviewScreen = (props) => {
               userId: itemData.item.userId,
               userName: itemData.item.name,
               answers: itemData.item.answers,
+              accepted: itemData.item.accepted,
             },
           });
         }}>
@@ -157,8 +160,8 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 10,
     backgroundColor: "white",
-    height: 100,
-    borderRadius: 50,
+    height: 50,
+    borderRadius: 25,
     margin: 20,
     justifyContent: "center",
     alignItems: "center",

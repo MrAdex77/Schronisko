@@ -15,7 +15,6 @@ export const signInWithGoogleAsync = () => {
   return async (dispatch) => {
     try {
       const result = await Google.logInAsync({
-        behavior: "web",
         androidClientId:
           "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com",
         scopes: ["profile", "email"],
@@ -196,7 +195,7 @@ export const signInWithFacebookAsync = () => {
           })
 
           .then(async function (response) {
-           // console.log(response);
+            // console.log(response);
             //await SecureStore.setItemAsync("tokenfb", response.data.token);
             console.log(response.data);
 

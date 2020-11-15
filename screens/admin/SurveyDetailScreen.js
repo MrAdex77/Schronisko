@@ -6,6 +6,7 @@ import {
   FlatList,
   Modal,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import CustomButton from "../../components/CustomButton";
 import * as SecureStore from "expo-secure-store";
@@ -18,6 +19,7 @@ const SurveyDetailScreen = (props) => {
 
   const answers = props.navigation.getParam("answers");
   const survey = props.navigation.getParam("survey");
+  const accepted = props.navigation.getParam("accepted");
   const loadedSurveys = [];
 
   for (const key in answers) {
@@ -34,14 +36,18 @@ const SurveyDetailScreen = (props) => {
       answer8: answers[key].answer8,
       answer9: answers[key].answer9,
       answer10: answers[key].answer10,
+      isAccepted: null,
     });
   }
   for (const key in survey) {
     loadedSurveys[key].id = survey[key];
     //console.log("sdasd: " + survey[key]);
   }
-
-  console.log("userid: " + userId + " userName: " + userName);
+  for (const key in accepted) {
+    loadedSurveys[key].isAccepted = accepted[key];
+    // console.log("sdasd: " + accepted[key]);
+  }
+  //console.log("userid: " + userId + " userName: " + userName);
 
   if (loadedSurveys.length === 0) {
     return (
@@ -52,7 +58,6 @@ const SurveyDetailScreen = (props) => {
   }
 
   const confirmSurvey = async (id) => {
-    //404 wywala
     const token = await SecureStore.getItemAsync("token");
     const response = await fetch(
       "http://mateuszdobosz.site/panel/survey/accept",
@@ -72,6 +77,7 @@ const SurveyDetailScreen = (props) => {
       throw new Error("Something went wrong!");
     }
     console.log(response.status);
+    Alert.alert("Zatwierdzono", "Ankieta została zatwierdzona");
   };
 
   const renderSurveyItem = (itemData) => {
@@ -79,7 +85,7 @@ const SurveyDetailScreen = (props) => {
       <View style={styles.centered}>
         <View style={styles.form}>
           <Text style={styles.header}>Ankieta</Text>
-          <Text> id: {itemData.item.id}</Text>
+          {/* <Text> id: {itemData.item.id}</Text> */}
           <Text style={styles.question}>Imię i nazwisko: {userName}</Text>
           <Text style={styles.question}>
             Czy wszyscy domownicy zgadzają się na adopcję zwierzęcia?
@@ -133,13 +139,20 @@ const SurveyDetailScreen = (props) => {
             zwierzęcia?
           </Text>
           <Text style={styles.answer}>{itemData.item.answer10}</Text>
-          <CustomButton
-            style={styles.button}
-            onPress={() => {
-              confirmSurvey(itemData.item.id);
-            }}>
-            Zatwierdź
-          </CustomButton>
+          {!itemData.item.isAccepted && (
+            <CustomButton
+              style={styles.button}
+              onPress={() => {
+                confirmSurvey(itemData.item.id);
+              }}>
+              Zatwierdź
+            </CustomButton>
+          )}
+          {itemData.item.isAccepted && (
+            <CustomButton style={styles.buttonConfirmed}>
+              Zatwierdzono
+            </CustomButton>
+          )}
         </View>
       </View>
     );
@@ -196,6 +209,11 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 18,
     alignItems: "center",
+  },
+  buttonConfirmed: {
+    marginVertical: 18,
+    alignItems: "center",
+    backgroundColor: "#686868",
   },
 });
 

@@ -162,12 +162,13 @@ export const UpdateAnimal = (
         description: description,
       }),
     });
-    const resData = await response.json();
-    console.log(resData);
     if (!response.ok) {
       console.log(response.status);
       throw new Error("Something went wrong!");
     }
+
+    const resData = await response.json();
+    console.log(resData);
     dispatch({
       type: UPDATE_ANIMAL,
       pid: id,

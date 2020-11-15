@@ -2,16 +2,15 @@ import React, { useEffect, useCallback } from "react";
 import {
   ScrollView,
   View,
-  Image,
+  ImageBackground,
   Text,
   StyleSheet,
-  Button,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
-import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFavorite } from "../store/actions/animals";
+import CustomButton from "../components/CustomButton";
 
 const AnimalDetailScreen = (props) => {
   const availableAnimals = useSelector((state) => state.animals.animals);
@@ -38,26 +37,28 @@ const AnimalDetailScreen = (props) => {
   return (
     <ScrollView>
       <View style={styles.cos}>
-        <Image source={{ uri: selectedAnimal.imageUrl }} style={styles.image} />
+        <ImageBackground
+          source={{ uri: selectedAnimal.imageUrl }}
+          style={styles.image}>
+          <CustomButton
+            style={styles.button}
+            color='red'
+            onPress={() => {
+              props.navigation.navigate({
+                routeName: "Survey",
+                params: {
+                  animalId: animalId,
+                },
+              });
+            }}>
+            <Text>Adoptuj mnie!</Text>
+          </CustomButton>
+        </ImageBackground>
+
         <View style={styles.details}>
           <Text style={styles.title}>Imię: {selectedAnimal.title}</Text>
           <Text>Wiek: {selectedAnimal.age} lata</Text>
-          <Text style={styles.description}>
-            {selectedAnimal.description}{" "}
-            <Button
-              style={styles.button}
-              title="adoptuj mnie!"
-              color="red"
-              onPress={() => {
-                props.navigation.navigate({
-                  routeName: "Survey",
-                  params: {
-                    animalId: animalId,
-                  },
-                });
-              }}
-            />
-          </Text>
+          <Text style={styles.description}>{selectedAnimal.description}</Text>
         </View>
       </View>
     </ScrollView>
@@ -75,7 +76,7 @@ AnimalDetailScreen.navigationOptions = (navigationData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Favorite"
+          title='Favorite'
           iconName={isFavorite ? "ios-star" : "ios-star-outline"}
           onPress={toggleFavorite}
         />
@@ -88,6 +89,8 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 300,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   details: {
     paddingHorizontal: 10,
@@ -105,6 +108,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     height: "100%",
     backgroundColor: "white",
+  },
+  button: {
+    marginBottom: 5,
   },
 });
 

@@ -1,12 +1,18 @@
 import React from "react";
-import { ImageBackground,View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  ImageBackground,
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import { CATEGORIES } from "../data/categories-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import HeaderButton from "../components/HeaderButton";
-//import { Item } from "react-native-paper/lib/typescript/src/components/List/List";
 
 const CategoriesScreen = (props) => {
   const renderGridItem = (itemData) => {
@@ -24,13 +30,13 @@ const CategoriesScreen = (props) => {
     );
   };
   return (
-    <ImageBackground source={require('../img/dog.png')} style={styles.image}>
-    <FlatList
-      keyExtractor={(item, index) => item.id}
-      data={CATEGORIES}
-      renderItem={renderGridItem}
-      numColumns={2}
-    />
+    <ImageBackground source={require("../img/dog.png")} style={styles.image}>
+      <FlatList
+        keyExtractor={(item, index) => item.id}
+        data={CATEGORIES}
+        renderItem={renderGridItem}
+        numColumns={2}
+      />
     </ImageBackground>
   );
 };
@@ -58,12 +64,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image:{
+  image: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: "cover",
     justifyContent: "center",
-    
-  }
+  },
 });
 
 export default CategoriesScreen;
