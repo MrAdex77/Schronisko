@@ -85,6 +85,7 @@ const rankImgPicker = rank => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState("");
+  
 
 
   const dane = {
@@ -102,19 +103,17 @@ const rankImgPicker = rank => {
         .then(function (response) {
           console.log("udany get moje statsy");
           console.log(response.data);
-
+          
           setIsLoading(false);
-
+         
           setData(response.data);
           
-          console.log("data rank" +response.data.rank);
-         
           
           
         })
         .catch(function (error) {
           console.log("catch po axiosie pobranie  statsow");
-          console.log(error);
+         
         });
     } catch (e) {
       return { error: true };
@@ -160,7 +159,15 @@ const rankImgPicker = rank => {
         {/* <FontAwesome5 name='medal' size={40} color={Colors.primaryColor} /> */}
       </View>
       <View>
-          <RankItem rank={rankImgPicker(data.rank)}/>
+          {/* <RankItem rank={data.ranknumber}/> */}
+          {!data && (
+            <Image
+              style={styles.tinyLogo}
+              source={require('../img/r1.png')}
+            />
+          )}
+          {data && <RankItem rank={rankImgPicker(data.rank)}/>}
+          {/* <Image style={styles.tinyLogo}  source={require('../img/r'+data.ranknumber+'.png')}      /> */}
       </View>
     </View>
   );

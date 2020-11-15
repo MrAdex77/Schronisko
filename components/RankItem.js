@@ -10,7 +10,7 @@ import Colors from "../constants/Colors";
 
 
 const RankItem= (props) => {
-
+  console.log("rankitem "+props.rank);
   return (
     <View>
       <Image style={styles.tinyLogo}  source={require('../img/r'+props.rank+'.png')}      />
