@@ -3,6 +3,7 @@ import { Platform, Text } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createSwitchNavigator } from "react-navigation";
 import { Ionicons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
@@ -31,6 +32,7 @@ import SurveyDetailScreen from "../screens/admin/SurveyDetailScreen";
 import PedometerScreen from "../screens/PedometerScreen";
 import LogoutScreen from "../screens/LogoutScreen";
 import CustomDrawer from "../components/CustomDrawer";
+
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -119,7 +121,7 @@ const AnimalNavigator = createStackNavigator(
     },
     Appointment: AppointmentServiceScreen,
     Donation: DonationScreen,
-    Login: LoginScreen,
+     Login: LoginScreen,
     Statistics: StatisticsScreen,
     News: {
       screen: NewsScreen,
@@ -135,17 +137,21 @@ const AnimalNavigator = createStackNavigator(
     },
     AnimalDetail: { screen: AnimalDetailScreen },
     Survey: SurveyScreen,
-    StartUp: StartupScreen,
+    // StartUp: StartupScreen,
     Krokomierz: PedometerScreen,
+    
+  
   },
   {
-    initialRouteName: "StartUp",
+    // initialRouteName: "StartUp",
+    initialRouteName: "Categories",
     defaultNavigationOptions: defaultStackNavOptions,
   }
 );
 
 const AdminNavigator = createStackNavigator(
   {
+    
     AdminCategories: {
       screen: AdminCategoriesScreen,
       navigationOptions: { headerTitle: "Admin menu" },
@@ -207,4 +213,17 @@ const MainNavigator = createDrawerNavigator(
   }
 );
 
-export default createAppContainer(MainNavigator);
+
+
+
+const Routes = createSwitchNavigator({
+  startUp: StartupScreen,
+  all: MainNavigator,
+}, {
+  initialRouteName: 'startUp',
+});
+
+
+
+// export default createAppContainer(MainNavigator);
+export default createAppContainer(Routes);
