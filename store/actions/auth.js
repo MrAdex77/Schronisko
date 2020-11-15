@@ -196,7 +196,7 @@ export const signInWithFacebookAsync = () => {
           })
 
           .then(async function (response) {
-            console.log(JSON.stringify(response.data.token));
+           // console.log(response);
             //await SecureStore.setItemAsync("tokenfb", response.data.token);
             console.log(response.data);
 
@@ -268,5 +268,49 @@ export const logout = () => {
     await SecureStore.deleteItemAsync("FacebookToken");
     await SecureStore.deleteItemAsync("Googletoken");
     dispatch({ type: LOGOUT });
+  };
+};
+
+export const autoLogIn = (token) => {
+  return async (dispatch) => {
+    try {
+      //console.log("TOKEN: " + token);
+      const response = await fetch(`http://mateuszdobosz.site/auth/check`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+        }),
+      });
+      if (!response.ok) {
+        console.log("blad");
+        console.log(response.status);
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      console.log(resData);
+      console.log("Zalogowano: " + resData.name + " " + resData.balance);
+      const name = resData.name;
+      const balance = resData.balance;
+      const isAdmin = resData.isAdmin;
+      const picture = resData.picture;
+
+      const newUser = new User(
+        "trololo@wp.pl",
+        name,
+        balance,
+        isAdmin,
+        picture
+      );
+      dispatch({
+        type: LOGIN,
+        user: newUser,
+      });
+    } catch (e) {
+      return { error: true };
+    }
   };
 };
