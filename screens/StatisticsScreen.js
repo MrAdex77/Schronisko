@@ -7,9 +7,9 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
-import RankItem from "../components/NewsItem";
 
-import Colors from "../constants/Colors";
+
+import {rankImages} from "../constants/Ranks";
 import axios from "axios";
 
 const StatisticsScreen = (props) => {
@@ -159,15 +159,10 @@ const rankImgPicker = rank => {
         {/* <FontAwesome5 name='medal' size={40} color={Colors.primaryColor} /> */}
       </View>
       <View>
-          {/* <RankItem rank={data.ranknumber}/> */}
-          {!data && (
-            <Image
+       <Image
               style={styles.tinyLogo}
-              source={require('../img/r1.png')}
-            />
-          )}
-          {data && <RankItem rank={rankImgPicker(data.rank)}/>}
-          {/* <Image style={styles.tinyLogo}  source={require('../img/r'+data.ranknumber+'.png')}      /> */}
+              source={rankImages.ranks[1]}
+            /> 
       </View>
     </View>
   );
