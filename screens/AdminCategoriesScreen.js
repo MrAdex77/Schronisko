@@ -17,8 +17,7 @@ import { ADMINCATEGORIES } from "../data/categories-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import HeaderButton from "../components/HeaderButton";
 import { useDispatch,useSelector } from "react-redux";
-import { NavigationActions, StackActions } from "react-navigation";
-import AnimalsNavigator from "../navigation/AnimalsNavigator";
+
 const AdminCategoriesScreen = (props) => {
 
   const isAdmin = useSelector((state) => state.auth.user.isAdmin);
