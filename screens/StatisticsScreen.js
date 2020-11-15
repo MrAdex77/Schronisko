@@ -8,7 +8,7 @@ import {
 } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 
-
+import Colors from "../constants/Colors"
 import {rankImages} from "../constants/Ranks";
 import axios from "axios";
 
@@ -50,32 +50,6 @@ const rankImgPicker = rank => {
     }
   };
 
-  // const rankImgPicker = rank => {
-  //   switch (rank) {
-  //     case ranks[0]:
-  //       return '../img/r1.png';
-
-  //     case ranks[1]:
-  //       return '../img/r2.png';
-
-  //     case ranks[2]:
-  //       return '../img/r3.png';
-
-  //     case ranks[3]:
-  //       return '../img/r4.png';
-
-  //     case ranks[4]:
-  //       return '../img/r5.png';
-
-  //     case ranks[5]:
-  //       return '../img/r6.png';
-
-  //     default: {
-  //       return '../img/r1.png';
-  //     }
-
-  //   }
-  // };
   
 
 
@@ -161,7 +135,7 @@ const rankImgPicker = rank => {
       <View>
        <Image
               style={styles.tinyLogo}
-              source={rankImages.ranks[1]}
+              source={rankImages.ranks[rankImgPicker(data.rank)]}
             /> 
       </View>
     </View>
