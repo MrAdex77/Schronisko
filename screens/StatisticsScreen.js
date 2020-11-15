@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator,Image, Alert } from "react-native";
 import {
   FontAwesome5,
   AntDesign,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
+import RankItem from "../components/NewsItem";
 
 import Colors from "../constants/Colors";
 import axios from "axios";
@@ -14,12 +15,77 @@ import axios from "axios";
 const StatisticsScreen = (props) => {
   // const balance = useSelector((state) => state.auth.user.balance);
   // console.log(balance);
+  const ranks =[
+    "ranga1",
+    "ranga2",
+    "ranga3",
+    "ranga4",
+    "ranga5",
+    "ranga6",
+  ];
+const rankImgPicker = rank => {
+    switch (rank) {
+      case ranks[0]:
+        return 1;
+
+      case ranks[1]:
+        return 2;
+
+      case ranks[2]:
+        return 3;
+
+      case ranks[3]:
+        return 4;
+
+      case ranks[4]:
+        return 5;
+
+      case ranks[5]:
+        return 6;
+
+      default: {
+        return 1;
+      }
+
+    }
+  };
+
+  // const rankImgPicker = rank => {
+  //   switch (rank) {
+  //     case ranks[0]:
+  //       return '../img/r1.png';
+
+  //     case ranks[1]:
+  //       return '../img/r2.png';
+
+  //     case ranks[2]:
+  //       return '../img/r3.png';
+
+  //     case ranks[3]:
+  //       return '../img/r4.png';
+
+  //     case ranks[4]:
+  //       return '../img/r5.png';
+
+  //     case ranks[5]:
+  //       return '../img/r6.png';
+
+  //     default: {
+  //       return '../img/r1.png';
+  //     }
+
+  //   }
+  // };
+  
+
+
   useEffect(() => {
     GetStatsAsync();
   }, []);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState("");
+
 
   const dane = {
     balance: 2000,
@@ -40,8 +106,11 @@ const StatisticsScreen = (props) => {
           setIsLoading(false);
 
           setData(response.data);
-
-          //console.log(response)
+          
+          console.log("data rank" +response.data.rank);
+         
+          
+          
         })
         .catch(function (error) {
           console.log("catch po axiosie pobranie  statsow");
@@ -51,6 +120,9 @@ const StatisticsScreen = (props) => {
       return { error: true };
     }
   }
+
+
+  
 
   if (isLoading) {
     return (
@@ -85,7 +157,10 @@ const StatisticsScreen = (props) => {
       <View style={{ alignItems: "center" }}>
         <Text style={styles.txt1}>Ranga: </Text>
         <Text style={styles.txt2}>{data.rank} </Text>
-        <FontAwesome5 name='medal' size={40} color={Colors.primaryColor} />
+        {/* <FontAwesome5 name='medal' size={40} color={Colors.primaryColor} /> */}
+      </View>
+      <View>
+          <RankItem rank={rankImgPicker(data.rank)}/>
       </View>
     </View>
   );
@@ -129,6 +204,11 @@ const styles = StyleSheet.create({
     color: "#808080",
     padding: 5,
     marginRight: 5,
+  },
+  tinyLogo: {
+    marginTop:20,
+    width: 120,
+    height: 120,
   },
 });
 
