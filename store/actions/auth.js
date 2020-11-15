@@ -162,10 +162,10 @@ export const UpdateSteps = (amount) => {
       // const resData = await response.json();
       // console.log(resData);
 
-      dispatch({
-        type: UPDATE_STEPS,
-        amount: amount,
-      });
+      // dispatch({
+      //   type: UPDATE_STEPS,
+      //   amount: amount,
+      // });
     } catch (err) {
       throw err;
     }

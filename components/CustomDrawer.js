@@ -31,7 +31,7 @@ const CustomDrawer = (props) => {
           {!Picture && (
             <Image
               style={styles.image}
-              source={require("../assets/avatar.png")}
+              source={require("../assets/user.png")}
             />
           )}
           {Picture && <Image style={styles.image} source={{ uri: Picture }} />}

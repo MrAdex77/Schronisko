@@ -71,13 +71,16 @@ export const deleteAnimal = (animalId) => {
   return async (dispatch) => {
     const token = await SecureStore.getItemAsync("token");
     //any async code http://176.107.131.27:5000/animals/new
-    const response = await fetch("http://mateuszdobosz.site/animals/delete", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: animalId, token: token }),
-    });
+    const response = await fetch(
+      `http://mateuszdobosz.site/animals/delete/${animalId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token }),
+      }
+    );
 
     if (!response.ok) {
       console.log(response.status);
@@ -146,18 +149,21 @@ export const UpdateAnimal = (
   return async (dispatch) => {
     const token = await SecureStore.getItemAsync("token");
     const response = await fetch("http://mateuszdobosz.site/animals/edit", {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         token: token,
+        id: id,
         name: title,
         category: category,
         age: age,
         description: description,
       }),
     });
+    const resData = await response.json();
+    console.log(resData);
     if (!response.ok) {
       console.log(response.status);
       throw new Error("Something went wrong!");

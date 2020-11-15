@@ -44,20 +44,20 @@ const defaultStackNavOptions = {
   },
   headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
 };
-const FavNavigator = createStackNavigator(
-  {
-    Favorites: {
-      screen: FavoritesScreen,
-      navigationOptions: { headerTitle: "Ulubione" },
-    },
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-  }
-);
+// const FavNavigator = createStackNavigator(
+//   {
+//     Favorites: {
+//       screen: FavoritesScreen,
+//       navigationOptions: { headerTitle: "Ulubione" },
+//     },
+//   },
+//   {
+//     defaultNavigationOptions: defaultStackNavOptions,
+//   }
+// );
 
 const tabScreenConfig = {
-  Animals: {
+  AnimalsOverview: {
     screen: AnimalsOverviewScreen,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
@@ -73,7 +73,7 @@ const tabScreenConfig = {
     },
   },
   Favorites: {
-    screen: FavNavigator,
+    screen: FavoritesScreen,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return <Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />;
@@ -174,7 +174,7 @@ const AdminNavigator = createStackNavigator(
 );
 const MainNavigator = createDrawerNavigator(
   {
-    AnimalsFav: {
+    Menu: {
       screen: AnimalNavigator,
       navigationOptions: {
         drawerLabel: "Menu",
