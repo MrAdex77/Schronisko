@@ -21,7 +21,7 @@ export const signInWithGoogleAsync = () => {
       });
 
       if (result.type === "success") {
-        const response = await fetch(`http://mateuszdobosz.site/auth/google`, {
+        const response = await fetch(`http://176.107.131.27/auth/google`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export const googleLogIn = (token) => {
   return async (dispatch) => {
     try {
       //console.log("TOKEN: " + token);
-      const response = await fetch(`http://mateuszdobosz.site/auth/check`, {
+      const response = await fetch(`http://176.107.131.27/auth/check`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,19 +106,16 @@ export const UpdateDonation = (amount) => {
   return async (dispatch) => {
     try {
       const token = await SecureStore.getItemAsync("token");
-      const response = await fetch(
-        `http://mateuszdobosz.site/user/donation/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-            amount: amount,
-          }),
-        }
-      );
+      const response = await fetch(`http://176.107.131.27/user/donation/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          amount: amount,
+        }),
+      });
       if (!response.ok) {
         console.log("blad");
         console.log(response.status);
@@ -142,7 +139,7 @@ export const UpdateSteps = (amount) => {
   return async (dispatch) => {
     try {
       const token = await SecureStore.getItemAsync("token");
-      const response = await fetch(`http://mateuszdobosz.site/user/walk/new`, {
+      const response = await fetch(`http://176.107.131.27/user/walk/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -274,7 +271,7 @@ export const autoLogIn = (token) => {
   return async (dispatch) => {
     try {
       //console.log("TOKEN: " + token);
-      const response = await fetch(`http://mateuszdobosz.site/auth/check`, {
+      const response = await fetch(`http://176.107.131.27/auth/check`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

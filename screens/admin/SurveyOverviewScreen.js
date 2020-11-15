@@ -24,10 +24,10 @@ const SurveyOverviewScreen = (props) => {
     setIsRefreshing(true);
     try {
       const token = await SecureStore.getItemAsync("token");
-      //http://mateuszdobosz.site/panel/survey/overview
-      //http://mateuszdobosz.site/animals/overview
+      //http://176.107.131.27/panel/survey/overview
+      //http://176.107.131.27/animals/overview
       const response = await fetch(
-        "http://mateuszdobosz.site/panel/survey/overview",
+        "http://176.107.131.27/panel/survey/overview",
         {
           method: "PUT",
           headers: {

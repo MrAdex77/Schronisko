@@ -13,14 +13,11 @@ export const SET_CATEGORY = "SET_CATEGORY";
 export const fetchAnimals = () => {
   return async (dispatch) => {
     //any async code https://schronisko-7cfd1.firebaseio.com/animals.json
-    //http://mateuszdobosz.site/animals/overview
+    //http://176.107.131.27/animals/overview
     try {
-      const response = await fetch(
-        "http://mateuszdobosz.site/animals/overview",
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch("http://176.107.131.27/animals/overview", {
+        method: "GET",
+      });
       if (!response.ok) {
         console.log(response.status);
         throw new Error("Something went wrong!");
@@ -72,7 +69,7 @@ export const deleteAnimal = (animalId) => {
     const token = await SecureStore.getItemAsync("token");
     //any async code http://176.107.131.27:5000/animals/new
     const response = await fetch(
-      `http://mateuszdobosz.site/animals/delete/${animalId}`,
+      `http://176.107.131.27/animals/delete/${animalId}`,
       {
         method: "DELETE",
         headers: {
@@ -92,7 +89,7 @@ export const deleteAnimal = (animalId) => {
 
 export const createAnimal = (title, category, age, description, imageUrl) => {
   return async (dispatch) => {
-    //any async code http://mateuszdobosz.site/animals/new
+    //any async code http://176.107.131.27/animals/new
     //https://schronisko-7cfd1.firebaseio.com/animals.json
     //name,category,age,description,token
     try {
@@ -108,7 +105,7 @@ export const createAnimal = (title, category, age, description, imageUrl) => {
       formData.append("description", description);
       const token = await SecureStore.getItemAsync("token");
       formData.append("token", token);
-      const response = await fetch("http://mateuszdobosz.site/animals/new", {
+      const response = await fetch("http://176.107.131.27/animals/new", {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -148,7 +145,7 @@ export const UpdateAnimal = (
 ) => {
   return async (dispatch) => {
     const token = await SecureStore.getItemAsync("token");
-    const response = await fetch("http://mateuszdobosz.site/animals/edit", {
+    const response = await fetch("http://176.107.131.27/animals/edit", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

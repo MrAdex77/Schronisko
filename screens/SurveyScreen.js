@@ -99,30 +99,27 @@ const SurveyScreen = (props) => {
     setIsLoading(true);
     try {
       const token = await SecureStore.getItemAsync("token");
-      const response = await fetch(
-        "http://mateuszdobosz.site/panel/survey/new",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch("http://176.107.131.27/panel/survey/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+          answers: {
+            answer1: formState.inputValues.answer1,
+            answer2: formState.inputValues.answer2,
+            answer3: formState.inputValues.answer3,
+            answer4: formState.inputValues.answer4,
+            answer5: formState.inputValues.answer5,
+            answer6: formState.inputValues.answer6,
+            answer7: formState.inputValues.answer7,
+            answer8: formState.inputValues.answer8,
+            answer9: formState.inputValues.answer9,
+            answer10: formState.inputValues.answer10,
           },
-          body: JSON.stringify({
-            token: token,
-            answers: {
-              answer1: formState.inputValues.answer1,
-              answer2: formState.inputValues.answer2,
-              answer3: formState.inputValues.answer3,
-              answer4: formState.inputValues.answer4,
-              answer5: formState.inputValues.answer5,
-              answer6: formState.inputValues.answer6,
-              answer7: formState.inputValues.answer7,
-              answer8: formState.inputValues.answer8,
-              answer9: formState.inputValues.answer9,
-              answer10: formState.inputValues.answer10,
-            },
-          }),
-        }
-      );
+        }),
+      });
       if (!response.ok) {
         console.log(response.status);
         throw new Error("Something went wrong!");

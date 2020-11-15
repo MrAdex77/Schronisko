@@ -59,19 +59,16 @@ const SurveyDetailScreen = (props) => {
 
   const confirmSurvey = async (id) => {
     const token = await SecureStore.getItemAsync("token");
-    const response = await fetch(
-      "http://mateuszdobosz.site/panel/survey/accept",
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          token,
-        }),
-      }
-    );
+    const response = await fetch("http://176.107.131.27/panel/survey/accept", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        token,
+      }),
+    });
     if (!response.ok) {
       console.log(response.status);
       throw new Error("Something went wrong!");
