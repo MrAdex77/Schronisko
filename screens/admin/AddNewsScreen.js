@@ -62,12 +62,13 @@ const descriptionInputHandler = (enteredText) =>{
 }
 
   return (
+      <ScrollView>
       <KeyboardAvoidingView
       behavior={Platform.OS === "android" ? "padding" : "height"}
       style={{ flex: 1 }}
   >
-      <SafeAreaView style={{ flex:1 }}>
-        <ScrollView  >
+      {/* <SafeAreaView style={{ flex:1 }}> */}
+        {/* <ScrollView  > */}
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           
        <View style={styles.screen} >   
@@ -92,15 +93,16 @@ const descriptionInputHandler = (enteredText) =>{
      <TouchableOpacity   style={styles.btn} onPress={addNewsHandler}              >
        <Text style={styles.txt}>Opublikuj</Text>
      </TouchableOpacity>
+     <TextInput/>
       <View style={{ flex : 1} } /> 
      </View>
      
                         
      </TouchableWithoutFeedback>
-     </ScrollView>
-                </SafeAreaView>
+     {/* </ScrollView> */}
+                {/* </SafeAreaView> */}
             </KeyboardAvoidingView>
-  
+            </ScrollView>
   );
 };
 
