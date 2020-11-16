@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, ActivityIndicator,Image, Alert } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator,Image, Alert ,ScrollView} from "react-native";
 import {
   FontAwesome5,
   AntDesign,
@@ -12,9 +12,18 @@ import Colors from "../constants/Colors"
 import {rankImages} from "../constants/Ranks";
 import axios from "axios";
 
+import LoggedText from "../components/LoggedText";
+
 const StatisticsScreen = (props) => {
-  // const balance = useSelector((state) => state.auth.user.balance);
-  // console.log(balance);
+   
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  
+ if(isLogged === false){
+   return(
+      <LoggedText/>
+   );
+ };
+
   const ranks =[
     "ranga1",
     "ranga2",
@@ -106,6 +115,7 @@ const rankImgPicker = rank => {
   }
 
   return (
+    <ScrollView>
     <View style={styles.screen}>
       <View style={styles.row}>
         <Text style={styles.txt2}>Dziękujemy za wsparcie! </Text>
@@ -139,6 +149,7 @@ const rankImgPicker = rank => {
             /> 
       </View>
     </View>
+    </ScrollView>
   );
 };
 

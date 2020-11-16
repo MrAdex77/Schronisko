@@ -76,6 +76,7 @@ const descriptionInputHandler = (enteredText) =>{
         style={styles.input}
         placeholder="Tytuł..."
         multiline={false}
+        maxLength={80}
         onChangeText={tittleInputHandler}
         value={tittle}
       />
@@ -83,6 +84,7 @@ const descriptionInputHandler = (enteredText) =>{
       <TextInput
         style={styles.input3}
         multiline={true}
+        maxLength={1000}
         placeholder="Treść..."
         onChangeText={descriptionInputHandler}
         value={description}

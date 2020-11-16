@@ -119,7 +119,7 @@ export const UpdateDonation = (amount) => {
       if (!response.ok) {
         console.log("blad");
         console.log(response.status);
-        throw new Error("Something went wrong!");
+       // throw new Error("Something went wrong!");
       }
 
       const resData = await response.json();
@@ -152,7 +152,7 @@ export const UpdateSteps = (amount) => {
       if (!response.ok) {
         console.log("blad");
         console.log(response.status);
-        throw new Error("Something went wrong!");
+        //throw new Error("Something went wrong!");
       }
 
       // const resData = await response.json();
@@ -192,14 +192,15 @@ export const signInWithFacebookAsync = () => {
           })
 
           .then(async function (response) {
-            // console.log(response);
-            //await SecureStore.setItemAsync("tokenfb", response.data.token);
+            
             console.log(response.data);
 
-            //const email = response.data.email;
+            const email = response.data.email;
             const name = response.data.name;
-            //const balance = response.data.balance;
-            const newUser = new User("abcmm@abcmm.pl", name, 1000);
+            const balance = response.data.balance;
+            const isAdmin = response.data.isAdmin;
+            const picture = response.data.picture;
+            const newUser = new User(email, name, balance,isAdmin,picture);
 
             await SecureStore.setItemAsync("FacebookToken", token);
 
@@ -288,14 +289,15 @@ export const autoLogIn = (token) => {
 
       const resData = await response.json();
       console.log(resData);
-      console.log("Zalogowano: " + resData.name + " " + resData.balance);
+      
       const name = resData.name;
+      const email = "brak";
       const balance = resData.balance;
       const isAdmin = resData.isAdmin;
       const picture = resData.picture;
 
       const newUser = new User(
-        "trololo@wp.pl",
+        email,
         name,
         balance,
         isAdmin,

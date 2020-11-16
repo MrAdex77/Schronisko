@@ -14,8 +14,20 @@ import { TextInput } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import Colors from "../constants/Colors";
 import axios from "axios";
+import { useSelector} from "react-redux";
+import LoggedText from "../components/LoggedText";
+
 const SignUpOnWalkScreen = (props) => {
   //const [date, setDate] = useState(new Date(1598051730000));
+  
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  
+ if(isLogged === false){
+   return(
+      <LoggedText/>
+   );
+ };
+  
 
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
