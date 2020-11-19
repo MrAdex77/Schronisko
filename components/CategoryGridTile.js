@@ -18,10 +18,11 @@ const CategoryGridTile = (props) => {
     <View style={styles.gridItem}>
       <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
         <View
-          style={{ ...styles.container, ...{ backgroundColor: 'rgba(52,52,52,0.4)'} }}>
-          <Text style={styles.title} numberOfLines={2}>
-            {props.title}
-          </Text>
+          style={{
+            ...styles.container,
+            ...{ backgroundColor: "rgba(52,52,52,0.4)" },
+          }}>
+          <Text style={styles.title}>{props.title}</Text>
         </View>
       </TouchableCmp>
     </View>
@@ -50,9 +51,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "open-sans",
-    fontSize: 24,
+    fontSize: 22,
     textAlign: "right",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
   },
 });
 

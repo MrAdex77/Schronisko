@@ -1,11 +1,11 @@
 import Category from "../models/category";
 export const CATEGORIES = [
   new Category("AnimalsOverview", "Przegląd Zwierząt", "#f5428d"),
-  new Category("News", "Aktualności",  "#47fce"),
+  new Category("News", "Aktualności", "#47fce"),
   new Category("Krokomierz", "Krokomierz", "#f54242"),
   new Category("Donation", "Darowizna", "#f5d142"),
   new Category("Statistics", "Statystyki", "#368dff"),
-  new Category("SignUpOnWalk","Wolontariat zapisy","#47fce"),
+  new Category("SignUpOnWalk", "Zapisy wolontariat", "#47fce"),
   new Category("Appointment", "Twoj wolontariat", "#f54242"),
   new Category("Login", "Zaloguj się", "#47fced"),
   new Category("Contact", "Kontakt", "#47fce"),
