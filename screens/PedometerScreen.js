@@ -16,8 +16,19 @@ import Colors from "../constants/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../store/actions/auth";
 import CustomButton from "../components/CustomButton";
+import LoggedText from "../components/LoggedText";
 
 const PedometerScreen = () => {
+
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  
+  if(isLogged === false){
+    return(
+       <LoggedText/>
+    );
+  };
+  
+
   const shelterCoords = { latitude: 50.811294, longitude: 19.120867 };
   const [isFetching, setIsFetching] = useState(false);
   const [pickedLocation, setPickedLocation] = useState(null);

@@ -119,10 +119,19 @@ const AnimalNavigator = createStackNavigator(
       screen: AnimalFavTabNavigator,
       navigationOptions: { headerTitle: "Zwierzęta" },
     },
-    Appointment: AppointmentServiceScreen,
+    Appointment:{
+        screen: AppointmentServiceScreen,
+        navigationOptions: { headerTitle: "Twój wolontariat" },
+    },
     Donation: DonationScreen,
-     Login: LoginScreen,
-    Statistics: StatisticsScreen,
+     Login:{ 
+       screen: LoginScreen,
+       navigationOptions: { headerTitle: "Zaloguj się" },
+    },
+    Statistics:{
+      screen: StatisticsScreen,
+      navigationOptions: { headerTitle: "Twoje statystyki" },
+    },
     News: {
       screen: NewsScreen,
       navigationOptions: { headerTitle: "Aktualności" },
@@ -139,7 +148,7 @@ const AnimalNavigator = createStackNavigator(
     Survey: SurveyScreen,
     // StartUp: StartupScreen,
     Krokomierz: PedometerScreen,
-    
+
   
   },
   {
@@ -210,6 +219,7 @@ const MainNavigator = createDrawerNavigator(
         fontFamily: "open-sans-bold",
       },
     },
+    
   }
 );
 
@@ -219,6 +229,7 @@ const MainNavigator = createDrawerNavigator(
 const Routes = createSwitchNavigator({
   startUp: StartupScreen,
   all: MainNavigator,
+  
 }, {
   initialRouteName: 'startUp',
 });

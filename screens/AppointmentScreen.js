@@ -8,10 +8,17 @@ import axios from 'axios';
 import * as walkActions from "../store/actions/walk";
 import WalkItem from "../components/WalkItem";
 import { NavigationActions, StackActions } from "react-navigation";
+import LoggedText from "../components/LoggedText";
 
 const AppointmentScreen = (props) => {
 
+  const isLogged = useSelector((state) => state.auth.isLogged);
   
+  if(isLogged === false){
+    return(
+       <LoggedText/>
+    );
+  };
 
   const[error,SetError]=useState(false);
   const[isLoading,setIsLoading]=useState(false);

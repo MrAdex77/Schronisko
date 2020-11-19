@@ -3,8 +3,16 @@ import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../store/actions/auth";
 import CustomButton from "../components/CustomButton";
-
+import LoggedText from "../components/LoggedText";
 const DonationScreen = (props) => {
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  
+  if(isLogged === false){
+    return(
+       <LoggedText/>
+    );
+  };
+
   const [amount, setAmount] = useState(30);
   const [amountisValid, setAmountisValid] = useState(true);
   //const [touched, setTouched] = useState(false);
@@ -29,11 +37,15 @@ const DonationScreen = (props) => {
       return;
     }
     if (amount) {
+      try{
       dispatch(userActions.UpdateDonation(amount));
       Alert.alert(
         "Udało się!",
         "Pieniądze bezpiecznie powędrowały do schroniska"
-      );
+      );}
+      catch(e){
+         console.log("Cos poszlo nie tak");
+      };
     }
   };
 
@@ -49,6 +61,7 @@ const DonationScreen = (props) => {
             value={amount.toString()}
             placeholder='ile'
             keyboardType='numeric'
+            maxLength={7}
             onChangeText={(text) => textChangeHandler(text)}
           />
         </View>

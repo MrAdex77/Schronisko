@@ -12,6 +12,8 @@ import Input from "../components/Input";
 import HeaderButton from "../components/HeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import * as SecureStore from "expo-secure-store";
+import LoggedText from "../components/LoggedText";
+
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
@@ -37,6 +39,15 @@ const formReducer = (state, action) => {
   return state;
 };
 const SurveyScreen = (props) => {
+
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  
+ if(isLogged === false){
+   return(
+      <LoggedText/>
+   );
+ };
+
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState();
   const animalId = props.navigation.getParam("animalId");
