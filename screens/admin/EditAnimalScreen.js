@@ -17,6 +17,7 @@ import Colors from "../../constants/Colors";
 import * as animalsActions from "../../store/actions/animals";
 import ImagePicker from "../../components/ImagePicker";
 import Input from "../../components/Input";
+import { Picker } from "@react-native-picker/picker";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -51,6 +52,9 @@ const EditAnimalScreen = (props) => {
     state.animals.animals.find((ani) => ani.id === animalId)
   );
   const [newValue, setnewValue] = useState("");
+  const [category, setCategory] = useState(
+    editedAnimal ? editedAnimal.category : "Other"
+  );
 
   const dispatch = useDispatch();
 
@@ -163,7 +167,7 @@ const EditAnimalScreen = (props) => {
             initiallyValid={!!editedAnimal}
             required
           />
-          <Input
+          {/* <Input
             id='category'
             label='Kategoria'
             errorText='Wprowadź poprawną kategorię: Pies,kot'
@@ -173,7 +177,22 @@ const EditAnimalScreen = (props) => {
             initialValue={editedAnimal ? editedAnimal.category : ""}
             initiallyValid={!!editedAnimal}
             required
-          />
+          /> */}
+          <Text style={styles.label}>Kategoria</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={category}
+              style={styles.picker}
+              mode='dropdown'
+              onValueChange={(itemValue, itemIndex) => {
+                inputChangeHandler("category", itemValue, true);
+                setCategory(itemValue);
+              }}>
+              <Picker.Item label='Kot' value='Cat' />
+              <Picker.Item label='Pies' value='Dog' />
+              <Picker.Item label='Inne' value='Other' />
+            </Picker>
+          </View>
           <Input
             id='age'
             label='Wiek'
@@ -185,19 +204,22 @@ const EditAnimalScreen = (props) => {
             initiallyValid={!!editedAnimal}
             required
             min={1}
+            max={100}
           />
-          <Input
-            id='imageUrl'
-            label='Link do zdjecia'
-            errorText='Wprowadź poprawny link!'
-            keyboardType='default'
-            returnKeyType='next'
-            onInputChange={inputChangeHandler}
-            img={newValue}
-            initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
-            initiallyValid={!!editedAnimal}
-            required
-          />
+          {editedAnimal && (
+            <Input
+              id='imageUrl'
+              label='Link do zdjecia'
+              errorText='Wprowadź poprawny link!'
+              keyboardType='default'
+              returnKeyType='next'
+              onInputChange={inputChangeHandler}
+              img={newValue}
+              initialValue={editedAnimal ? editedAnimal.imageUrl : ""}
+              initiallyValid={!!editedAnimal}
+              required
+            />
+          )}
 
           {!editedAnimal && <ImagePicker onAddImage={addNewImageHandler} />}
           <Input
@@ -210,8 +232,8 @@ const EditAnimalScreen = (props) => {
             onInputChange={inputChangeHandler}
             initialValue={editedAnimal ? editedAnimal.description : ""}
             initiallyValid={!!editedAnimal}
-            required
             minLength={5}
+            required
           />
         </View>
       </ScrollView>
@@ -248,6 +270,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "red",
+    borderWidth: 4,
+  },
+  label: {
+    fontFamily: "open-sans-bold",
+    marginVertical: 8,
+  },
+  pickerContainer: {
+    borderColor: "grey",
+    borderWidth: 1,
+    borderRadius: 10,
   },
 });
 

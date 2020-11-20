@@ -35,31 +35,32 @@ const AnimalDetailScreen = (props) => {
     props.navigation.setParams({ isFav: currentAnimalIsFav });
   }, [currentAnimalIsFav]);
   return (
-    <ScrollView>
-      <View style={styles.cos}>
-        <ImageBackground
-          source={{ uri: selectedAnimal.imageUrl }}
-          style={styles.image}>
-          <CustomButton
-            style={styles.button}
-            color='red'
-            onPress={() => {
-              props.navigation.navigate({
-                routeName: "Survey",
-                params: {
-                  animalId: animalId,
-                },
-              });
-            }}>
-            <Text>Adoptuj mnie!</Text>
-          </CustomButton>
-        </ImageBackground>
+    <ScrollView style={styles.container}>
+      <ImageBackground
+        source={{ uri: selectedAnimal.imageUrl }}
+        style={styles.image}>
+        <CustomButton
+          style={styles.button}
+          color='red'
+          onPress={() => {
+            props.navigation.navigate({
+              routeName: "Survey",
+              params: {
+                animalId: animalId,
+              },
+            });
+          }}>
+          <Text>Adoptuj mnie!</Text>
+        </CustomButton>
+      </ImageBackground>
 
-        <View style={styles.details}>
-          <Text style={styles.title}>Imię: {selectedAnimal.title}</Text>
-          <Text>Wiek: {selectedAnimal.age} lata</Text>
-          <Text style={styles.description}>{selectedAnimal.description}</Text>
-        </View>
+      <View style={styles.details}>
+        <Text style={styles.title}>Imię</Text>
+        <Text style={styles.subTitle}>{selectedAnimal.title}</Text>
+        <Text style={styles.title}>Wiek</Text>
+        <Text style={styles.subTitle}>{selectedAnimal.age}</Text>
+        <Text style={styles.title}>Opis</Text>
+        <Text style={styles.subTitle}>{selectedAnimal.description}</Text>
       </View>
     </ScrollView>
   );
@@ -88,29 +89,33 @@ AnimalDetailScreen.navigationOptions = (navigationData) => {
 const styles = StyleSheet.create({
   image: {
     width: "100%",
-    height: 300,
+    height: 250,
     justifyContent: "flex-end",
     alignItems: "center",
   },
   details: {
-    paddingHorizontal: 10,
-    justifyContent: "space-between",
+    marginVertical: 10,
     alignItems: "center",
-    height: 300,
+    height: "100%",
     backgroundColor: "white",
   },
   title: {
+    marginVertical: 10,
     fontFamily: "open-sans-bold",
     fontSize: 22,
     textAlign: "center",
   },
-  description: {
+  subTitle: {
+    fontFamily: "open-sans",
+    fontSize: 18,
     textAlign: "center",
-    height: "100%",
-    backgroundColor: "white",
   },
   button: {
     marginBottom: 5,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "white",
   },
 });
 
