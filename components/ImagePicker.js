@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Button, Image, Text, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import CustomButton from "../components/CustomButton";
 
 import Colors from "../constants/Colors";
 
@@ -35,22 +36,6 @@ const ImgPicker = (props) => {
     setPickedImage(image.uri);
 
     props.onAddImage(image.uri);
-    // let formData = new FormData();
-    // formData.append("photo", { uri: image.uri, name: filename, type });
-
-    // const response = await fetch("http://176.107.131.27/animals/new", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    //   body: formData,
-    // });
-    // if (!response.ok) {
-    //   console.log(response.status);
-    //   throw new Error("Something went wrong!");
-    // }
-    // const resData = await response.json();
-    // console.log(resData);
   };
 
   return (
@@ -62,11 +47,9 @@ const ImgPicker = (props) => {
           <Image style={styles.image} source={{ uri: pickedImage }} />
         )}
       </View>
-      <Button
-        title="Zrób Zdjęcie"
-        color={Colors.primary}
-        onPress={takeImageHandler}
-      />
+      <CustomButton color={Colors.primary} onPress={takeImageHandler}>
+        Zrób Zdjęcie
+      </CustomButton>
     </View>
   );
 };

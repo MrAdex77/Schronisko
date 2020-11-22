@@ -24,7 +24,8 @@
       "package": "com.Schronisko",
       "config": {
         "googleSignIn": {
-          "apiKey": "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com"
+          "apiKey": "AIzaSyA1Ch4qp400o3WTQKDIOqkX-rAD-QnkStY",
+          "certificateHash": "60:D6:BF:24:67:D4:4D:83:D3:B5:62:21:AC:45:5C:90:D7:A5:85:42"
         }
       }
     }

@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../store/actions/auth";
 import CustomButton from "../components/CustomButton";
 import LoggedText from "../components/LoggedText";
+
 const DonationScreen = (props) => {
   const isLogged = useSelector((state) => state.auth.isLogged);
-  
-  if(isLogged === false){
-    return(
-       <LoggedText/>
-    );
-  };
+
+  if (isLogged === false) {
+    return <LoggedText />;
+  }
 
   const [amount, setAmount] = useState(30);
   const [amountisValid, setAmountisValid] = useState(true);
   //const [touched, setTouched] = useState(false);
+  const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
 
   const textChangeHandler = (text) => {
+    var textInt = parseInt(text, 10);
     //setTouched(true);
-    if (text.trim().length === 0) {
+    if (text.trim().length === 0 || textInt <= 0) {
       setAmountisValid(false);
     } else {
       setAmountisValid(true);
@@ -31,23 +32,24 @@ const DonationScreen = (props) => {
 
   const submitHandler = async () => {
     if (!amountisValid) {
-      Alert.alert("Wrong amount!", "Please check the errors in the form.", [
-        { text: "Okay" },
-      ]);
+      Alert.alert("Zła suma!", "Popraw dane!", [{ text: "Okay" }]);
       return;
     }
     if (amount) {
-      try{
-      dispatch(userActions.UpdateDonation(amount));
-      Alert.alert(
-        "Udało się!",
-        "Pieniądze bezpiecznie powędrowały do schroniska"
-      );}
-      catch(e){
-         console.log("Cos poszlo nie tak");
-      };
+      try {
+        await dispatch(userActions.UpdateDonation(amount));
+      } catch (err) {
+        setError(err.message);
+      }
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Błąd!", error);
+      setError(null);
+    }
+  }, [error]);
 
   return (
     <View style={styles.screen}>
@@ -59,11 +61,24 @@ const DonationScreen = (props) => {
           <TextInput
             style={styles.input}
             value={amount.toString()}
-            placeholder='ile'
+            placeholder='Ilość'
             keyboardType='numeric'
             maxLength={7}
             onChangeText={(text) => textChangeHandler(text)}
           />
+          {/* <Input
+            id='kasa'
+            label=''
+            errorText='Wprowadź poprawną sumę!'
+            keyboardType='decimal-pad'
+            returnKeyType='done'
+            onInputChange={(text) => textChangeHandler(text)}
+            initialValue={amount.toString()}
+            required
+            min={1}
+            max={100}
+            maxLength={7}
+          /> */}
         </View>
         <View style={styles.buttonsContainer}>
           <CustomButton
@@ -165,6 +180,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputContainer: { marginVertical: 40 },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default DonationScreen;

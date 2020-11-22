@@ -19,15 +19,11 @@ import CustomButton from "../components/CustomButton";
 import LoggedText from "../components/LoggedText";
 
 const PedometerScreen = () => {
-
   const isLogged = useSelector((state) => state.auth.isLogged);
-  
-  if(isLogged === false){
-    return(
-       <LoggedText/>
-    );
-  };
-  
+
+  if (isLogged === false) {
+    return <LoggedText />;
+  }
 
   const shelterCoords = { latitude: 50.811294, longitude: 19.120867 };
   const [isFetching, setIsFetching] = useState(false);
@@ -35,7 +31,7 @@ const PedometerScreen = () => {
   const [showPedometer, setShowPedometer] = useState(false);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState(false);
   const [currentStepCount, setCurrentStepCount] = useState(0);
-
+  const [error, setError] = useState(null);
   const [trackSteps, setTrackSteps] = useState(false);
 
   const dispatch = useDispatch();
@@ -60,18 +56,21 @@ const PedometerScreen = () => {
     try {
       setTrackSteps(false);
       this.subscription.remove();
-      dispatch(userActions.UpdateSteps(currentStepCount));
-      Alert.alert(
-        "Udało się!",
-        "Kroki zostały wysłane na serwer do statystyk!"
-      );
+      await dispatch(userActions.UpdateSteps(currentStepCount));
     } catch (err) {
-      Alert.alert("Błąd!", "Nie udało się wysłać kroków na serwer!");
+      setError(err.message);
     }
   };
   useEffect(() => {
     pedometerHandler();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Błąd!", error);
+      setError(null);
+    }
+  }, [error]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -137,7 +136,7 @@ const PedometerScreen = () => {
   if (isFetching) {
     return (
       <View style={styles.screen}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size='large' color={Colors.primaryColor} />
       </View>
     );
   }
@@ -154,8 +153,7 @@ const PedometerScreen = () => {
             style={styles.button}
             onPress={() => {
               watchSteps();
-            }}
-          >
+            }}>
             Zliczaj kroki
           </CustomButton>
         )}
@@ -164,8 +162,7 @@ const PedometerScreen = () => {
             style={styles.button}
             onPress={() => {
               sendSteps();
-            }}
-          >
+            }}>
             Zatrzymaj liczenie
           </CustomButton>
         )}

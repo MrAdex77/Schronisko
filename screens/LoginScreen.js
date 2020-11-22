@@ -12,7 +12,11 @@ import * as Google from "expo-google-app-auth";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useKeepAwake } from "expo-keep-awake";
 import Colors from "../constants/Colors";
-import {SwitchActions, NavigationActions, StackActions } from "react-navigation";
+import {
+  SwitchActions,
+  NavigationActions,
+  StackActions,
+} from "react-navigation";
 
 //import * as Facebook from "expo-facebook";
 //import axios from "axios";
@@ -21,50 +25,35 @@ import * as SecureStore from "expo-secure-store";
 import * as AuthActions from "../store/actions/auth";
 
 const LoginScreen = (props) => {
-
-  
-
-
   const dispatch = useDispatch();
 
   const signInWithGoogleAsync = async () => {
     //useKeepAwake();
-  
+
     await dispatch(AuthActions.signInWithGoogleAsync());
-    Alert.alert("Witaj!" ,"Pomyślnie zalogowano", [
-      { text: "Ok", style: "default", onPress:()=> {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: "Categories",
-            }),
-          ],
-        });
-        props.navigation.dispatch(resetAction);
-      }}
-    ]);
-    
+
     //console.log(userEmail);
   };
 
   const signInWithFacebookAsync = async () => {
-  
     await dispatch(AuthActions.signInWithFacebookAsync());
-    Alert.alert("Witaj!" ,"Pomyślnie zalogowano", [
-      { text: "Ok", style: "default", onPress:()=> {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: "Categories",
-            }),
-          ],
-        });
-        props.navigation.dispatch(resetAction);
-      }}
+    Alert.alert("Witaj!", "Pomyślnie zalogowano", [
+      {
+        text: "Ok",
+        style: "default",
+        onPress: () => {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Categories",
+              }),
+            ],
+          });
+          props.navigation.dispatch(resetAction);
+        },
+      },
     ]);
-    //console.log(userEmail);
   };
 
   return (
@@ -121,8 +110,8 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans",
     fontSize: 28,
     color: "#808080",
-    padding:5,
-    margin:5,
+    padding: 5,
+    margin: 5,
   },
 });
 
