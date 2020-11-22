@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useCallback} from "react";
 import { 
         FlatList,
         View,
@@ -11,77 +11,85 @@ import NewsItem from "../components/NewsItem";
 import Colors from "../constants/Colors";
 import axios from 'axios';
 import { NavigationActions, StackActions } from "react-navigation";
+import * as newsActions from "../store/actions/news";
+import { useDispatch,useSelector } from "react-redux";
 
 const NewsScreen = (props) => {
-    const dane2 =[];
     
-    useEffect(()=>{
-        GetNewsAsync();
-    },[])
- 
-    const[isLoading,setIsLoading]=useState(true);
-    const[data,setData]=useState('');
-    async function GetNewsAsync (){
-       try{
-       await axios.get('http://176.107.131.27/panel/news/overview')
-       
-         .then( function(response) {
-          console.log("udany get moje dane")
-          //console.log(response.data.news)
-          setIsLoading(false)
-          setData(response.data.news)
-         
-          
-          //console.log(response)
-          
-         }) .catch( function (error) {
-           
-           console.log("catch po axiosie pobranie  newsa");
-           console.log(error);
-           const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: "Categories",
-              }),
-            ],
-          });
-          props.navigation.dispatch(resetAction);
-         })
-   
-       }catch ( e ) {
-     
-           return {error: true};
-         }
-   
-   }
+    
+    const[error,SetError]=useState(false);
+  const[isLoading,setIsLoading]=useState(false);
+  const data=useSelector((state) => state.news.news);
+  
+  const dispatch = useDispatch();
+  
+  const loadNews = useCallback(async () => {
+    SetError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(newsActions.GetNewsAsync());
+    } catch (err) {
+      SetError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, SetError]);
 
-  const renderNewsItem= (itemData) =>{
+  const renderNewsItem = (itemData) => {
 
-   return(
-     <NewsItem
-       Tittle={itemData.item.title}
-       Desc={itemData.item.description}
-       date={itemData.item.date}
-     />
-   );
-  };
-   if (isLoading) {
-        return (
-          <View style={styles.centered}>
-            <ActivityIndicator size="large" color={Colors.primaryColor} />
-          </View>
-        );
-      }
     return (
+      <NewsItem
+        Tittle={itemData.item.title}
+        Desc={itemData.item.description}
+        date={itemData.item.date}
+        id={itemData.item._id}
+      />
+    );
+  };
+
+
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener("willFocus", loadNews);
+
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadNews]);
+
+  useEffect(() => {
+    loadNews();
+  }, [dispatch, loadNews]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>Wystąpił błąd! </Text>
+        <Button
+          title='Spróbuj ponownie'
+          onPress={loadNews}
+          color={Colors.primaryColor}
+        />
+      </View>
+    );
+  }
+
+  return (
     <View style={styles.screen}>
-        <FlatList
+      <FlatList
         keyExtractor={(item, index) => item._id}
         data={data}
+        extraData={data}
         renderItem={renderNewsItem}
         style={{ width: "100%" }}
       />
-      
+
     </View>
   );
 };
