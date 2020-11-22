@@ -20,8 +20,8 @@ export const signInWithGoogleAsync = () => {
           "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com",
         androidStandaloneAppClientId:
           "299847310816-3oe9ku92ts7rs02v3ediur9schrid8cv.apps.googleusercontent.com",
-        webClientId:
-          "299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com",
+        // webClientId:
+        //   "299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com",
         scopes: ["profile", "email"],
       });
 
@@ -114,7 +114,7 @@ export const UpdateDonation = (amount) => {
   return async (dispatch) => {
     try {
       const token = await SecureStore.getItemAsync("token");
-      const response = await fetch(`http://176.107.131.27/user/donation/new`, {
+      const response = await fetch("http://176.107.131.27/user/donation/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,9 +125,10 @@ export const UpdateDonation = (amount) => {
         }),
       });
       if (!response.ok) {
-        console.log("blad");
         console.log(response.status);
-        // throw new Error("Something went wrong!");
+        throw new Error(
+          "błąd połączenia z serwerem! Kod błędu: " + response.status
+        );
       }
 
       const resData = await response.json();
@@ -137,6 +138,10 @@ export const UpdateDonation = (amount) => {
         type: DONATE,
         amount: newAmount,
       });
+      Alert.alert(
+        "Udało się!",
+        "Pieniądze bezpiecznie powędrowały do schroniska"
+      );
     } catch (err) {
       throw err;
     }
@@ -158,9 +163,10 @@ export const UpdateSteps = (amount) => {
         }),
       });
       if (!response.ok) {
-        console.log("blad");
         console.log(response.status);
-        //throw new Error("Something went wrong!");
+        throw new Error(
+          "Błąd połączenia z serwerem! kod błędu: " + response.status
+        );
       }
 
       // const resData = await response.json();
@@ -170,6 +176,10 @@ export const UpdateSteps = (amount) => {
       //   type: UPDATE_STEPS,
       //   amount: amount,
       // });
+      Alert.alert(
+        "Udało się!",
+        "Kroki zostały wysłane na serwer do statystyk!"
+      );
     } catch (err) {
       throw err;
     }

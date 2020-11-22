@@ -33,7 +33,6 @@ import PedometerScreen from "../screens/PedometerScreen";
 import LogoutScreen from "../screens/LogoutScreen";
 import CustomDrawer from "../components/CustomDrawer";
 
-
 const defaultStackNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "white",
@@ -119,16 +118,16 @@ const AnimalNavigator = createStackNavigator(
       screen: AnimalFavTabNavigator,
       navigationOptions: { headerTitle: "Zwierzęta" },
     },
-    Appointment:{
-        screen: AppointmentServiceScreen,
-        navigationOptions: { headerTitle: "Twój wolontariat" },
+    Appointment: {
+      screen: AppointmentServiceScreen,
+      navigationOptions: { headerTitle: "Twój wolontariat" },
     },
     Donation: DonationScreen,
-     Login:{ 
-       screen: LoginScreen,
-       navigationOptions: { headerTitle: "Zaloguj się" },
+    Login: {
+      screen: LoginScreen,
+      navigationOptions: { headerTitle: "Zaloguj się" },
     },
-    Statistics:{
+    Statistics: {
       screen: StatisticsScreen,
       navigationOptions: { headerTitle: "Twoje statystyki" },
     },
@@ -148,8 +147,6 @@ const AnimalNavigator = createStackNavigator(
     Survey: SurveyScreen,
     // StartUp: StartupScreen,
     Krokomierz: PedometerScreen,
-
-  
   },
   {
     // initialRouteName: "StartUp",
@@ -160,7 +157,6 @@ const AnimalNavigator = createStackNavigator(
 
 const AdminNavigator = createStackNavigator(
   {
-    
     AdminCategories: {
       screen: AdminCategoriesScreen,
       navigationOptions: { headerTitle: "Admin menu" },
@@ -219,22 +215,18 @@ const MainNavigator = createDrawerNavigator(
         fontFamily: "open-sans-bold",
       },
     },
-    
   }
 );
 
-
-
-
-const Routes = createSwitchNavigator({
-  startUp: StartupScreen,
-  all: MainNavigator,
-  
-}, {
-  initialRouteName: 'startUp',
-});
-
-
+const Routes = createSwitchNavigator(
+  {
+    startUp: StartupScreen,
+    all: MainNavigator,
+  },
+  {
+    initialRouteName: "startUp",
+  }
+);
 
 // export default createAppContainer(MainNavigator);
 export default createAppContainer(Routes);

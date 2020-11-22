@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../store/actions/auth";
 import CustomButton from "../components/CustomButton";
 import LoggedText from "../components/LoggedText";
-import Input from "../components/Input";
+
 const DonationScreen = (props) => {
   const isLogged = useSelector((state) => state.auth.isLogged);
 
@@ -15,6 +15,7 @@ const DonationScreen = (props) => {
   const [amount, setAmount] = useState(30);
   const [amountisValid, setAmountisValid] = useState(true);
   //const [touched, setTouched] = useState(false);
+  const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -36,16 +37,19 @@ const DonationScreen = (props) => {
     }
     if (amount) {
       try {
-        dispatch(userActions.UpdateDonation(amount));
-        Alert.alert(
-          "Udało się!",
-          "Pieniądze bezpiecznie powędrowały do schroniska"
-        );
-      } catch (e) {
-        console.log("Cos poszlo nie tak");
+        await dispatch(userActions.UpdateDonation(amount));
+      } catch (err) {
+        setError(err.message);
       }
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Błąd!", error);
+      setError(null);
+    }
+  }, [error]);
 
   return (
     <View style={styles.screen}>
@@ -176,6 +180,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputContainer: { marginVertical: 40 },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default DonationScreen;
