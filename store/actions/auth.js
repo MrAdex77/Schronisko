@@ -5,6 +5,7 @@ import * as Facebook from "expo-facebook";
 import axios from "axios";
 
 import User from "../../models/user";
+import { Alert } from "react-native";
 
 export const LOGIN = "LOGIN";
 export const DONATE = "DONATE";
@@ -17,11 +18,15 @@ export const signInWithGoogleAsync = () => {
       const result = await Google.logInAsync({
         androidClientId:
           "299847310816-epv8kb1rf2oc205ri1aqg20dv1ff8tq6.apps.googleusercontent.com",
+        androidStandaloneAppClientId:
+          "299847310816-3oe9ku92ts7rs02v3ediur9schrid8cv.apps.googleusercontent.com",
+        webClientId:
+          "299847310816-vc55jckp0jqbioah4fv37vcv4pn9oiuh.apps.googleusercontent.com",
         scopes: ["profile", "email"],
       });
 
       if (result.type === "success") {
-        const response = await fetch(`http://176.107.131.27/auth/google`, {
+        const response = await fetch("http://176.107.131.27/auth/google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -49,10 +54,13 @@ export const signInWithGoogleAsync = () => {
           type: LOGIN,
           user: newUser,
         });
+        Alert.alert("Witaj!", "Pomyślnie zalogowano");
       } else {
         return { cancelled: true };
       }
     } catch (e) {
+      Alert.alert("Błąd!", e.message);
+      console.log(e.message);
       return { error: true };
     }
   };
@@ -119,7 +127,7 @@ export const UpdateDonation = (amount) => {
       if (!response.ok) {
         console.log("blad");
         console.log(response.status);
-       // throw new Error("Something went wrong!");
+        // throw new Error("Something went wrong!");
       }
 
       const resData = await response.json();
@@ -192,7 +200,6 @@ export const signInWithFacebookAsync = () => {
           })
 
           .then(async function (response) {
-            
             console.log(response.data);
 
             const email = response.data.email;
@@ -200,7 +207,7 @@ export const signInWithFacebookAsync = () => {
             const balance = response.data.balance;
             const isAdmin = response.data.isAdmin;
             const picture = response.data.picture;
-            const newUser = new User(email, name, balance,isAdmin,picture);
+            const newUser = new User(email, name, balance, isAdmin, picture);
 
             await SecureStore.setItemAsync("FacebookToken", token);
 
@@ -289,20 +296,14 @@ export const autoLogIn = (token) => {
 
       const resData = await response.json();
       console.log(resData);
-      
+
       const name = resData.name;
       const email = "brak";
       const balance = resData.balance;
       const isAdmin = resData.isAdmin;
       const picture = resData.picture;
 
-      const newUser = new User(
-        email,
-        name,
-        balance,
-        isAdmin,
-        picture
-      );
+      const newUser = new User(email, name, balance, isAdmin, picture);
       dispatch({
         type: LOGIN,
         user: newUser,
