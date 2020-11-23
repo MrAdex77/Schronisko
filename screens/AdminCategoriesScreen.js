@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   ImageBackground,
   View,
@@ -6,32 +6,33 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-
-import Colors from "../constants/Colors"
+import Colors from "../constants/Colors";
 import { ADMINCATEGORIES } from "../data/categories-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import HeaderButton from "../components/HeaderButton";
-import { useDispatch,useSelector } from "react-redux";
-import {SwitchActions, NavigationActions, StackActions } from "react-navigation";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SwitchActions,
+  NavigationActions,
+  StackActions,
+} from "react-navigation";
 
 const AdminCategoriesScreen = (props) => {
-
-   const isAdmin = useSelector((state) => state.auth.user.isAdmin);
-   const isLogged = useSelector((state) => state.auth.isLogged);
-   //console.log("check admin Admin categories "+isAdmin);
-  if(isAdmin === false || isLogged === false){
-    return(
-      <View style={{flex:1,justifyContent:'center'}}>
-        <Text style={styles.txt1}>Admin required</Text>
+  const isAdmin = useSelector((state) => state.auth.user.isAdmin);
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  //console.log("check admin Admin categories "+isAdmin);
+  if (isAdmin === false || isLogged === false) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <Text style={styles.txt1}>Panel wymaga Administratora</Text>
       </View>
     );
-  };
+  }
 
   const renderGridItem = (itemData) => {
     return (
